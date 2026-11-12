@@ -155,11 +155,11 @@ export function PopularSearches() {
             <Link
               key={card.rank}
               href={card.href}
-              className="group relative bg-[#FBFBFB] hover:bg-white rounded-3xl p-7 border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-slate-200 transition-all duration-300 min-h-[250px] sm:min-h-[270px] flex flex-col justify-between overflow-hidden"
+              className="group relative bg-[#FBFBFB] hover:bg-white rounded-3xl p-7 border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-slate-200 transition-all duration-300 h-[265px] sm:h-[285px] flex flex-col justify-between overflow-hidden"
             >
               {/* Top Text: Rank & Category Name */}
-              <div className="relative z-10 max-w-[62%]">
-                <span className="block text-[11px] font-bold text-slate-400 tracking-wider uppercase mb-3">
+              <div className="relative z-10 max-w-[62%] h-[115px] flex flex-col justify-start">
+                <span className="block text-[11px] font-bold text-slate-400 tracking-wider uppercase mb-2">
                   TRENDING AT #{card.rank}
                 </span>
 
@@ -474,10 +474,10 @@ export function CurtainRevealSection() {
                 </div>
 
                 {/* Title & Subtitle */}
-                <h3 className="text-xl sm:text-[22px] font-black text-slate-900 tracking-tight leading-snug group-hover:text-slate-950 transition-colors">
+                <h3 className="text-xl sm:text-[22px] font-black text-slate-900 tracking-tight leading-snug group-hover:text-slate-950 transition-colors h-[54px] flex items-center">
                   {card.title}
                 </h3>
-                <p className="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed min-h-[38px]">
+                <p className="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed h-[42px] flex items-start">
                   {card.subtitle}
                 </p>
               </div>
@@ -508,10 +508,10 @@ export function CurtainRevealSection() {
               </div>
 
               {/* Features Bullet List */}
-              <div className="p-6 sm:p-7 pt-4 pb-2">
-                <ul className="space-y-2.5">
+              <div className="p-6 sm:p-7 pt-4 pb-2 flex-1 flex flex-col justify-center">
+                <ul className="space-y-3">
                   {card.features.map((feat, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-700 leading-normal">
+                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-700 leading-normal min-h-[38px]">
                       <CheckCircle2
                         className={`w-4 h-4 shrink-0 mt-0.5 ${
                           card.id === "find-job"
@@ -794,7 +794,7 @@ export function StatsAndTestimonials() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
           
           {/* LEFT FIXED BLOCK: Dark Blue Signature DLC Color */}
-          <div className="lg:col-span-4 bg-[#0C59D4] rounded-3xl p-8 sm:p-10 text-white flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[380px] lg:min-h-[460px]">
+          <div className="lg:col-span-4 bg-[#0C59D4] rounded-3xl p-8 sm:p-10 text-white flex flex-col justify-between shadow-xl relative overflow-hidden min-h-[400px] lg:h-[405px]">
             <div className="absolute -right-8 -bottom-8 text-white/10 pointer-events-none select-none">
               <Quote className="w-48 h-48 sm:w-56 sm:h-56 stroke-[1]" />
             </div>
@@ -818,7 +818,7 @@ export function StatsAndTestimonials() {
             </div>
 
             {/* Centered Left/Right Navigation Arrows Inside Left Block */}
-            <div className="relative z-10 pt-8 border-t border-white/20 flex items-center justify-center gap-4">
+            <div className="relative z-10 pt-6 border-t border-white/20 flex items-center justify-center gap-4">
               <button
                 onClick={prevSlide}
                 className="w-11 h-11 rounded-full bg-white/15 hover:bg-white text-white hover:text-[#0C59D4] border border-white/30 flex items-center justify-center transition-all duration-200 active:scale-95 shadow-md focus:outline-none"
@@ -866,44 +866,46 @@ export function StatsAndTestimonials() {
                     style={{ width: `${100 / visibleCount}%` }}
                   >
                     <div className="flex flex-col items-center h-full">
-                      {/* Speech Bubble Container with Downward Pointer */}
-                      <div className="relative w-full bg-white rounded-3xl p-6 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-200/80 flex flex-col justify-between min-h-[220px] sm:min-h-[240px]">
-                        <div className="flex text-amber-400 mb-3 gap-0.5">
+                      {/* Speech Bubble Container with Downward Pointer - Exact Uniform Height */}
+                      <div className="relative w-full bg-white rounded-3xl p-6 sm:p-7 shadow-[0_4px_20px_rgba(0,0,0,0.05)] border border-slate-200/80 flex flex-col justify-between h-[270px] sm:h-[280px]">
+                        <div className="flex text-amber-400 mb-2 gap-0.5 shrink-0">
                           {[...Array(card.rating)].map((_, i) => (
                             <Star key={i} className="w-4 h-4 fill-amber-400 text-amber-400" />
                           ))}
                         </div>
 
-                        <p className="text-slate-700 text-sm sm:text-[14.5px] leading-relaxed italic mb-4">
-                          "{card.text}"
-                        </p>
+                        <div className="flex-1 flex items-center justify-center my-auto overflow-hidden">
+                          <p className="text-slate-700 text-sm sm:text-[14px] leading-relaxed italic line-clamp-6">
+                            "{card.text}"
+                          </p>
+                        </div>
 
-                        <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 pt-2 border-t border-slate-100">
+                        <div className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 pt-2.5 border-t border-slate-100 shrink-0 mt-auto">
                           <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 flex-shrink-0" />
                           <span>Verified Review • {card.location}</span>
                         </div>
 
                         {/* Downward Speech Bubble Pointer */}
-                        <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white border-r border-b border-slate-200/80 rotate-45" />
+                        <div className="absolute -bottom-2.5 left-1/2 -translate-x-1/2 w-5 h-5 bg-white border-r border-b border-slate-200/80 rotate-45 z-10" />
                       </div>
 
-                      {/* Author Profile Information */}
-                      <div className="mt-5 flex flex-col items-center text-center">
+                      {/* Author Profile Information - Exact Uniform Height & Alignment */}
+                      <div className="mt-5 flex flex-col items-center text-center h-[110px] justify-start w-full px-2">
                         <div
-                          className={`w-12 h-12 rounded-full ${card.avatarBg} text-white font-extrabold text-sm flex items-center justify-center shadow-md ring-3 ring-white`}
+                          className={`w-12 h-12 rounded-full ${card.avatarBg} text-white font-extrabold text-sm flex items-center justify-center shadow-md ring-3 ring-white shrink-0`}
                         >
                           {card.avatarText}
                         </div>
 
-                        <span className="mt-2.5 text-base font-extrabold text-slate-900 tracking-tight leading-tight">
+                        <span className="mt-2.5 text-base font-extrabold text-slate-900 tracking-tight leading-tight truncate max-w-full">
                           {card.name}
                         </span>
 
-                        <span className="text-xs font-bold text-[#0C59D4] mt-0.5">
+                        <span className="text-xs font-bold text-[#0C59D4] mt-0.5 truncate max-w-full">
                           {card.role}
                         </span>
 
-                        <span className="text-[11px] font-medium text-slate-500">
+                        <span className="text-[11px] font-medium text-slate-500 truncate max-w-full">
                           {card.company}
                         </span>
                       </div>

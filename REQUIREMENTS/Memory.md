@@ -8,6 +8,7 @@
 ## 1. Project Identity & Sandbox Context
 * **Project Name**: Digital Labour Chowk (DLC) Website V2
 * **Application Path**: `/Users/suryanarayanmandal/Company Project/dlc_website/dlc-website-v2`
+* **GitHub Repository**: [https://github.com/suryanmandal/digitallabourchowkv2.git](https://github.com/suryanmandal/digitallabourchowkv2.git) (Branch: `main`)
 * **Parent Repo (Legacy WordPress)**: Strictly zero-touch! Do not stage, edit, or commit legacy files in root.
 * **Development Server**: Next.js App Router running on **Port 3001** (`http://localhost:3001`).
 * **Design Anchor**: DLC Signature Blue (`#0C59D4`), clean corporate editorial typography, horizontal divider rows.
