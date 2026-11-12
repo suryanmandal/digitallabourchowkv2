@@ -1,0 +1,120 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white text-slate-900 antialiased;
+  }
+}
+
+/* Subtle chevron / diagonal line pattern for Hero background */
+.hero-watermark-bg {
+  background-color: #ffffff;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(12, 89, 212, 0.02) 0px,
+    rgba(12, 89, 212, 0.02) 2px,
+    transparent 2px,
+    transparent 16px
+  );
+}
+
+/* Inner chevron pattern for solid blue accent blocks */
+.block-chevron-pattern {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(255, 255, 255, 0.12) 0px,
+    rgba(255, 255, 255, 0.12) 2px,
+    transparent 2px,
+    transparent 14px
+  );
+}
+
+/* Watermark outline text for Popular Searches cards */
+.stroke-watermark {
+  -webkit-text-stroke: 1.5px rgba(203, 213, 225, 0.35);
+  color: transparent;
+  user-select: none;
+}
+
+/* Smooth Right-to-Left Infinite Marquee */
+@-webkit-keyframes marquee-rtl {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-rtl {
+  0% {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    -webkit-transform: translate3d(-50%, 0, 0);
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee,
+.animate-marquee-rtl {
+  display: flex !important;
+  width: max-content !important;
+  -webkit-animation: marquee-rtl 25s linear infinite !important;
+  animation: marquee-rtl 25s linear infinite !important;
+  will-change: transform;
+}
+
+.animate-marquee:hover,
+.animate-marquee-rtl:hover {
+  -webkit-animation-play-state: paused !important;
+  animation-play-state: paused !important;
+}
+
+/* ========================================================================= */
+/* Google Translate Customization - Clean Native DLC Look                    */
+/* ========================================================================= */
+body {
+  top: 0px !important;
+  position: static !important;
+}
+
+.skiptranslate iframe,
+iframe.goog-te-banner-frame,
+.goog-te-banner-frame {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+#goog-gt-tt,
+.goog-te-balloon-frame {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Position Google widget off-screen while allowing DOM elements to mount */
+#google_translate_element {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Ensure proper nouns and brand marks are protected from distortion */
+.notranslate {
+  translate: no;
+}
+
