@@ -525,11 +525,8 @@ export default function Header() {
         <div className="lg:hidden w-full bg-white border-b border-slate-200 shadow-2xl max-h-[85vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-8 py-5 flex flex-col gap-3">
             
-            {/* Mobile Regional Language Switcher */}
-            <LanguageSwitcher variant="mobile" />
-
             {/* Mobile Nav Links Hierarchy */}
-            <div className="flex flex-col gap-1.5 pt-2">
+            <div className="flex flex-col gap-1.5 pt-1">
               
               {/* 1. Home */}
               <Link
