@@ -1,1 +1,5 @@
-export { default } from "@/app/careers/page";
+import { redirect } from "next/navigation";
+
+export default function AboutUsCareersPage() {
+  redirect("/careers");
+}
