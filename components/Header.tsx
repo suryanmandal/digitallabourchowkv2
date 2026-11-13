@@ -187,32 +187,24 @@ export default function Header() {
       <div className="w-full bg-white border-b border-gray-100 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
           
-          {/* Brand Logo & Tagline */}
+          {/* Brand Logo */}
           <Link
             href="/"
-            className="flex items-center gap-2 sm:gap-3 group min-w-0 flex-shrink-0"
+            className="flex items-center flex-shrink-0"
             onClick={() => {
               setIsMobileMenuOpen(false);
               setActiveDropdown(null);
             }}
           >
-            <div className="relative h-8 w-8 sm:h-11 sm:w-11 flex-shrink-0">
+            <div className="relative w-36 sm:w-44 md:w-48 h-9 sm:h-11 md:h-12 flex-shrink-0">
               <Image
                 src="/images/logo.png"
                 alt="Digital Labour Chowk Logo"
                 fill
-                sizes="(max-width: 640px) 32px, 44px"
-                className="object-contain"
+                sizes="(max-width: 640px) 144px, 192px"
+                className="object-contain object-left"
                 priority
               />
-            </div>
-            <div className="flex flex-col min-w-0">
-              <span className="text-[13px] sm:text-lg lg:text-xl font-black tracking-tight text-[#0C59D4] uppercase leading-none truncate">
-                DIGITAL LABOUR CHOWK
-              </span>
-              <span className="text-[7px] sm:text-[8.5px] lg:text-[9px] font-bold text-slate-700 tracking-[0.14em] sm:tracking-[0.2em] uppercase mt-0.5 sm:mt-1 truncate">
-                A CONSTRUCTION WORKFORCE PLATFORM
-              </span>
             </div>
           </Link>
 
