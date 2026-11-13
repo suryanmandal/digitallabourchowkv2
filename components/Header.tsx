@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import {
   Phone,
   Mail,
@@ -12,18 +13,52 @@ import {
   Menu,
   X,
   ChevronDown,
-  ChevronRight,
-  ExternalLink,
+  HardHat,
+  Building2,
+  Users,
+  Trophy,
+  Handshake,
+  FileText,
+  Briefcase,
 } from "lucide-react";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+
+// Custom crossed tools icon matching the General Contractor icon in manager's design
+function CrossedToolsIcon({ className = "w-5 h-5" }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+      <path d="M18.5 5.5 5.5 18.5" />
+      <path d="m4 20 1.5 1.5" />
+    </svg>
+  );
+}
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>(null);
 
+  const pathname = usePathname();
   const navContainerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Active route helpers
+  const isHomeActive = pathname === "/";
+  const isAboutActive = pathname.startsWith("/about");
+  const isWorkerActive = pathname.startsWith("/worker");
+  const isBusinessActive = pathname.startsWith("/business") || pathname.startsWith("/hire");
+  const isMediaActive = pathname.startsWith("/media") || pathname.startsWith("/awards") || pathname.startsWith("/partnerships");
+  const isContactActive = pathname.startsWith("/contact");
+  const isResourcesActive = pathname.startsWith("/blog") || pathname.startsWith("/career");
 
   // Close dropdowns on outside click or Escape key
   useEffect(() => {
@@ -150,7 +185,7 @@ export default function Header() {
       {/* 2. MAIN NAVIGATION BAR                                                    */}
       {/* ========================================================================= */}
       <div className="w-full bg-white border-b border-gray-100 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 h-16 sm:h-20 flex items-center justify-between gap-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-4">
           
           {/* Brand Logo & Tagline */}
           <Link
@@ -172,406 +207,233 @@ export default function Header() {
               />
             </div>
             <div className="flex flex-col min-w-0">
-              <span className="text-[14px] sm:text-xl lg:text-2xl font-black tracking-tight text-[#0C59D4] uppercase leading-none truncate">
+              <span className="text-[13px] sm:text-lg lg:text-xl font-black tracking-tight text-[#0C59D4] uppercase leading-none truncate">
                 DIGITAL LABOUR CHOWK
               </span>
-              <span className="text-[7.5px] sm:text-[9.5px] lg:text-[10px] font-bold text-slate-700 tracking-[0.14em] sm:tracking-[0.22em] uppercase mt-0.5 sm:mt-1 truncate">
+              <span className="text-[7px] sm:text-[8.5px] lg:text-[9px] font-bold text-slate-700 tracking-[0.14em] sm:tracking-[0.2em] uppercase mt-0.5 sm:mt-1 truncate">
                 A CONSTRUCTION WORKFORCE PLATFORM
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links (>= xl / 1280px) */}
-          <nav className="hidden xl:flex items-center gap-7 2xl:gap-9 text-[13.5px] font-bold tracking-wider uppercase text-slate-800">
+          {/* ========================================================================= */}
+          {/* Desktop Navigation Links (>= lg / 1024px)                                  */}
+          {/* Structure requested by Manager:                                           */}
+          {/* 1. Home                                                                   */}
+          {/* 2. About                                                                  */}
+          {/* 3. Worker                                                                 */}
+          {/* 4. Business ▼                                                             */}
+          {/* 5. Media ▼                                                                */}
+          {/* 6. Contact Us                                                             */}
+          {/* 7. Resources ▼                                                            */}
+          {/* ========================================================================= */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-7 2xl:gap-8 text-[15px] font-medium text-slate-700 whitespace-nowrap">
             
-            {/* ----------------------------------------------------------------- */}
-            {/* 1. ABOUT US (Single-Column Elegant Dropdown - Exact Image 1 Style) */}
-            {/* ----------------------------------------------------------------- */}
-            <div
-              className="relative py-6"
-              onMouseEnter={() => handleMouseEnter("about")}
-              onMouseLeave={handleMouseLeave}
-            >
+            {/* 1. HOME (Direct Link with Active Indicator) */}
+            <div className="relative py-6 flex items-center">
+              <Link
+                href="/"
+                onClick={() => setActiveDropdown(null)}
+                className={`transition-colors duration-150 whitespace-nowrap ${
+                  isHomeActive ? "text-[#0C59D4] font-semibold" : "hover:text-[#0C59D4]"
+                }`}
+              >
+                <span>Home</span>
+              </Link>
+              {isHomeActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
+              )}
+            </div>
+
+            {/* 2. ABOUT (Direct Link) */}
+            <div className="relative py-6 flex items-center">
               <Link
                 href="/about-us"
                 onClick={() => setActiveDropdown(null)}
-                className={`flex items-center gap-1.5 transition-colors duration-150 focus:outline-none ${
-                  activeDropdown === "about" ? "text-[#0C59D4]" : "hover:text-[#0C59D4]"
+                className={`transition-colors duration-150 whitespace-nowrap ${
+                  isAboutActive ? "text-[#0C59D4] font-semibold" : "hover:text-[#0C59D4]"
                 }`}
               >
-                <span>ABOUT US</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    activeDropdown === "about" ? "rotate-180 text-[#0C59D4]" : "text-slate-400"
-                  }`}
-                />
+                <span>About</span>
               </Link>
-
-              {/* Exact Image 1 Card: White container, 3px top blue line, clean dividers */}
-              {activeDropdown === "about" && (
-                <div
-                  className="absolute top-full left-0 w-72 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
-                  onMouseEnter={() => handleMouseEnter("about")}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="bg-white shadow-xl border-x border-b border-gray-100 border-t-[3px] border-t-[#0C59D4] px-6 py-2 normal-case font-normal">
-                    <div className="flex flex-col">
-                      <Link
-                        href="/about-us/history"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Our History
-                      </Link>
-                      <Link
-                        href="/about-us/vision-mission"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Vision & Mission
-                      </Link>
-                      <Link
-                        href="/about-us/values"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Values
-                      </Link>
-                      <Link
-                        href="/about-us/leadership"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Leadership
-                      </Link>
-                      <Link
-                        href="/awards-recognition"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Awards & Recognitions
-                      </Link>
-                      <Link
-                        href="/about-us/footprint"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Our Footprint
-                      </Link>
-                      <Link
-                        href="/media-coverage"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Media Coverage
-                      </Link>
-                      <Link
-                        href="/partnerships"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Institutional Partners
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+              {isAboutActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
               )}
             </div>
 
-            {/* ----------------------------------------------------------------- */}
-            {/* 2. HIRE MANPOWER (3-Column Mega Menu - Exact Image 2 Style)        */}
-            {/* ----------------------------------------------------------------- */}
+            {/* 3. WORKER (Direct Link) */}
+            <div className="relative py-6 flex items-center">
+              <Link
+                href="/worker"
+                onClick={() => setActiveDropdown(null)}
+                className={`transition-colors duration-150 whitespace-nowrap ${
+                  isWorkerActive ? "text-[#0C59D4] font-semibold" : "hover:text-[#0C59D4]"
+                }`}
+              >
+                <span>Worker</span>
+              </Link>
+              {isWorkerActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
+              )}
+            </div>
+
+            {/* 4. BUSINESS ▼ (Dropdown Card) */}
             <div
-              className="relative py-6"
-              onMouseEnter={() => handleMouseEnter("hire")}
+              className="relative py-6 flex items-center"
+              onMouseEnter={() => handleMouseEnter("business")}
               onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                onClick={() => setActiveDropdown(activeDropdown === "hire" ? null : "hire")}
-                aria-expanded={activeDropdown === "hire"}
-                className={`flex items-center gap-1.5 transition-colors duration-150 focus:outline-none ${
-                  activeDropdown === "hire" ? "text-[#0C59D4]" : "hover:text-[#0C59D4]"
+                onClick={() => setActiveDropdown(activeDropdown === "business" ? null : "business")}
+                aria-expanded={activeDropdown === "business"}
+                className={`flex items-center gap-1 cursor-pointer transition-colors duration-150 focus:outline-none whitespace-nowrap ${
+                  activeDropdown === "business" || isBusinessActive
+                    ? "text-[#0C59D4] font-semibold"
+                    : "hover:text-[#0C59D4]"
                 }`}
               >
-                <span>HIRE MANPOWER</span>
+                <span>Business</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    activeDropdown === "hire" ? "rotate-180 text-[#0C59D4]" : "text-slate-400"
+                    activeDropdown === "business" ? "rotate-180 text-[#0C59D4]" : "text-slate-500"
                   }`}
                 />
               </button>
+              {isBusinessActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
+              )}
 
-              {/* Exact Image 2 Multi-Column Mega Card */}
-              {activeDropdown === "hire" && (
+              {/* Business Dropdown Card - Mockup Design Match */}
+              {activeDropdown === "business" && (
                 <div
-                  className="absolute top-full left-0 -translate-x-48 w-[820px] z-50 animate-in fade-in slide-in-from-top-1 duration-150"
-                  onMouseEnter={() => handleMouseEnter("hire")}
+                  className="absolute top-full left-0 z-50 pt-1 animate-in fade-in slide-in-from-top-1 duration-150"
+                  onMouseEnter={() => handleMouseEnter("business")}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="bg-white shadow-xl border-x border-b border-gray-100 border-t-[3px] border-t-[#0C59D4] px-8 py-7 normal-case font-normal">
-                    <div className="grid grid-cols-3 gap-8">
-                      
-                      {/* Column 1: Civil & Finishing Trades */}
-                      <div>
-                        <h4 className="text-[17px] font-bold text-[#0C59D4] mb-3 tracking-tight">
-                          Civil & Finishing Trades
-                        </h4>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/instant-manpower-dispatch"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Instant Manpower Dispatch
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#civil"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Masons & Bricklayers
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#plumbing"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Plumbing & Sanitation
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#carpenters"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Carpenters & Bar-Benders
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#helpers"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            General Site Helpers
-                          </Link>
-                        </div>
-                      </div>
+                  <div className="bg-white rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden min-w-[270px] py-1.5 font-normal">
+                    {/* Contractor */}
+                    <Link
+                      href="/business#contractor"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
+                    >
+                      <HardHat className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Contractor</span>
+                    </Link>
 
-                      {/* Column 2: Whom We Serve */}
-                      <div>
-                        <h4 className="text-[17px] font-bold text-[#0C59D4] mb-3 tracking-tight">
-                          Whom We Serve
-                        </h4>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/hire-construction-workers-business#epcs"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            General Contractors & EPCs
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#subcontractors"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Sub-Contractors & Jamadars
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#developers"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Builders & Real Estate
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#infrastructure"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Infrastructure Projects
-                          </Link>
-                          <Link
-                            href="/hire-construction-workers-business#industrial"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Industrial Plants & Warehouses
-                          </Link>
-                        </div>
-                      </div>
+                    {/* General Contractor */}
+                    <Link
+                      href="/business#general-contractor"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
+                    >
+                      <CrossedToolsIcon className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>General Contractor</span>
+                    </Link>
 
-                      {/* Column 3: Compliance & Rates */}
-                      <div>
-                        <h4 className="text-[17px] font-bold text-[#0C59D4] mb-3 tracking-tight">
-                          Compliance & Rates
-                        </h4>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/compliance-safety#biometrics"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Digital Biometric Attendance
-                          </Link>
-                          <Link
-                            href="/compliance-safety#pf-esic"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Statutory PF & ESIC Records
-                          </Link>
-                          <Link
-                            href="/compliance-safety#safety"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Site Safety & PPE Standards
-                          </Link>
-                          <Link
-                            href="/wage-calculator"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Wage Calculator & Rate Card
-                          </Link>
-                          <Link
-                            href="/wage-calculator#benchmarks"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            City-Wise Wage Benchmarks
-                          </Link>
-                        </div>
-                      </div>
+                    {/* Builder & Developer */}
+                    <Link
+                      href="/business#builder-developer"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
+                    >
+                      <Building2 className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Builder &amp; Developer</span>
+                    </Link>
 
-                    </div>
+                    {/* Staffing & Placement Agency */}
+                    <Link
+                      href="/business#staffing-agency"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors group"
+                    >
+                      <Users className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Staffing &amp; Placement Agency</span>
+                    </Link>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* ----------------------------------------------------------------- */}
-            {/* 3. FOR WORKERS (2-Column Mega Menu - Image 2 Style)               */}
-            {/* ----------------------------------------------------------------- */}
+            {/* 5. MEDIA ▼ (Dropdown Card) */}
             <div
-              className="relative py-6"
-              onMouseEnter={() => handleMouseEnter("workers")}
+              className="relative py-6 flex items-center"
+              onMouseEnter={() => handleMouseEnter("media")}
               onMouseLeave={handleMouseLeave}
             >
               <button
                 type="button"
-                onClick={() => setActiveDropdown(activeDropdown === "workers" ? null : "workers")}
-                aria-expanded={activeDropdown === "workers"}
-                className={`flex items-center gap-1.5 transition-colors duration-150 focus:outline-none ${
-                  activeDropdown === "workers" ? "text-[#0C59D4]" : "hover:text-[#0C59D4]"
+                onClick={() => setActiveDropdown(activeDropdown === "media" ? null : "media")}
+                aria-expanded={activeDropdown === "media"}
+                className={`flex items-center gap-1 cursor-pointer transition-colors duration-150 focus:outline-none whitespace-nowrap ${
+                  activeDropdown === "media" || isMediaActive
+                    ? "text-[#0C59D4] font-semibold"
+                    : "hover:text-[#0C59D4]"
                 }`}
               >
-                <span>FOR WORKERS</span>
+                <span>Media</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    activeDropdown === "workers" ? "rotate-180 text-[#0C59D4]" : "text-slate-400"
+                    activeDropdown === "media" ? "rotate-180 text-[#0C59D4]" : "text-slate-500"
                   }`}
                 />
               </button>
+              {isMediaActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
+              )}
 
-              {/* Exact Image 2 Style for Workers */}
-              {activeDropdown === "workers" && (
+              {/* Media Dropdown Card - Mockup Design Match */}
+              {activeDropdown === "media" && (
                 <div
-                  className="absolute top-full left-0 -translate-x-32 w-[600px] z-50 animate-in fade-in slide-in-from-top-1 duration-150"
-                  onMouseEnter={() => handleMouseEnter("workers")}
+                  className="absolute top-full left-0 z-50 pt-1 animate-in fade-in slide-in-from-top-1 duration-150"
+                  onMouseEnter={() => handleMouseEnter("media")}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="bg-white shadow-xl border-x border-b border-gray-100 border-t-[3px] border-t-[#0C59D4] px-8 py-7 normal-case font-normal">
-                    <div className="grid grid-cols-2 gap-8">
-                      
-                      {/* Column 1: Rozgar & Placements */}
-                      <div>
-                        <h4 className="text-[17px] font-bold text-[#0C59D4] mb-3 tracking-tight">
-                          Rozgar & Placements
-                        </h4>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/worker"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Find Daily Work (Aaj Ka Rozgar)
-                          </Link>
-                          <a
-                            href="https://play.google.com/store/apps/details?id=com.digitallabourchowk.dlc"
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors flex items-center justify-between"
-                          >
-                            <span>Download DLC Worker App</span>
-                            <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                          </a>
-                          <Link
-                            href="/worker#zero-commission"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Zero Commission Placement
-                          </Link>
-                          <Link
-                            href="/worker#skills"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Skill Development & Badges
-                          </Link>
-                        </div>
-                      </div>
+                  <div className="bg-white rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden min-w-[240px] py-1.5 font-normal">
+                    {/* Awards & Recognition */}
+                    <Link
+                      href="/awards-recognition"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
+                    >
+                      <Trophy className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Awards &amp; Recognition</span>
+                    </Link>
 
-                      {/* Column 2: Benefits & Suraksha */}
-                      <div>
-                        <h4 className="text-[17px] font-bold text-[#0C59D4] mb-3 tracking-tight">
-                          Benefits & Suraksha
-                        </h4>
-                        <div className="flex flex-col">
-                          <Link
-                            href="/worker#dbt"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Direct Bank Transfer (DBT)
-                          </Link>
-                          <Link
-                            href="/worker#insurance"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            ₹5 Lakhs Accidental Insurance
-                          </Link>
-                          <Link
-                            href="/worker#trade-id"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Digital Trade ID Card
-                          </Link>
-                          <Link
-                            href="/worker#helpline"
-                            onClick={() => setActiveDropdown(null)}
-                            className="py-3 text-[14.5px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                          >
-                            Worker Support (1800-202-0991)
-                          </Link>
-                        </div>
-                      </div>
-
-                    </div>
+                    {/* Partnership */}
+                    <Link
+                      href="/partnerships"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors group"
+                    >
+                      <Handshake className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Partnership</span>
+                    </Link>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* ----------------------------------------------------------------- */}
-            {/* 4. RESOURCES (Single-Column Elegant Dropdown - Exact Image 1 Style) */}
-            {/* ----------------------------------------------------------------- */}
+            {/* 6. CONTACT US (Direct Link) */}
+            <div className="relative py-6 flex items-center">
+              <Link
+                href="/contact"
+                onClick={() => setActiveDropdown(null)}
+                className={`transition-colors duration-150 whitespace-nowrap ${
+                  isContactActive ? "text-[#0C59D4] font-semibold" : "hover:text-[#0C59D4]"
+                }`}
+              >
+                <span>Contact Us</span>
+              </Link>
+              {isContactActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
+              )}
+            </div>
+
+            {/* 7. RESOURCES ▼ (Dropdown Card) */}
             <div
-              className="relative py-6"
+              className="relative py-6 flex items-center"
               onMouseEnter={() => handleMouseEnter("resources")}
               onMouseLeave={handleMouseLeave}
             >
@@ -579,88 +441,58 @@ export default function Header() {
                 type="button"
                 onClick={() => setActiveDropdown(activeDropdown === "resources" ? null : "resources")}
                 aria-expanded={activeDropdown === "resources"}
-                className={`flex items-center gap-1.5 transition-colors duration-150 focus:outline-none ${
-                  activeDropdown === "resources" ? "text-[#0C59D4]" : "hover:text-[#0C59D4]"
+                className={`flex items-center gap-1 cursor-pointer transition-colors duration-150 focus:outline-none whitespace-nowrap ${
+                  activeDropdown === "resources" || isResourcesActive
+                    ? "text-[#0C59D4] font-semibold"
+                    : "hover:text-[#0C59D4]"
                 }`}
               >
-                <span>RESOURCES</span>
+                <span>Resources</span>
                 <ChevronDown
                   className={`w-3.5 h-3.5 transition-transform duration-200 ${
-                    activeDropdown === "resources" ? "rotate-180 text-[#0C59D4]" : "text-slate-400"
+                    activeDropdown === "resources" ? "rotate-180 text-[#0C59D4]" : "text-slate-500"
                   }`}
                 />
               </button>
+              {isResourcesActive && (
+                <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
+              )}
 
-              {/* Exact Image 1 Style for Resources */}
+              {/* Resources Dropdown Card - Mockup Design Match */}
               {activeDropdown === "resources" && (
                 <div
-                  className="absolute top-full left-0 w-72 z-50 animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="absolute top-full left-0 z-50 pt-1 animate-in fade-in slide-in-from-top-1 duration-150"
                   onMouseEnter={() => handleMouseEnter("resources")}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="bg-white shadow-xl border-x border-b border-gray-100 border-t-[3px] border-t-[#0C59D4] px-6 py-2 normal-case font-normal">
-                    <div className="flex flex-col">
-                      <Link
-                        href="/blog"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Industry Blogs & Insights
-                      </Link>
-                      <Link
-                        href="/blog#automation"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Site Automation Trends
-                      </Link>
-                      <Link
-                        href="/blog#guides"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Workforce Guides
-                      </Link>
-                      <Link
-                        href="/labour-laws"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Labour Laws & Regulations
-                      </Link>
-                      <Link
-                        href="/labour-laws#minimum-wages"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Minimum Wage Notices
-                      </Link>
-                      <Link
-                        href="/press-releases"
-                        onClick={() => setActiveDropdown(null)}
-                        className="py-3.5 text-[15px] text-slate-800 hover:text-[#0C59D4] border-b border-gray-200 transition-colors"
-                      >
-                        Press Releases & Media
-                      </Link>
-                    </div>
+                  <div className="bg-white rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden min-w-[200px] py-1.5 font-normal">
+                    {/* Blogs */}
+                    <Link
+                      href="/blog"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
+                    >
+                      <FileText className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Blogs</span>
+                    </Link>
+
+                    {/* Career */}
+                    <Link
+                      href="/careers"
+                      onClick={() => setActiveDropdown(null)}
+                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors group"
+                    >
+                      <Briefcase className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
+                      <span>Career</span>
+                    </Link>
                   </div>
                 </div>
               )}
             </div>
 
-            {/* ----------------------------------------------------------------- */}
-            {/* 5. INVESTOR RELATIONS (Direct Link)                               */}
-            {/* ----------------------------------------------------------------- */}
-            <Link
-              href="#investor-relations"
-              className="hover:text-[#0C59D4] transition-colors duration-150 py-6"
-            >
-              INVESTOR RELATIONS
-            </Link>
-
           </nav>
 
-          {/* Right Header Actions (CTA + Mobile Burger Menu) */}
+          {/* Right Header Actions (Language Switcher + Get in Touch + Mobile Burger) */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
             {/* Desktop Language Switcher */}
             <div className="hidden lg:block">
@@ -670,16 +502,16 @@ export default function Header() {
             {/* Get in Touch CTA Button */}
             <a
               href="https://onboarding.digitallabourchowk.com/login"
-              className="hidden md:inline-flex px-4 sm:px-6 py-2 sm:py-2.5 rounded-lg bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase shadow-sm hover:shadow transition-all duration-200 active:scale-95"
+              className="hidden sm:inline-flex px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-[11px] sm:text-xs tracking-wider uppercase shadow-xs hover:shadow transition-all duration-200 active:scale-95"
             >
               Get in Touch
             </a>
 
-            {/* Burger Menu Button (Visible on Phone & Tablet: < xl / 1280px) */}
+            {/* Burger Menu Button (Visible below lg / 1024px) */}
             <button
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="xl:hidden inline-flex items-center justify-center p-2 rounded-lg bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-[#0C59D4] active:scale-95 border border-slate-200 transition-all duration-200 focus:outline-none"
+              className="lg:hidden inline-flex items-center justify-center p-2 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 hover:text-[#0C59D4] active:scale-95 border border-slate-200 transition-all duration-200 focus:outline-none"
               aria-expanded={isMobileMenuOpen}
               aria-label="Toggle navigation menu"
             >
@@ -695,337 +527,221 @@ export default function Header() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. MOBILE & TABLET EXPANDABLE MENU DRAWER (Below xl / 1280px)             */}
+      {/* 3. MOBILE & TABLET EXPANDABLE MENU DRAWER (Below lg / 1024px)              */}
       {/* ========================================================================= */}
       {isMobileMenuOpen && (
-        <div className="xl:hidden w-full bg-white border-b border-slate-200 shadow-2xl max-h-[85vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
+        <div className="lg:hidden w-full bg-white border-b border-slate-200 shadow-2xl max-h-[85vh] overflow-y-auto animate-in fade-in slide-in-from-top-2 duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-8 py-5 flex flex-col gap-3">
             
-            {/* Mobile Regional Language Switcher - Dedicated Touch Friendly Card for Workers */}
+            {/* Mobile Regional Language Switcher */}
             <LanguageSwitcher variant="mobile" />
 
-            {/* Accordion 1: ABOUT US */}
-            <div className="border border-slate-200 overflow-hidden bg-white">
-              <button
-                type="button"
-                onClick={() => toggleMobileSection("about")}
-                className="w-full flex items-center justify-between p-3.5 text-left font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
+            {/* Mobile Nav Links Hierarchy */}
+            <div className="flex flex-col gap-1.5 pt-2">
+              
+              {/* 1. Home */}
+              <Link
+                href="/"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isHomeActive
+                    ? "bg-blue-50 text-[#0C59D4]"
+                    : "text-slate-800 hover:bg-slate-50"
+                }`}
               >
-                <span>About Us</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                    mobileExpandedSection === "about" ? "rotate-180 text-[#0C59D4]" : ""
-                  }`}
-                />
-              </button>
+                <span>Home</span>
+                {isHomeActive && <span className="w-2 h-2 rounded-full bg-[#0C59D4]" />}
+              </Link>
 
-              {mobileExpandedSection === "about" && (
-                <div className="p-4 bg-white border-t-[2px] border-t-[#0C59D4] flex flex-col">
-                  <Link
-                    href="/about-us"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-[#0C59D4] font-bold border-b border-gray-200"
-                  >
-                    Overview & Bento Hub
-                  </Link>
-                  <Link
-                    href="/about-us/history"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Our History
-                  </Link>
-                  <Link
-                    href="/about-us/vision-mission"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Vision & Mission
-                  </Link>
-                  <Link
-                    href="/about-us/values"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Values
-                  </Link>
-                  <Link
-                    href="/about-us/leadership"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Leadership
-                  </Link>
-                  <Link
-                    href="/awards-recognition"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Awards & Recognitions
-                  </Link>
-                  <Link
-                    href="/about-us/footprint"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Our Footprint
-                  </Link>
-                  <Link
-                    href="/media-coverage"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Media Coverage
-                  </Link>
-                  <Link
-                    href="/partnerships"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-3 text-[14px] text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Institutional Partners
-                  </Link>
-                </div>
-              )}
+              {/* 2. About */}
+              <Link
+                href="/about-us"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isAboutActive
+                    ? "bg-blue-50 text-[#0C59D4]"
+                    : "text-slate-800 hover:bg-slate-50"
+                }`}
+              >
+                <span>About</span>
+                {isAboutActive && <span className="w-2 h-2 rounded-full bg-[#0C59D4]" />}
+              </Link>
+
+              {/* 3. Worker */}
+              <Link
+                href="/worker"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isWorkerActive
+                    ? "bg-blue-50 text-[#0C59D4]"
+                    : "text-slate-800 hover:bg-slate-50"
+                }`}
+              >
+                <span>Worker</span>
+                {isWorkerActive && <span className="w-2 h-2 rounded-full bg-[#0C59D4]" />}
+              </Link>
+
+              {/* 4. Business (Accordion) */}
+              <div className="rounded-xl border border-slate-200/80 overflow-hidden bg-white">
+                <button
+                  type="button"
+                  onClick={() => toggleMobileSection("business")}
+                  className="w-full flex items-center justify-between p-3.5 text-left font-semibold text-sm text-slate-800 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
+                >
+                  <span className={isBusinessActive ? "text-[#0C59D4]" : ""}>Business</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
+                      mobileExpandedSection === "business" ? "rotate-180 text-[#0C59D4]" : ""
+                    }`}
+                  />
+                </button>
+                {mobileExpandedSection === "business" && (
+                  <div className="p-2 bg-white border-t border-slate-100 flex flex-col">
+                    <Link
+                      href="/business#contractor"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                    >
+                      <HardHat className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Contractor</span>
+                    </Link>
+                    <Link
+                      href="/business#general-contractor"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                    >
+                      <CrossedToolsIcon className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>General Contractor</span>
+                    </Link>
+                    <Link
+                      href="/business#builder-developer"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                    >
+                      <Building2 className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Builder &amp; Developer</span>
+                    </Link>
+                    <Link
+                      href="/business#staffing-agency"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 transition-colors"
+                    >
+                      <Users className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Staffing &amp; Placement Agency</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* 5. Media (Accordion) */}
+              <div className="rounded-xl border border-slate-200/80 overflow-hidden bg-white">
+                <button
+                  type="button"
+                  onClick={() => toggleMobileSection("media")}
+                  className="w-full flex items-center justify-between p-3.5 text-left font-semibold text-sm text-slate-800 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
+                >
+                  <span className={isMediaActive ? "text-[#0C59D4]" : ""}>Media</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
+                      mobileExpandedSection === "media" ? "rotate-180 text-[#0C59D4]" : ""
+                    }`}
+                  />
+                </button>
+                {mobileExpandedSection === "media" && (
+                  <div className="p-2 bg-white border-t border-slate-100 flex flex-col">
+                    <Link
+                      href="/awards-recognition"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                    >
+                      <Trophy className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Awards &amp; Recognition</span>
+                    </Link>
+                    <Link
+                      href="/partnerships"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 transition-colors"
+                    >
+                      <Handshake className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Partnership</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
+              {/* 6. Contact Us */}
+              <Link
+                href="/contact"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={`flex items-center justify-between px-4 py-3 rounded-xl text-sm font-semibold transition-colors ${
+                  isContactActive
+                    ? "bg-blue-50 text-[#0C59D4]"
+                    : "text-slate-800 hover:bg-slate-50"
+                }`}
+              >
+                <span>Contact Us</span>
+                {isContactActive && <span className="w-2 h-2 rounded-full bg-[#0C59D4]" />}
+              </Link>
+
+              {/* 7. Resources (Accordion) */}
+              <div className="rounded-xl border border-slate-200/80 overflow-hidden bg-white">
+                <button
+                  type="button"
+                  onClick={() => toggleMobileSection("resources")}
+                  className="w-full flex items-center justify-between p-3.5 text-left font-semibold text-sm text-slate-800 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
+                >
+                  <span className={isResourcesActive ? "text-[#0C59D4]" : ""}>Resources</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
+                      mobileExpandedSection === "resources" ? "rotate-180 text-[#0C59D4]" : ""
+                    }`}
+                  />
+                </button>
+                {mobileExpandedSection === "resources" && (
+                  <div className="p-2 bg-white border-t border-slate-100 flex flex-col">
+                    <Link
+                      href="/blog"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                    >
+                      <FileText className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Blogs</span>
+                    </Link>
+                    <Link
+                      href="/careers"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 transition-colors"
+                    >
+                      <Briefcase className="w-4 h-4 text-slate-600 flex-shrink-0" />
+                      <span>Career</span>
+                    </Link>
+                  </div>
+                )}
+              </div>
+
             </div>
 
-            {/* Accordion 2: HIRE MANPOWER */}
-            <div className="border border-slate-200 overflow-hidden bg-white">
-              <button
-                type="button"
-                onClick={() => toggleMobileSection("hire")}
-                className="w-full flex items-center justify-between p-3.5 text-left font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
-              >
-                <span>Hire Manpower</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                    mobileExpandedSection === "hire" ? "rotate-180 text-[#0C59D4]" : ""
-                  }`}
-                />
-              </button>
-
-              {mobileExpandedSection === "hire" && (
-                <div className="p-4 bg-white border-t-[2px] border-t-[#0C59D4] flex flex-col gap-4">
-                  <div>
-                    <h5 className="text-[14px] font-bold text-[#0C59D4] mb-1">Civil & Finishing Trades</h5>
-                    <div className="flex flex-col">
-                      <Link
-                        href="/instant-manpower-dispatch"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Instant Manpower Dispatch
-                      </Link>
-                      <Link
-                        href="/hire-construction-workers-business#civil"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Masons & Bricklayers
-                      </Link>
-                      <Link
-                        href="/hire-construction-workers-business#plumbing"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Plumbing & Sanitation
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h5 className="text-[14px] font-bold text-[#0C59D4] mb-1">Whom We Serve</h5>
-                    <div className="flex flex-col">
-                      <Link
-                        href="/hire-construction-workers-business#epcs"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        General Contractors & EPCs
-                      </Link>
-                      <Link
-                        href="/hire-construction-workers-business#subcontractors"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Sub-Contractors & Jamadars
-                      </Link>
-                      <Link
-                        href="/hire-construction-workers-business#developers"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Builders & Real Estate
-                      </Link>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h5 className="text-[14px] font-bold text-[#0C59D4] mb-1">Compliance & Rates</h5>
-                    <div className="flex flex-col">
-                      <Link
-                        href="/compliance-safety"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Compliance & Safety Standards
-                      </Link>
-                      <Link
-                        href="/wage-calculator"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Wage Calculator & Rate Card
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Accordion 3: FOR WORKERS */}
-            <div className="border border-slate-200 overflow-hidden bg-white">
-              <button
-                type="button"
-                onClick={() => toggleMobileSection("workers")}
-                className="w-full flex items-center justify-between p-3.5 text-left font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
-              >
-                <span>For Workers</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                    mobileExpandedSection === "workers" ? "rotate-180 text-[#0C59D4]" : ""
-                  }`}
-                />
-              </button>
-
-              {mobileExpandedSection === "workers" && (
-                <div className="p-4 bg-white border-t-[2px] border-t-[#0C59D4] flex flex-col gap-4">
-                  <div>
-                    <h5 className="text-[14px] font-bold text-[#0C59D4] mb-1">Rozgar & Placements</h5>
-                    <div className="flex flex-col">
-                      <Link
-                        href="/worker"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Find Daily Work (Aaj Ka Rozgar)
-                      </Link>
-                      <a
-                        href="https://play.google.com/store/apps/details?id=com.digitallabourchowk.dlc"
-                        target="_blank"
-                        rel="noreferrer"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal flex items-center justify-between"
-                      >
-                        <span>Download DLC Worker App</span>
-                        <ExternalLink className="w-3.5 h-3.5 text-slate-400" />
-                      </a>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h5 className="text-[14px] font-bold text-[#0C59D4] mb-1">Benefits & Suraksha</h5>
-                    <div className="flex flex-col">
-                      <Link
-                        href="/worker#dbt"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Direct Bank Transfer (DBT)
-                      </Link>
-                      <Link
-                        href="/worker#insurance"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        ₹5 Lakhs Accidental Insurance
-                      </Link>
-                      <Link
-                        href="/worker#helpline"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                        className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                      >
-                        Worker Helpline (1800-202-0991)
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Accordion 4: RESOURCES */}
-            <div className="border border-slate-200 overflow-hidden bg-white">
-              <button
-                type="button"
-                onClick={() => toggleMobileSection("resources")}
-                className="w-full flex items-center justify-between p-3.5 text-left font-bold text-xs sm:text-sm tracking-wider uppercase text-slate-900 bg-slate-50/70 hover:bg-blue-50/50 transition-colors"
-              >
-                <span>Resources</span>
-                <ChevronDown
-                  className={`w-4 h-4 text-slate-500 transition-transform duration-200 ${
-                    mobileExpandedSection === "resources" ? "rotate-180 text-[#0C59D4]" : ""
-                  }`}
-                />
-              </button>
-
-              {mobileExpandedSection === "resources" && (
-                <div className="p-4 bg-white border-t-[2px] border-t-[#0C59D4] flex flex-col">
-                  <Link
-                    href="/blog"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Industry Blogs & Insights
-                  </Link>
-                  <Link
-                    href="/labour-laws"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Labour Laws & Regulations
-                  </Link>
-                  <Link
-                    href="/press-releases"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="py-2.5 text-xs text-slate-800 border-b border-gray-200 font-normal"
-                  >
-                    Press Releases & Media
-                  </Link>
-                </div>
-              )}
-            </div>
-
-            {/* Direct Link: Investor Relations */}
-            <Link
-              href="#investor-relations"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="flex items-center justify-between px-3.5 py-3 border border-slate-200 text-xs sm:text-sm font-bold uppercase tracking-wider text-slate-800 hover:text-[#0C59D4] transition-all"
-            >
-              <span>Investor Relations</span>
-              <ChevronRight className="w-4 h-4 text-slate-400" />
-            </Link>
-
-            {/* Mobile Call To Action Button */}
-            <div className="pt-2 border-t border-slate-100 flex flex-col gap-3">
+            {/* Mobile Actions: CTA + Quick Contacts */}
+            <div className="pt-3 border-t border-slate-100 flex flex-col gap-3">
               <a
                 href="https://onboarding.digitallabourchowk.com/login"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center py-3.5 rounded-lg bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-sm transition-all"
+                className="w-full flex items-center justify-center py-3.5 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-xs transition-all"
               >
                 Get in Touch
               </a>
 
-              {/* Direct Quick Calls */}
-              <div className="grid grid-cols-2 gap-2.5 pt-1">
+              <div className="grid grid-cols-2 gap-2.5">
                 <a
                   href="tel:+917070999175"
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-slate-100 text-slate-800 text-xs font-bold hover:bg-blue-50 hover:text-[#0C59D4] transition-colors"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold hover:bg-blue-50 hover:text-[#0C59D4] transition-colors"
                 >
                   <Phone className="w-3.5 h-3.5 text-[#0C59D4]" />
                   <span>Call Us</span>
                 </a>
                 <a
                   href="mailto:info@digitallabourchowk.com"
-                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-slate-100 text-slate-800 text-xs font-bold hover:bg-blue-50 hover:text-[#0C59D4] transition-colors"
+                  className="flex items-center justify-center gap-2 py-2.5 px-3 rounded-xl bg-slate-100 text-slate-800 text-xs font-bold hover:bg-blue-50 hover:text-[#0C59D4] transition-colors"
                 >
                   <Mail className="w-3.5 h-3.5 text-[#0C59D4]" />
                   <span>Email</span>
@@ -1039,7 +755,7 @@ export default function Header() {
 
       {/* Floating Accessible Language Pill for Mobile Workers (hidden when mobile menu is open) */}
       {!isMobileMenuOpen && (
-        <div className="xl:hidden">
+        <div className="lg:hidden">
           <LanguageSwitcher variant="floating" />
         </div>
       )}
