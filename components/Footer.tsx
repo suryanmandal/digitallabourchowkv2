@@ -317,15 +317,15 @@ export default function Footer() {
       </div>
 
       {/* Mega Typographic Brand Watermark at Bottom */}
-      <div className="w-full overflow-hidden select-none pointer-events-none -mb-6 sm:-mb-10 lg:-mb-14">
+      <div className="w-full overflow-hidden select-none pointer-events-none pt-2 sm:pt-4 pb-8 sm:pb-0 mb-0 sm:-mb-8 lg:-mb-14">
         <svg
-          viewBox="0 0 1600 230"
-          className="w-full h-auto text-white/[0.065] fill-current"
+          viewBox="0 0 1600 180"
+          className="w-full h-auto text-white/[0.08] fill-current"
           preserveAspectRatio="xMidYMid meet"
         >
           <text
             x="50%"
-            y="78%"
+            y="62%"
             textAnchor="middle"
             letterSpacing="-3"
             style={{
