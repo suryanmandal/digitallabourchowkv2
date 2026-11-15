@@ -1861,183 +1861,222 @@ export function HowItWorksSection() {
 }
 
 // =============================================================================
-// SECTION 6: ENTERPRISE BUILDER & EPC PARTNER WALL (Institutional Credibility)
+// SECTION 6: ENTERPRISE BUILDER & EPC PARTNER WALL (Dual-Row Infinite Marquee)
 // =============================================================================
 interface EnterprisePartner {
+  id: string;
   name: string;
   category: string;
   location: string;
   image: string;
+  logo: string;
   projectHighlight: string;
-  initials: string;
-  brandColor: string;
 }
 
-const ENTERPRISE_PARTNERS: EnterprisePartner[] = [
+const UPPER_ROW_PARTNERS: EnterprisePartner[] = [
   {
+    id: "lnt",
     name: "L&T Construction",
     category: "Heavy Civil & Metro",
     location: "Pan-India",
     image: "/images/clients/lnt-metro.jpg",
+    logo: "/images/clients/logos/lnt.svg",
     projectHighlight: "Metro Viaducts & Expressways",
-    initials: "LT",
-    brandColor: "bg-[#002D62]",
   },
   {
+    id: "godrej",
     name: "Godrej Construction",
     category: "Commercial & Residential",
     location: "Mumbai & NCR",
     image: "/images/clients/godrej-residential.jpg",
+    logo: "/images/clients/logos/godrej.svg",
     projectHighlight: "Luxury High-Rise Developments",
-    initials: "GC",
-    brandColor: "bg-[#7A1C16]",
   },
   {
-    name: "Sobha Developers",
-    category: "Premium Real Estate",
-    location: "South & West",
-    image: "/images/clients/sobha-luxury.jpg",
-    projectHighlight: "Townships & Luxury Villas",
-    initials: "SD",
-    brandColor: "bg-[#855B2E]",
-  },
-  {
-    name: "Kalpataru Limited",
-    category: "Urban Infrastructure",
-    location: "Western India",
-    image: "/images/clients/kalpataru-urban.jpg",
-    projectHighlight: "Skyline Infra & Commercial",
-    initials: "KL",
-    brandColor: "bg-[#004B23]",
-  },
-  {
+    id: "tata",
     name: "Tata Projects",
     category: "Industrial & Transport",
     location: "National Corridors",
     image: "/images/clients/tata-projects.jpg",
+    logo: "/images/clients/logos/tata.svg",
     projectHighlight: "New Parliament & Corridors",
-    initials: "TP",
-    brandColor: "bg-[#0F56CB]",
   },
   {
-    name: "Shapoorji Pallonji",
-    category: "Engineering & Mega Projects",
-    location: "Pan-India",
-    image: "/images/clients/shapoorji-pallonji.jpg",
-    projectHighlight: "Imperial Towers & Bridges",
-    initials: "SP",
-    brandColor: "bg-[#1C355E]",
-  },
-  {
-    name: "BSES Infrastructure",
-    category: "Power & Utility Grid",
-    location: "North India",
-    image: "/images/clients/bses-grid.jpg",
-    projectHighlight: "Substation & Transmission",
-    initials: "BI",
-    brandColor: "bg-[#D9381E]",
-  },
-  {
+    id: "dlf",
     name: "DLF Building India",
     category: "Commercial Parks",
     location: "NCR & Haryana",
     image: "/images/clients/dlf-commercial.jpg",
+    logo: "/images/clients/logos/dlf.svg",
     projectHighlight: "DLF Cyber City & IT Parks",
-    initials: "DB",
-    brandColor: "bg-[#0A3D62]",
+  },
+  {
+    id: "adani",
+    name: "Adani Infrastructure",
+    category: "Mega Energy & Transport",
+    location: "National Ports & Grid",
+    image: "/images/clients/adani-infra.jpg",
+    logo: "/images/clients/logos/adani.svg",
+    projectHighlight: "Mundra Mega Port & Green Infra",
   },
 ];
 
-export function EnterprisePartnerWall() {
+const LOWER_ROW_PARTNERS: EnterprisePartner[] = [
+  {
+    id: "shapoorji",
+    name: "Shapoorji Pallonji",
+    category: "Engineering & Mega Projects",
+    location: "Pan-India",
+    image: "/images/clients/shapoorji-pallonji.jpg",
+    logo: "/images/clients/logos/shapoorji.svg",
+    projectHighlight: "Imperial Towers & Mega Bridges",
+  },
+  {
+    id: "sobha",
+    name: "Sobha Developers",
+    category: "Premium Real Estate",
+    location: "South & West",
+    image: "/images/clients/sobha-luxury.jpg",
+    logo: "/images/clients/logos/sobha.jpg",
+    projectHighlight: "Townships & Luxury Villas",
+  },
+  {
+    id: "kalpataru",
+    name: "Kalpataru Limited",
+    category: "Urban Infrastructure",
+    location: "Western India",
+    image: "/images/clients/kalpataru-urban.jpg",
+    logo: "/images/clients/logos/kalpataru.svg",
+    projectHighlight: "Skyline Infra & Commercial",
+  },
+  {
+    id: "bses",
+    name: "BSES Infrastructure",
+    category: "Power & Utility Grid",
+    location: "North India",
+    image: "/images/clients/bses-grid.jpg",
+    logo: "/images/clients/logos/bses.png",
+    projectHighlight: "Substation & Transmission",
+  },
+  {
+    id: "lodha",
+    name: "Lodha Group",
+    category: "Luxury Real Estate",
+    location: "Mumbai & MMR",
+    image: "/images/clients/lodha-luxury.jpg",
+    logo: "/images/clients/logos/lodha.png",
+    projectHighlight: "The World Towers & Palava",
+  },
+];
+
+function EnterpriseMarqueeCard({ partner }: { partner: EnterprisePartner }) {
   return (
-    <section className="w-full bg-white py-16 sm:py-24 border-t border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
-            <Building2 className="w-3.5 h-3.5 text-slate-700" />
-            <span>ENTERPRISE CLIENTS</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Trusted by India’s Premier Builders & EPC Giants
-          </h2>
-          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
-            From smart cities and national highways to luxury high-rises, leading construction enterprises trust DLC for bulk, compliant tradesmen mobilization.
-          </p>
+    <div className="w-[300px] sm:w-[340px] md:w-[360px] shrink-0 mx-3 sm:mx-4 group bg-white rounded-2xl overflow-hidden border border-slate-200/90 hover:border-blue-400 transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between">
+      {/* Top Project Showcase Banner */}
+      <div className="relative w-full h-36 sm:h-40 overflow-hidden bg-slate-100">
+        <Image
+          src={partner.image}
+          alt={`${partner.name} - ${partner.projectHighlight}`}
+          fill
+          unoptimized
+          sizes="360px"
+          className="object-cover group-hover:scale-108 transition-transform duration-700 brightness-[0.92]"
+        />
+
+        {/* Visual Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-black/20 pointer-events-none" />
+
+        {/* Top Badges */}
+        <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10">
+          <span className="text-[10px] font-black text-slate-800 bg-white/95 backdrop-blur-md px-2 py-0.5 rounded-md shadow-xs border border-white/60">
+            {partner.category}
+          </span>
+          <span className="inline-flex items-center gap-1 text-[9.5px] font-extrabold text-emerald-700 bg-emerald-50/95 backdrop-blur-md border border-emerald-300/80 px-2 py-0.5 rounded-full shadow-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            Active Site
+          </span>
         </div>
 
-        {/* 4-Column Partner Grid with Real Project Showcase Imagery */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-          {ENTERPRISE_PARTNERS.map((partner, idx) => (
-            <div
-              key={idx}
-              className="group bg-white rounded-2xl overflow-hidden border border-slate-200/90 hover:border-blue-400 transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between"
-            >
-              {/* Top Project Showcase Banner */}
-              <div className="relative w-full h-36 sm:h-40 overflow-hidden bg-slate-100">
-                <Image
-                  src={partner.image}
-                  alt={`${partner.name} - ${partner.projectHighlight}`}
-                  fill
-                  unoptimized
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="object-cover group-hover:scale-108 transition-transform duration-700 brightness-[0.92]"
-                />
+        {/* Bottom Overlay Label */}
+        <div className="absolute bottom-2.5 left-3 right-3 z-10 flex items-center justify-between">
+          <p className="text-[11px] font-extrabold text-white drop-shadow-md truncate tracking-tight">
+            {partner.projectHighlight}
+          </p>
+        </div>
+      </div>
 
-                {/* Visual Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/25 to-black/20 pointer-events-none" />
-
-                {/* Top Badges */}
-                <div className="absolute top-2.5 left-2.5 right-2.5 flex items-center justify-between z-10">
-                  <span className="text-[10px] font-black text-slate-800 bg-white/95 backdrop-blur-md px-2 py-0.5 rounded-md shadow-xs border border-white/60">
-                    {partner.category}
-                  </span>
-                  <span className="inline-flex items-center gap-1 text-[9.5px] font-extrabold text-emerald-700 bg-emerald-50/95 backdrop-blur-md border border-emerald-300/80 px-2 py-0.5 rounded-full shadow-xs">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    Active Site
-                  </span>
-                </div>
-
-                {/* Bottom Overlay Label */}
-                <div className="absolute bottom-2.5 left-3 right-3 z-10 flex items-center justify-between">
-                  <p className="text-[11px] font-extrabold text-white drop-shadow-md truncate tracking-tight">
-                    {partner.projectHighlight}
-                  </p>
-                </div>
-              </div>
-
-              {/* Card Body Details */}
-              <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-2.5 mb-1.5">
-                    <div
-                      className={`w-8 h-8 rounded-lg ${partner.brandColor} text-white font-black text-xs flex items-center justify-center shrink-0 shadow-sm border border-white/20`}
-                    >
-                      {partner.initials}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3 className="text-sm sm:text-[15px] font-black text-slate-900 tracking-tight group-hover:text-[#0C59D4] transition-colors truncate">
-                        {partner.name}
-                      </h3>
-                      <p className="text-[11px] text-slate-500 font-medium truncate">
-                        {partner.category}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Footer Info */}
-                <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
-                  <span className="text-slate-500 flex items-center gap-1 font-medium">
-                    <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
-                    <span>{partner.location}</span>
-                  </span>
-                  <span className="font-bold text-slate-700 flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
-                    <span>Verified Partner</span>
-                  </span>
-                </div>
-              </div>
+      {/* Card Body Details */}
+      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <div className="flex items-center gap-3 mb-1.5">
+            {/* Authentic Company Logo Box */}
+            <div className="w-14 h-9 rounded-lg bg-white border border-slate-200/90 shadow-xs flex items-center justify-center p-1.5 shrink-0">
+              <img
+                src={partner.logo}
+                alt={`${partner.name} logo`}
+                className="max-h-full max-w-full object-contain"
+              />
             </div>
+            <div className="min-w-0 flex-1">
+              <h3 className="text-sm sm:text-[15px] font-black text-slate-900 tracking-tight group-hover:text-[#0C59D4] transition-colors truncate">
+                {partner.name}
+              </h3>
+              <p className="text-[11px] text-slate-500 font-medium truncate">
+                {partner.category}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Info */}
+        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px]">
+          <span className="text-slate-500 flex items-center gap-1 font-medium">
+            <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+            <span>{partner.location}</span>
+          </span>
+          <span className="font-bold text-slate-700 flex items-center gap-1">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 shrink-0" />
+            <span>Verified Partner</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function EnterprisePartnerWall() {
+  return (
+    <section className="w-full bg-[#FAFAFC] py-16 sm:py-24 border-t border-slate-200/80 overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-14 text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+          <Building2 className="w-3.5 h-3.5 text-slate-700" />
+          <span>ENTERPRISE CLIENTS</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+          Trusted by India’s Premier Builders & EPC Giants
+        </h2>
+        <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal max-w-3xl mx-auto">
+          From smart cities and national highways to luxury high-rises, leading construction enterprises trust DLC for bulk, compliant tradesmen mobilization.
+        </p>
+      </div>
+
+      {/* Dual Row Infinite Marquee Container (Both Moving Right-to-Left with Edge Vignettes) */}
+      <div className="relative w-full space-y-6 sm:space-y-8">
+        {/* Left and Right Visual Gradient Vignettes */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-[#FAFAFC] via-[#FAFAFC]/90 to-transparent z-20 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-[#FAFAFC] via-[#FAFAFC]/90 to-transparent z-20 pointer-events-none" />
+
+        {/* ROW 1: UPPER MARQUEE (Right to Left) */}
+        <div className="flex w-max animate-[marquee-rtl_35s_linear_infinite] hover:[animation-play-state:paused]">
+          {[...UPPER_ROW_PARTNERS, ...UPPER_ROW_PARTNERS].map((partner, idx) => (
+            <EnterpriseMarqueeCard key={`upper-${partner.id}-${idx}`} partner={partner} />
+          ))}
+        </div>
+
+        {/* ROW 2: LOWER MARQUEE (Right to Left) */}
+        <div className="flex w-max animate-[marquee-rtl_38s_linear_infinite] hover:[animation-play-state:paused]">
+          {[...LOWER_ROW_PARTNERS, ...LOWER_ROW_PARTNERS].map((partner, idx) => (
+            <EnterpriseMarqueeCard key={`lower-${partner.id}-${idx}`} partner={partner} />
           ))}
         </div>
       </div>
