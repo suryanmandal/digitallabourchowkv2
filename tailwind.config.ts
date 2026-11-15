@@ -24,10 +24,15 @@ const config: Config = {
           "0%": { transform: "translate3d(0, 0, 0)" },
           "100%": { transform: "translate3d(-50%, 0, 0)" },
         },
+        "marquee-ltr": {
+          "0%": { transform: "translate3d(-50%, 0, 0)" },
+          "100%": { transform: "translate3d(0, 0, 0)" },
+        },
       },
       animation: {
         marquee: "marquee-rtl 25s linear infinite",
         "marquee-rtl": "marquee-rtl 25s linear infinite",
+        "marquee-ltr": "marquee-ltr 38s linear infinite",
       },
     },
   },

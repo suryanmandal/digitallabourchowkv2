@@ -2060,12 +2060,8 @@ export function EnterprisePartnerWall() {
         </p>
       </div>
 
-      {/* Dual Row Infinite Marquee Container (Both Moving Right-to-Left with Edge Vignettes) */}
+      {/* Dual Row Infinite Marquee Container (Upper: Right-to-Left | Lower: Left-to-Right) */}
       <div className="relative w-full space-y-6 sm:space-y-8">
-        {/* Left and Right Visual Gradient Vignettes */}
-        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-r from-[#FAFAFC] via-[#FAFAFC]/90 to-transparent z-20 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-32 bg-gradient-to-l from-[#FAFAFC] via-[#FAFAFC]/90 to-transparent z-20 pointer-events-none" />
-
         {/* ROW 1: UPPER MARQUEE (Right to Left) */}
         <div className="flex w-max animate-[marquee-rtl_35s_linear_infinite] hover:[animation-play-state:paused]">
           {[...UPPER_ROW_PARTNERS, ...UPPER_ROW_PARTNERS].map((partner, idx) => (
@@ -2073,8 +2069,8 @@ export function EnterprisePartnerWall() {
           ))}
         </div>
 
-        {/* ROW 2: LOWER MARQUEE (Right to Left) */}
-        <div className="flex w-max animate-[marquee-rtl_38s_linear_infinite] hover:[animation-play-state:paused]">
+        {/* ROW 2: LOWER MARQUEE (Left to Right) */}
+        <div className="flex w-max animate-marquee-ltr hover:[animation-play-state:paused]">
           {[...LOWER_ROW_PARTNERS, ...LOWER_ROW_PARTNERS].map((partner, idx) => (
             <EnterpriseMarqueeCard key={`lower-${partner.id}-${idx}`} partner={partner} />
           ))}
