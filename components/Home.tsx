@@ -2841,10 +2841,10 @@ export function QuickLeadCapture() {
     <section className="w-full bg-[#FAFAFC] py-16 sm:py-24 border-t border-slate-200/80">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-8 sm:p-12 lg:p-14 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
+        <div className="rounded-3xl sm:rounded-[2.5rem] bg-black p-8 sm:p-12 lg:p-14 text-white shadow-2xl border border-neutral-800/90 relative overflow-hidden">
           
           <div className="max-w-2xl mb-8">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-3">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/10 text-blue-300 border border-white/15 text-xs font-bold uppercase tracking-wider mb-3">
               <PhoneCall className="w-3.5 h-3.5 text-blue-400" />
               <span>Priority Workforce Dispatch</span>
             </span>
@@ -2853,7 +2853,7 @@ export function QuickLeadCapture() {
               Need Verified Construction Workforce On-Site Tomorrow?
             </h2>
 
-            <p className="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+            <p className="mt-3 text-sm sm:text-base text-neutral-400 leading-relaxed font-normal">
               Post your manpower requirements in 60 seconds. Our site coordinator will call you back within 15 minutes with verified tradesmen availability.
             </p>
           </div>
@@ -2867,7 +2867,7 @@ export function QuickLeadCapture() {
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Trade Chips */}
               <div>
-                <label className="text-xs font-extrabold text-slate-300 uppercase tracking-wider block mb-2.5">
+                <label className="text-xs font-extrabold text-neutral-300 uppercase tracking-wider block mb-2.5">
                   Select Required Trade:
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -2879,7 +2879,7 @@ export function QuickLeadCapture() {
                       className={`px-3 sm:px-4 py-1.5 rounded-xl text-xs font-extrabold border transition-all ${
                         selectedTrade === trade
                           ? "bg-[#D4A017] text-white border-[#D4A017] shadow-sm shadow-amber-600/30"
-                          : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800"
+                          : "bg-[#111113] text-neutral-300 border-white/10 hover:bg-neutral-900 hover:text-white"
                       }`}
                     >
                       {trade}
@@ -2891,7 +2891,7 @@ export function QuickLeadCapture() {
               {/* Input Fields Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-xs font-bold text-neutral-300 block mb-1.5">
                     Your Mobile Number:
                   </label>
                   <input
@@ -2900,12 +2900,12 @@ export function QuickLeadCapture() {
                     placeholder="+91 98765 43210"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 font-medium"
+                    className="w-full px-4 py-3 rounded-xl bg-[#111113] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-[#0C59D4] font-medium transition-colors"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                  <label className="text-xs font-bold text-neutral-300 block mb-1.5">
                     City / Site Location:
                   </label>
                   <input
@@ -2914,14 +2914,14 @@ export function QuickLeadCapture() {
                     placeholder="e.g. Noida, Gurgaon, Pune"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 font-medium"
+                    className="w-full px-4 py-3 rounded-xl bg-[#111113] border border-white/10 text-white placeholder-neutral-500 text-sm focus:outline-none focus:border-[#0C59D4] font-medium transition-colors"
                   />
                 </div>
 
                 <div className="sm:col-span-2 lg:col-span-1 flex items-end">
                   <button
                     type="submit"
-                    className="w-full py-3 px-6 rounded-xl bg-[#0C59D4] hover:bg-[#0947A8] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 transform active:scale-98"
+                    className="w-full py-3 px-6 rounded-xl bg-[#0C59D4] hover:bg-[#0947A8] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 transform active:scale-98 cursor-pointer"
                   >
                     <span>Request Callback (15m)</span>
                     <ArrowRight className="w-4 h-4" />
@@ -2929,17 +2929,17 @@ export function QuickLeadCapture() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-400 pt-2 font-medium">
+              <div className="flex flex-wrap items-center gap-4 text-[11px] text-neutral-400 pt-2 font-medium">
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
                   100% Aadhaar KYC Verified
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
                   2-Hour Matching SLA
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-blue-400" />
                   0% Middleman Cut
                 </span>
               </div>
