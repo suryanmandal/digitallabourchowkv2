@@ -21,6 +21,12 @@ import {
   QrCode,
   Smartphone,
   ArrowRight,
+  HelpCircle,
+  ChevronDown,
+  Award,
+  PhoneCall,
+  ArrowUpRight,
+  Calculator,
 } from "lucide-react";
 
 // =============================================================================
@@ -515,7 +521,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
 
 export function CurtainRevealSection() {
   return (
-    <section className="w-full bg-white pt-16 sm:pt-20 pb-6 relative">
+    <section className="w-full bg-white pt-16 sm:pt-20 pb-16 sm:pb-24 relative">
       {/* SECTION HEADER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
         {/* Top Unified Platform Pill Badge */}
@@ -1182,6 +1188,863 @@ export function AppDownloadSection() {
 }
 
 // =============================================================================
+// SECTION 5: HOW IT WORKS (Dual-Persona Interactive Stepper: Worker vs Contractor)
+// =============================================================================
+interface StepItem {
+  number: string;
+  title: string;
+  subtitle: string;
+  points: string[];
+  mockupTitle: string;
+  mockupSubtitle: string;
+  mockupBadge: string;
+}
+
+const WORKER_STEPS: StepItem[] = [
+  {
+    number: "01",
+    title: "1-Minute Mobile Registration",
+    subtitle: "Install the app, enter your phone number, and select your primary construction trade.",
+    points: [
+      "Available in 10+ regional Indian languages",
+      "Choose your trade: Rajmistri, Carpenter, Painter, etc.",
+      "Zero registration or agent fees",
+    ],
+    mockupTitle: "Craftsman Registration",
+    mockupSubtitle: "Select trade & language",
+    mockupBadge: "Instant Mobile OTP",
+  },
+  {
+    number: "02",
+    title: "Zero-Cost Aadhaar KYC",
+    subtitle: "Complete instant Aadhaar verification directly from your phone to earn your verified badge.",
+    points: [
+      "100% government-backed Aadhaar KYC",
+      "Free Digital Skill Card issued instantly",
+      "Build your site rating & contractor trust",
+    ],
+    mockupTitle: "Digital Skill Card",
+    mockupSubtitle: "100% Aadhaar KYC Verified",
+    mockupBadge: "Verified Craftsman",
+  },
+  {
+    number: "03",
+    title: "Direct Work, Wages & Insurance",
+    subtitle: "Receive daily job alerts, get paid directly into your bank account, and enjoy free accident insurance.",
+    points: [
+      "0% middleman commission on daily earnings",
+      "Direct bank transfer (DBT) with wage slip",
+      "₹5,00,000 Suraksha accident cover included",
+    ],
+    mockupTitle: "Daily Wage Transfer",
+    mockupSubtitle: "₹5L Suraksha Cover Active",
+    mockupBadge: "0% Commission",
+  },
+];
+
+const CONTRACTOR_STEPS: StepItem[] = [
+  {
+    number: "01",
+    title: "Post Site Requirement",
+    subtitle: "Specify required trades, headcount (2 to 100+), job site location, and reporting date in under 60 seconds.",
+    points: [
+      "Mason, bar benders, carpenters & helpers",
+      "Specify daily rate or project contract",
+      "Multi-site support across 6,000+ cities",
+    ],
+    mockupTitle: "Post Site Requirement",
+    mockupSubtitle: "Urgent site deployment",
+    mockupBadge: "2-Minute Setup",
+  },
+  {
+    number: "02",
+    title: "2-Hour Algorithmic Match",
+    subtitle: "DLC's proprietary matching system assigns KYC-verified, skill-graded tradesmen ready for dispatch.",
+    points: [
+      "2-hour matching SLA across India",
+      "Pre-screened tradesmen with verified past ratings",
+      "Replaces chaotic physical chowk visits",
+    ],
+    mockupTitle: "Workforce Dispatched",
+    mockupSubtitle: "Tradesmen arriving on site",
+    mockupBadge: "2-Hour SLA Match",
+  },
+  {
+    number: "03",
+    title: "Biometric Attendance & Compliance",
+    subtitle: "Track digital attendance, manage daily muster rolls, and receive 100% compliant GST, PF & ESIC invoices.",
+    points: [
+      "Mobile biometric & selfie attendance",
+      "Full statutory compliance: PF, ESIC & GST bills",
+      "Dedicated Enterprise Account Manager",
+    ],
+    mockupTitle: "Muster Roll & GST",
+    mockupSubtitle: "Full statutory compliance",
+    mockupBadge: "100% GST & PF/ESIC",
+  },
+];
+
+export function HowItWorksSection() {
+  const [activeTab, setActiveTab] = useState<"contractor" | "worker">("contractor");
+  const [activeStep, setActiveStep] = useState(0);
+
+  const steps = activeTab === "contractor" ? CONTRACTOR_STEPS : WORKER_STEPS;
+  const currentStep = steps[activeStep] || steps[0];
+
+  return (
+    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 border-t border-slate-200/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+            <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
+            <span>HOW IT WORKS • कार्यप्रणाली</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            How Digital Labour Chowk Works
+          </h2>
+          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
+            Whether you are hiring 50+ tradesmen for an active EPC site or seeking daily wage work with 0% commission — get started in 3 simple steps.
+          </p>
+
+          {/* Persona Switcher Tabs */}
+          <div className="inline-flex items-center bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-sm mt-8">
+            <button
+              onClick={() => { setActiveTab("contractor"); setActiveStep(0); }}
+              className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
+                activeTab === "contractor"
+                  ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <HardHat className="w-4 h-4" />
+              <span>For Contractors & Builders (मजदूर पाएं)</span>
+            </button>
+
+            <button
+              onClick={() => { setActiveTab("worker"); setActiveStep(0); }}
+              className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
+                activeTab === "worker"
+                  ? "bg-[#0C59D4] text-white shadow-md shadow-blue-600/25"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Users className="w-4 h-4" />
+              <span>For Workers & Craftsmen (काम ढूंढें)</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 2-Column Split Stepper Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          {/* Left Column: Interactive Step Cards */}
+          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
+            {steps.map((step, idx) => {
+              const isActive = activeStep === idx;
+              return (
+                <div
+                  key={step.number}
+                  onClick={() => setActiveStep(idx)}
+                  className={`cursor-pointer rounded-2xl sm:rounded-3xl p-6 sm:p-7 border transition-all duration-300 ${
+                    isActive
+                      ? activeTab === "contractor"
+                        ? "bg-white border-[#D4A017] shadow-lg shadow-amber-500/10 ring-2 ring-[#D4A017]/20 scale-[1.01]"
+                        : "bg-white border-[#0C59D4] shadow-lg shadow-blue-500/10 ring-2 ring-[#0C59D4]/20 scale-[1.01]"
+                      : "bg-white/70 border-slate-200/80 hover:bg-white hover:border-slate-300"
+                  }`}
+                >
+                  <div className="flex items-start gap-4 sm:gap-5">
+                    <div
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center shrink-0 transition-colors ${
+                        isActive
+                          ? activeTab === "contractor"
+                            ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
+                            : "bg-[#0C59D4] text-white shadow-md shadow-blue-600/25"
+                          : "bg-slate-100 text-slate-500"
+                      }`}
+                    >
+                      {step.number}
+                    </div>
+
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
+                          {step.title}
+                        </h3>
+                        {isActive && (
+                          <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
+                            activeTab === "contractor" ? "bg-amber-50 text-[#B45309]" : "bg-blue-50 text-[#0C59D4]"
+                          }`}>
+                            ACTIVE STEP
+                          </span>
+                        )}
+                      </div>
+
+                      <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {step.subtitle}
+                      </p>
+
+                      {isActive && (
+                        <div className="mt-4 pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          {step.points.map((pt, pIdx) => (
+                            <div key={pIdx} className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                              <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 ${
+                                activeTab === "contractor" ? "text-[#D4A017]" : "text-[#0C59D4]"
+                              }`} />
+                              <span>{pt}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Right Column: Visual Simulated App UI Preview */}
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="relative w-full max-w-sm rounded-[2.5rem] bg-slate-900 p-4 sm:p-5 shadow-2xl border-4 border-slate-800">
+              {/* Phone Speaker Notch */}
+              <div className="w-24 h-4 bg-slate-800 rounded-full mx-auto mb-4" />
+
+              {/* Screen Content */}
+              <div className="bg-white rounded-3xl p-6 min-h-[400px] flex flex-col justify-between shadow-inner">
+                {/* Header */}
+                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-[#0C59D4] flex items-center justify-center text-white font-black text-xs">
+                      DLC
+                    </div>
+                    <div>
+                      <div className="text-xs font-bold text-slate-900">Digital Labour Chowk</div>
+                      <div className="text-[10px] text-slate-400">Step {currentStep.number} of 03</div>
+                    </div>
+                  </div>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
+                    Live
+                  </span>
+                </div>
+
+                {/* Body Preview */}
+                <div className="my-auto py-6 text-center">
+                  <div className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-white mb-4 shadow-lg ${
+                    activeTab === "contractor" ? "bg-[#D4A017] shadow-amber-600/30" : "bg-[#0C59D4] shadow-blue-600/30"
+                  }`}>
+                    {activeTab === "contractor" ? <HardHat className="w-8 h-8" /> : <Users className="w-8 h-8" />}
+                  </div>
+
+                  <span className={`inline-block text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 ${
+                    activeTab === "contractor" ? "bg-amber-50 text-[#B45309]" : "bg-blue-50 text-[#0C59D4]"
+                  }`}>
+                    {currentStep.mockupBadge}
+                  </span>
+
+                  <h4 className="text-lg font-black text-slate-900 tracking-tight">
+                    {currentStep.mockupTitle}
+                  </h4>
+                  <p className="text-xs text-slate-500 mt-1">
+                    {currentStep.mockupSubtitle}
+                  </p>
+                </div>
+
+                {/* Footer Action */}
+                <div className="border-t border-slate-100 pt-3">
+                  <Link
+                    href="https://onboarding.digitallabourchowk.com/login"
+                    className={`w-full py-3 rounded-xl font-extrabold text-xs text-white uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5 ${
+                      activeTab === "contractor" ? "bg-[#D4A017] hover:bg-[#B8860B]" : "bg-[#0C59D4] hover:bg-[#0947A8]"
+                    }`}
+                  >
+                    <span>{activeTab === "contractor" ? "Hire Workforce Now" : "Register as Craftsman"}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 6: ENTERPRISE BUILDER & EPC PARTNER WALL (Institutional Credibility)
+// =============================================================================
+const ENTERPRISE_PARTNERS = [
+  { name: "L&T Construction", category: "Heavy Civil & Metro", location: "Pan-India" },
+  { name: "Godrej Construction", category: "Commercial & Residential", location: "Mumbai & NCR" },
+  { name: "Sobha Developers", category: "Premium Real Estate", location: "South & West" },
+  { name: "Kalpataru Limited", category: "Urban Infrastructure", location: "Western India" },
+  { name: "Tata Projects", category: "Industrial & Transport", location: "National Corridors" },
+  { name: "Shapoorji Pallonji", category: "Engineering & Mega Projects", location: "Pan-India" },
+  { name: "BSES Infrastructure", category: "Power & Utility Grid", location: "North India" },
+  { name: "DLF Building India", category: "Commercial Parks", location: "NCR & Haryana" },
+];
+
+export function EnterprisePartnerWall() {
+  return (
+    <section className="w-full bg-white py-16 sm:py-24 border-t border-slate-200/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+            <Building2 className="w-3.5 h-3.5 text-slate-700" />
+            <span>ENTERPRISE CLIENTS • प्रमुख निर्माण भागीदार</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            Trusted by India’s Premier Builders & EPC Giants
+          </h2>
+          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
+            From smart cities and national highways to luxury high-rises, leading construction enterprises trust DLC for bulk, compliant tradesmen mobilization.
+          </p>
+        </div>
+
+        {/* 4-Column Partner Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+          {ENTERPRISE_PARTNERS.map((partner, idx) => (
+            <div
+              key={idx}
+              className="group bg-slate-50/70 hover:bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 hover:border-blue-300 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 flex flex-col justify-between"
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-9 h-9 rounded-xl bg-white border border-slate-200 flex items-center justify-center font-black text-xs text-slate-800 shadow-xs group-hover:bg-[#0C59D4] group-hover:text-white transition-colors">
+                  {partner.name.split(" ").map((w) => w[0]).slice(0, 2).join("")}
+                </div>
+                <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                  Active Site
+                </span>
+              </div>
+
+              <div>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight group-hover:text-[#0C59D4] transition-colors">
+                  {partner.name}
+                </h3>
+                <p className="text-xs text-slate-500 mt-1 font-medium">
+                  {partner.category}
+                </p>
+              </div>
+
+              <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between text-[11px] text-slate-400">
+                <span>{partner.location}</span>
+                <span className="font-semibold text-slate-600 flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                  Verified Partner
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 7: INTERACTIVE CONTRACTOR SAVINGS & ROI CALCULATOR
+// =============================================================================
+export function ContractorSavingsCalculator() {
+  const [workers, setWorkers] = useState(15);
+  const [duration, setDuration] = useState(1); // months
+
+  // Calculation parameters
+  const hoursSaved = Math.round(workers * duration * 8);
+  const rupeesSaved = (workers * duration * 3500).toLocaleString("en-IN");
+  const attendanceAccuracy = "99.4%";
+
+  return (
+    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 border-t border-slate-200/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-[#B45309] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+            <Calculator className="w-3.5 h-3.5 text-[#B45309]" />
+            <span>ROI & TIME CALCULATOR • बचत कैलकुलेटर</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            Calculate Your Job Site Savings
+          </h2>
+          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
+            See how much project management time and recruiting overhead you eliminate by hiring verified tradesmen through Digital Labour Chowk.
+          </p>
+        </div>
+
+        {/* Calculator Main Box */}
+        <div className="bg-white rounded-3xl sm:rounded-[2.5rem] border border-slate-200/90 shadow-xl overflow-hidden p-6 sm:p-10 lg:p-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+            
+            {/* Left Column: Interactive Controls */}
+            <div className="lg:col-span-7 space-y-8">
+              {/* Slider: Number of Workers */}
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <label className="text-sm sm:text-base font-extrabold text-slate-900">
+                    Daily Tradesmen / Helpers Needed on Site:
+                  </label>
+                  <span className="text-2xl font-black text-[#0C59D4] px-4 py-1 rounded-xl bg-blue-50 border border-blue-200">
+                    {workers} Workers
+                  </span>
+                </div>
+                <input
+                  type="range"
+                  min="2"
+                  max="60"
+                  step="1"
+                  value={workers}
+                  onChange={(e) => setWorkers(parseInt(e.target.value, 10))}
+                  className="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#0C59D4]"
+                />
+                <div className="flex justify-between text-xs text-slate-400 mt-2 font-medium">
+                  <span>2 Workers (Small Job)</span>
+                  <span>30 Workers (Medium Site)</span>
+                  <span>60+ Workers (Large Project)</span>
+                </div>
+              </div>
+
+              {/* Duration Buttons */}
+              <div>
+                <label className="text-sm sm:text-base font-extrabold text-slate-900 block mb-3">
+                  Project Duration:
+                </label>
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "1 Month", val: 1 },
+                    { label: "3 Months", val: 3 },
+                    { label: "6 Months", val: 6 },
+                  ].map((dur) => (
+                    <button
+                      key={dur.val}
+                      onClick={() => setDuration(dur.val)}
+                      className={`py-3 px-4 rounded-xl text-xs sm:text-sm font-extrabold border transition-all ${
+                        duration === dur.val
+                          ? "bg-[#D4A017] text-white border-[#D4A017] shadow-md shadow-amber-600/25"
+                          : "bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100"
+                      }`}
+                    >
+                      {dur.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Comparison Table Highlights */}
+              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-100">
+                <div className="p-4 rounded-2xl bg-rose-50/60 border border-rose-100">
+                  <span className="text-[11px] font-bold text-rose-700 uppercase tracking-wider block mb-1">
+                    Traditional Chowk
+                  </span>
+                  <ul className="text-xs text-rose-950 space-y-1.5 font-medium">
+                    <li>• 3-4 days lost hiring at chowk</li>
+                    <li>• 15% middleman commission markups</li>
+                    <li>• Zero identity or skill proof</li>
+                  </ul>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-emerald-50/60 border border-emerald-100">
+                  <span className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider block mb-1">
+                    Digital Labour Chowk
+                  </span>
+                  <ul className="text-xs text-emerald-950 space-y-1.5 font-medium">
+                    <li>• 2-Hour rapid site matching</li>
+                    <li>• 0% Middleman deductions</li>
+                    <li>• 100% Aadhaar KYC verified</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Live Savings Card */}
+            <div className="lg:col-span-5">
+              <div className="rounded-3xl bg-gradient-to-br from-slate-900 via-slate-950 to-blue-950 p-7 sm:p-8 text-white shadow-2xl relative overflow-hidden border border-slate-800">
+                {/* Accent glow */}
+                <div className="absolute top-0 right-0 w-48 h-48 bg-blue-500/20 rounded-full blur-2xl pointer-events-none" />
+
+                <span className="inline-block text-[11px] font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase tracking-wider mb-4">
+                  Estimated Site Value
+                </span>
+
+                <div className="mb-6">
+                  <div className="text-xs text-slate-400 font-medium">Estimated Contractor Cost Savings:</div>
+                  <div className="text-4xl sm:text-5xl font-black text-white tracking-tight mt-1 text-emerald-400">
+                    ₹{rupeesSaved}*
+                  </div>
+                  <div className="text-[11px] text-slate-400 mt-1">
+                    *Savings from reduced idle site days, eliminated middleman commissions & zero recruiter fees.
+                  </div>
+                </div>
+
+                <div className="space-y-3 pt-6 border-t border-slate-800">
+                  <div className="flex items-center justify-between text-xs sm:text-sm">
+                    <span className="text-slate-400">Project Hours Saved:</span>
+                    <span className="font-extrabold text-white">{hoursSaved} Hours</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs sm:text-sm">
+                    <span className="text-slate-400">Biometric Attendance:</span>
+                    <span className="font-extrabold text-emerald-400">{attendanceAccuracy}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs sm:text-sm">
+                    <span className="text-slate-400">Accident Insurance:</span>
+                    <span className="font-extrabold text-blue-400">₹5,00,000 / Worker</span>
+                  </div>
+                </div>
+
+                <Link
+                  href="https://onboarding.digitallabourchowk.com/login"
+                  className="mt-8 w-full py-3.5 px-6 rounded-xl bg-[#D4A017] hover:bg-[#B8860B] text-white font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-lg shadow-amber-600/30 flex items-center justify-center gap-2 transition-all transform active:scale-98"
+                >
+                  <span>Hire Verified Workers Now</span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 8: FREQUENTLY ASKED QUESTIONS (FAQ Accordion)
+// =============================================================================
+const FAQ_ITEMS = [
+  {
+    q: "How does Digital Labour Chowk verify workers and tradesmen?",
+    a: "Every craftsman on our platform undergoes a multi-layer verification process including government Aadhaar KYC verification, phone number authentication, prior trade experience validation, and contractor skill ratings.",
+  },
+  {
+    q: "Is there really 0% commission on worker wages?",
+    a: "Yes, 100% transparent. Digital Labour Chowk does not deduct any middleman commission from worker earnings. Craftsmen receive their full hard-earned daily and weekly wages directly in their bank accounts via Direct Benefit Transfer (DBT).",
+  },
+  {
+    q: "How fast can a contractor hire labour for urgent site work?",
+    a: "Our algorithmic matching system connects local contractors with available verified craftsmen within our 2-hour matching SLA. For bulk deployments (50+ workers), our dedicated enterprise team mobilizes manpower within 24 to 48 hours.",
+  },
+  {
+    q: "What statutory compliance is provided for large enterprise and EPC projects?",
+    a: "For registered enterprises and developers, DLC provides complete statutory compliance management, including Provident Fund (PF), Employee State Insurance (ESIC), Building & Other Construction Workers (BOCW) welfare compliance, and GST-compliant invoicing.",
+  },
+  {
+    q: "What is the ₹5,00,000 Suraksha Accident Insurance coverage?",
+    a: "Active craftsmen working on verified DLC project sites are covered under our complimentary ₹5 Lakh accidental insurance scheme, protecting workers and their families against on-site occupational hazards.",
+  },
+  {
+    q: "Which cities across India is Digital Labour Chowk available in?",
+    a: "Digital Labour Chowk is active in over 6,000+ cities, towns, and construction corridors across 20+ states in India, spanning major metros (Delhi-NCR, Mumbai, Bangalore, Hyderabad) and tier-2/tier-3 construction hubs.",
+  },
+];
+
+export function HomeFAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const toggle = (idx: number) => {
+    setOpenIndex((prev) => (prev === idx ? null : idx));
+  };
+
+  return (
+    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 border-t border-slate-200/80">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="text-center mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+            <HelpCircle className="w-3.5 h-3.5 text-[#0C59D4]" />
+            <span>GOT QUESTIONS? • अक्सर पूछे जाने वाले सवाल</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            Frequently Asked Questions
+          </h2>
+          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
+            Everything you need to know about hiring, working, insurance, and compliance on Digital Labour Chowk.
+          </p>
+        </div>
+
+        {/* Accordion Stack */}
+        <div className="space-y-3.5 sm:space-y-4">
+          {FAQ_ITEMS.map((item, idx) => {
+            const isOpen = openIndex === idx;
+            return (
+              <div
+                key={idx}
+                className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                  isOpen
+                    ? "bg-white border-[#0C59D4]/60 shadow-md ring-1 ring-[#0C59D4]/15"
+                    : "bg-white/80 border-slate-200/90 hover:border-slate-300"
+                }`}
+              >
+                <button
+                  onClick={() => toggle(idx)}
+                  className="w-full py-5 px-6 sm:px-7 text-left flex items-center justify-between gap-4 focus:outline-none"
+                >
+                  <span className="text-base sm:text-lg font-extrabold text-slate-900 tracking-tight">
+                    {item.q}
+                  </span>
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-transform duration-200 ${
+                      isOpen
+                        ? "bg-[#0C59D4] text-white rotate-180"
+                        : "bg-slate-100 text-slate-500"
+                    }`}
+                  >
+                    <ChevronDown className="w-4 h-4" />
+                  </div>
+                </button>
+
+                {isOpen && (
+                  <div className="px-6 sm:px-7 pb-6 pt-1 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100 font-normal">
+                    {item.a}
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 9: NEWS & MEDIA STRIP (National Recognition & Press Coverage)
+// =============================================================================
+const MEDIA_STORIES = [
+  {
+    outlet: "Amazon MX Player",
+    tag: "Documentary Feature",
+    headline: "Featured on 'Bharat Ke Super Founders'",
+    summary: "National documentary showcasing how DLC digitally connects over 3.5 Lakh craftsmen with India's building boom.",
+    badgeBg: "bg-amber-50 text-[#B45309] border-amber-200",
+  },
+  {
+    outlet: "Dainik Bhaskar",
+    tag: "National Print & Web",
+    headline: "Transforming Physical Chowks into Digital Platforms",
+    summary: "Highlighting how digital identity, transparent wages, and direct DBT are uplifting construction families across India.",
+    badgeBg: "bg-blue-50 text-[#0C59D4] border-blue-200",
+  },
+  {
+    outlet: "Aaj Tak & India Today",
+    tag: "Television Broadcast",
+    headline: "Zero Middlemen: Daily Direct Wages for Tradesmen",
+    summary: "Feature report on eliminating wage leakage and providing ₹5 Lakh accident insurance for site workers.",
+    badgeBg: "bg-emerald-50 text-[#16A34A] border-emerald-200",
+  },
+  {
+    outlet: "Startup India & DPIIT",
+    tag: "National Recognition",
+    headline: "Recognized Social Impact Workforce Platform",
+    summary: "Recognized for driving financial inclusion, digital literacy, and formalized employment in construction.",
+    badgeBg: "bg-purple-50 text-purple-700 border-purple-200",
+  },
+];
+
+export function NewsAndMediaSection() {
+  return (
+    <section className="w-full bg-white py-16 sm:py-24 border-t border-slate-200/80">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+            <Award className="w-3.5 h-3.5 text-purple-600" />
+            <span>DLC IN THE NEWS • मीडिया और सम्मान</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+            Recognized Across National Media
+          </h2>
+          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
+            Covered by leading national broadcasts, newspapers, and streaming documentaries for modernizing India’s unorganized construction labor market.
+          </p>
+        </div>
+
+        {/* 4-Card Media Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {MEDIA_STORIES.map((story, idx) => (
+            <div
+              key={idx}
+              className="group bg-slate-50/70 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-purple-300 transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${story.badgeBg}`}>
+                    {story.tag}
+                  </span>
+                  <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-purple-600 transition-colors" />
+                </div>
+
+                <div className="text-xs font-black text-slate-900 uppercase tracking-wider mb-2">
+                  {story.outlet}
+                </div>
+
+                <h3 className="text-base sm:text-[17px] font-extrabold text-slate-900 tracking-tight leading-snug group-hover:text-purple-700 transition-colors">
+                  {story.headline}
+                </h3>
+
+                <p className="mt-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  {story.summary}
+                </p>
+              </div>
+
+              <div className="mt-5 pt-3.5 border-t border-slate-200/60 text-[11px] font-semibold text-slate-400 group-hover:text-slate-600 transition-colors">
+                Verified Media Feature →
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+// SECTION 10: QUICK ENTERPRISE LEAD CAPTURE (Pre-Footer Dispatch Box)
+// =============================================================================
+export function QuickLeadCapture() {
+  const [selectedTrade, setSelectedTrade] = useState("Mason (राजमिस्त्री)");
+  const [phone, setPhone] = useState("");
+  const [city, setCity] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const trades = [
+    "Mason (राजमिस्त्री)",
+    "Carpenter (बढ़ई)",
+    "Painter (पेंटर)",
+    "Electrician (इलेक्ट्रीशियन)",
+    "Plumber (प्लम्बर)",
+    "Bar Bender (सरिया)",
+    "Helper (हेल्पर)",
+  ];
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!phone) return;
+    setSubmitted(true);
+  };
+
+  return (
+    <section className="w-full bg-[#FAFAFC] py-16 sm:py-24 border-t border-slate-200/80">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-slate-900 to-blue-950 p-8 sm:p-12 lg:p-14 text-white shadow-2xl border border-slate-800 relative overflow-hidden">
+          
+          <div className="max-w-2xl mb-8">
+            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-3">
+              <PhoneCall className="w-3.5 h-3.5 text-blue-400" />
+              <span>Priority Workforce Dispatch • तुरंत कॉल पाएं</span>
+            </span>
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
+              Need Verified Construction Workforce On-Site Tomorrow?
+            </h2>
+
+            <p className="mt-3 text-sm sm:text-base text-slate-300 leading-relaxed font-normal">
+              Post your manpower requirements in 60 seconds. Our site coordinator will call you back within 15 minutes with verified tradesmen availability.
+            </p>
+          </div>
+
+          {submitted ? (
+            <div className="p-6 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-extrabold text-sm sm:text-base flex items-center gap-3">
+              <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
+              <span>Requirement received! Our site mobilization team will call you within 15 minutes.</span>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Trade Chips */}
+              <div>
+                <label className="text-xs font-extrabold text-slate-300 uppercase tracking-wider block mb-2.5">
+                  Select Required Trade:
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {trades.map((trade) => (
+                    <button
+                      type="button"
+                      key={trade}
+                      onClick={() => setSelectedTrade(trade)}
+                      className={`px-3 sm:px-4 py-1.5 rounded-xl text-xs font-extrabold border transition-all ${
+                        selectedTrade === trade
+                          ? "bg-[#D4A017] text-white border-[#D4A017] shadow-sm shadow-amber-600/30"
+                          : "bg-slate-800/80 text-slate-300 border-slate-700 hover:bg-slate-800"
+                      }`}
+                    >
+                      {trade}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Input Fields Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div>
+                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                    Your Mobile Number:
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+91 98765 43210"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 font-medium"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-slate-300 block mb-1.5">
+                    City / Site Location:
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Noida, Gurgaon, Pune"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-blue-400 font-medium"
+                  />
+                </div>
+
+                <div className="sm:col-span-2 lg:col-span-1 flex items-end">
+                  <button
+                    type="submit"
+                    className="w-full py-3 px-6 rounded-xl bg-[#0C59D4] hover:bg-[#0947A8] text-white font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 transform active:scale-98"
+                  >
+                    <span>Request Callback (15m)</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-400 pt-2 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  100% Aadhaar KYC Verified
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  2-Hour Matching SLA
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  0% Middleman Cut
+                </span>
+              </div>
+            </form>
+          )}
+
+        </div>
+
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
 // MAIN HOME PAGE CONTENT COMPONENT (Clubbing All Landing Sections)
 // =============================================================================
 export default function HomeContent() {
@@ -1202,8 +2065,26 @@ export default function HomeContent() {
       {/* SECTION 4: Stats Marquee & Testimonials Split Section */}
       <StatsAndTestimonials />
 
-      {/* SECTION 5: App Download CTA (3D Phone Mockup, QR Box & Floating Stat Badges) */}
+      {/* SECTION 5: How It Works (Dual-Persona Interactive Stepper: Worker vs Contractor) */}
+      <HowItWorksSection />
+
+      {/* SECTION 6: Enterprise Builder & EPC Partner Wall */}
+      <EnterprisePartnerWall />
+
+      {/* SECTION 7: Contractor Savings & ROI Calculator */}
+      <ContractorSavingsCalculator />
+
+      {/* SECTION 8: App Download CTA (3D Phone Mockup, QR Box & Floating Stat Badges) */}
       <AppDownloadSection />
+
+      {/* SECTION 9: Frequently Asked Questions (FAQ Accordion) */}
+      <HomeFAQSection />
+
+      {/* SECTION 10: News & Media Strip (National Recognition & Press Coverage) */}
+      <NewsAndMediaSection />
+
+      {/* SECTION 11: Quick Enterprise Lead Capture (Pre-Footer Dispatch Box) */}
+      <QuickLeadCapture />
     </>
   );
 }
