@@ -485,7 +485,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
     buttonColor: "bg-[#0C59D4]",
     buttonHoverColor: "hover:bg-[#0947A8]",
     buttonShadow: "shadow-blue-600/35",
-    imageSrc: "/images/curtain-reveal/find-job.webp",
+    imageSrc: "/images/black.webp",
     imageAlt: "Digital Labour Chowk - Find Job for skilled construction craftsmen",
     zIndex: 10,
   },
@@ -496,7 +496,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
     buttonColor: "bg-[#D4A017]",
     buttonHoverColor: "hover:bg-[#B8860B]",
     buttonShadow: "shadow-amber-600/35",
-    imageSrc: "/images/curtain-reveal/FIND-WORKER.webp",
+    imageSrc: "/images/black.webp",
     imageAlt: "Digital Labour Chowk - Find Workers for contractors and builders",
     zIndex: 20,
   },
@@ -507,7 +507,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
     buttonColor: "bg-[#16A34A]",
     buttonHoverColor: "hover:bg-[#15803D]",
     buttonShadow: "shadow-green-600/35",
-    imageSrc: "/images/curtain-reveal/for-business.webp",
+    imageSrc: "/images/black.webp",
     imageAlt: "Digital Labour Chowk - Find Business for enterprise partners and developers",
     zIndex: 30,
   },
@@ -515,7 +515,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
 
 export function CurtainRevealSection() {
   return (
-    <section className="w-full bg-white pt-16 sm:pt-20 pb-20 sm:pb-28 relative">
+    <section className="w-full bg-white pt-16 sm:pt-20 pb-0 relative">
       {/* SECTION HEADER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
         {/* Top Unified Platform Pill Badge */}
@@ -528,13 +528,13 @@ export function CurtainRevealSection() {
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           Connecting the Construction Workforce
         </h2>
-        <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
+        {/* <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
           Empowering workers, contractors, and businesses with a transparent, direct hiring ecosystem.
-        </p>
+        </p> */}
       </div>
 
       {/* CURTAIN REVEAL CARDS STACKING TRACK */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 relative">
         {CURTAIN_CARDS.map((card, index) => {
           const isFirst = index === 0;
           const isLast = index === CURTAIN_CARDS.length - 1;
@@ -543,7 +543,7 @@ export function CurtainRevealSection() {
             <div
               key={card.id}
               className={`sticky top-24 sm:top-28 md:top-32 ${
-                isLast ? "mb-6" : "mb-16 sm:mb-24"
+                isLast ? "mb-0" : "mb-16 sm:mb-24"
               }`}
               style={{ zIndex: card.zIndex }}
             >
@@ -556,17 +556,18 @@ export function CurtainRevealSection() {
                 }`}
               >
                 {/* Worker Image Cutout Container */}
-                <div className="relative w-full h-[220px] sm:h-[300px] md:h-[370px] lg:h-[410px] flex items-end justify-center bg-white">
+                <div className="relative mx-auto h-[220px] sm:h-[300px] md:h-[370px] lg:h-[600px] flex items-end justify-center bg-white">
                   <Image
                     src={card.imageSrc}
                     alt={card.imageAlt}
                     fill
                     priority={index === 0}
-                    className="object-contain object-bottom select-none pointer-events-none"
+                    className="object-cover object-bottom select-none pointer-events-none"
                     sizes="(max-width: 1024px) 100vw, 1024px"
                   />
 
                   {/* FLOATING CTA BUTTON (Horizontally Centered at Bottom Edge) */}
+                  {card.id !== "find-job" && card.id !== "find-workers" && card.id !== "find-business" && (
                   <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20">
                     <Link
                       href={card.buttonHref}
@@ -576,6 +577,7 @@ export function CurtainRevealSection() {
                       <ArrowRight className="w-4 h-4 ml-0.5" />
                     </Link>
                   </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -789,7 +791,7 @@ export function StatsAndTestimonials() {
   }, [maxIndex]);
 
   return (
-    <section className="w-full bg-[#FAFAFC] py-16 sm:py-24 border-t border-slate-200/70 overflow-hidden">
+    <section className="w-full bg-[#FAFAFC] pt-0 pb-16 sm:pb-24 border-t-0 overflow-hidden">
       {/* PART A: TOP HORIZONTAL STATS MARQUEE (Right to Left Scrolling) */}
       <div className="w-full mb-16 sm:mb-20">
         <div className="w-full bg-white border-y border-slate-200/90 py-5 sm:py-6 shadow-xs overflow-hidden relative">
