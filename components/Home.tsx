@@ -515,7 +515,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
 
 export function CurtainRevealSection() {
   return (
-    <section className="w-full bg-white pt-16 sm:pt-20 pb-0 relative">
+    <section className="w-full bg-white pt-16 sm:pt-20 pb-6 relative">
       {/* SECTION HEADER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
         {/* Top Unified Platform Pill Badge */}
