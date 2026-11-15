@@ -1353,7 +1353,6 @@ export function AppDownloadSection() {
                 <div className="relative w-full rounded-t-[3rem] p-[3px] bg-gradient-to-b from-[#3B4C68] via-[#1E293B] to-[#0A0F1D] shadow-[0_-25px_60px_rgba(0,0,0,0.6)] border-t border-l border-r border-sky-300/30">
                   
                   {/* Side Volume Buttons on Left Edge */}
-                  <div className="absolute -left-[4px] top-20 w-[3px] h-6 bg-slate-500 rounded-l-sm" />
                   <div className="absolute -left-[4px] top-32 w-[3px] h-10 bg-slate-500 rounded-l-sm" />
                   <div className="absolute -left-[4px] top-46 w-[3px] h-10 bg-slate-500 rounded-l-sm" />
                   {/* Side Power Button on Right Edge */}
@@ -1460,7 +1459,6 @@ export function AppDownloadSection() {
                 <div className="relative w-full rounded-t-[3rem] p-[3px] bg-gradient-to-b from-[#473B28] via-[#241E15] to-[#0F0D09] shadow-[0_-25px_60px_rgba(0,0,0,0.6)] border-t border-l border-r border-amber-300/30">
                   
                   {/* Side Volume Buttons on Left Edge */}
-                  <div className="absolute -left-[4px] top-20 w-[3px] h-6 bg-amber-700/60 rounded-l-sm" />
                   <div className="absolute -left-[4px] top-32 w-[3px] h-10 bg-amber-700/60 rounded-l-sm" />
                   <div className="absolute -left-[4px] top-46 w-[3px] h-10 bg-amber-700/60 rounded-l-sm" />
                   {/* Side Power Button on Right Edge */}
