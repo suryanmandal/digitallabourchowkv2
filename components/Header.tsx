@@ -307,7 +307,7 @@ export default function Header() {
                     
                     {/* Top Header */}
                     <div className="flex items-center justify-between pb-3 mb-3.5 border-b border-slate-100">
-                      <span className="text-[11px] font-black uppercase tracking-wider text-emerald-600 flex items-center gap-1.5">
+                      <span className="text-[11px] font-black uppercase tracking-wider text-[#0C59D4] flex items-center gap-1.5">
                         <span>Business Solutions</span>
                       </span>
                       <span className="text-[11px] font-medium text-slate-400">
@@ -331,10 +331,10 @@ export default function Header() {
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 flex flex-col justify-end">
-                          <span className="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                          <span className="text-[9px] font-extrabold text-blue-400 uppercase tracking-wider mb-0.5">
                             Labour On-Demand
                           </span>
-                          <h4 className="text-[13px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                          <h4 className="text-[13px] font-black text-white leading-tight group-hover:text-blue-300 transition-colors">
                             Contractor
                           </h4>
                         </div>
@@ -353,10 +353,10 @@ export default function Header() {
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 flex flex-col justify-end">
-                          <span className="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                          <span className="text-[9px] font-extrabold text-blue-400 uppercase tracking-wider mb-0.5">
                             Turnkey Projects
                           </span>
-                          <h4 className="text-[13px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                          <h4 className="text-[13px] font-black text-white leading-tight group-hover:text-blue-300 transition-colors">
                             General Contractor
                           </h4>
                         </div>
@@ -375,10 +375,10 @@ export default function Header() {
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 flex flex-col justify-end">
-                          <span className="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                          <span className="text-[9px] font-extrabold text-blue-400 uppercase tracking-wider mb-0.5">
                             High-Rise &amp; Townships
                           </span>
-                          <h4 className="text-[13px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                          <h4 className="text-[13px] font-black text-white leading-tight group-hover:text-blue-300 transition-colors">
                             Builder &amp; Developer
                           </h4>
                         </div>
@@ -397,10 +397,10 @@ export default function Header() {
                           className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-3 flex flex-col justify-end">
-                          <span className="text-[9px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                          <span className="text-[9px] font-extrabold text-blue-400 uppercase tracking-wider mb-0.5">
                             Manpower Alliances
                           </span>
-                          <h4 className="text-[12.5px] font-black text-white leading-snug group-hover:text-emerald-300 transition-colors">
+                          <h4 className="text-[12.5px] font-black text-white leading-snug group-hover:text-blue-300 transition-colors">
                             Staffing &amp; Placement <br />Agency
                           </h4>
                         </div>
@@ -651,7 +651,7 @@ export default function Header() {
                 </button>
                 {mobileExpandedSection === "business" && (
                   <div className="p-2.5 bg-white border-t border-slate-100 flex flex-col gap-2">
-                    <span className="text-[11px] font-black text-emerald-600 uppercase px-2 pt-1 tracking-wider">
+                    <span className="text-[11px] font-black text-[#0C59D4] uppercase px-2 pt-1 tracking-wider">
                       Business Solutions
                     </span>
                     
