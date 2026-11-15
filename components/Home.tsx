@@ -658,6 +658,7 @@ interface TestimonialCard {
   rating: number;
   avatarBg: string;
   avatarText: string;
+  avatarImage?: string;
 }
 
 const TESTIMONIALS_DATA: TestimonialCard[] = [
@@ -671,6 +672,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-blue-600 to-indigo-500",
     avatarText: "RK",
+    avatarImage: "/images/testimonials/rajesh-kumar.jpg",
   },
   {
     id: 2,
@@ -682,6 +684,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-amber-600 to-orange-500",
     avatarText: "AS",
+    avatarImage: "/images/testimonials/amit-sharma.jpg",
   },
   {
     id: 3,
@@ -693,6 +696,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-emerald-600 to-teal-500",
     avatarText: "SV",
+    avatarImage: "/images/testimonials/sandeep-verma.jpg",
   },
   {
     id: 4,
@@ -704,6 +708,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-purple-600 to-pink-500",
     avatarText: "VM",
+    avatarImage: "/images/testimonials/vikram-malhotra.jpg",
   },
   {
     id: 5,
@@ -715,6 +720,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-cyan-600 to-blue-500",
     avatarText: "ML",
+    avatarImage: "/images/testimonials/mohan-lal.jpg",
   },
   {
     id: 6,
@@ -726,6 +732,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-rose-600 to-red-500",
     avatarText: "PH",
+    avatarImage: "/images/testimonials/pooja-hegde.jpg",
   },
   {
     id: 7,
@@ -737,6 +744,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-yellow-600 to-amber-500",
     avatarText: "DP",
+    avatarImage: "/images/testimonials/dinesh-patel.jpg",
   },
   {
     id: 8,
@@ -748,6 +756,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-blue-700 to-indigo-700",
     avatarText: "SY",
+    avatarImage: "/images/testimonials/sunil-yadav.jpg",
   },
   {
     id: 9,
@@ -759,6 +768,7 @@ const TESTIMONIALS_DATA: TestimonialCard[] = [
     rating: 5,
     avatarBg: "bg-gradient-to-tr from-emerald-700 to-green-600",
     avatarText: "KS",
+    avatarImage: "/images/testimonials/karanbir-singh.jpg",
   },
 ];
 
@@ -938,9 +948,21 @@ export function StatsAndTestimonials() {
                       {/* Author Profile Information - Exact Uniform Height & Alignment */}
                       <div className="mt-5 flex flex-col items-center text-center h-[110px] justify-start w-full px-2">
                         <div
-                          className={`w-12 h-12 rounded-full ${card.avatarBg} text-white font-extrabold text-sm flex items-center justify-center shadow-md ring-3 ring-white shrink-0`}
+                          className={`relative w-12 h-12 rounded-full overflow-hidden ${card.avatarBg} text-white font-extrabold text-sm flex items-center justify-center shadow-md ring-2 ring-white shrink-0`}
                         >
-                          {card.avatarText}
+                          {card.avatarImage ? (
+                            <Image
+                              src={card.avatarImage}
+                              alt={card.name}
+                              fill
+                              unoptimized
+                              priority
+                              sizes="48px"
+                              className="object-cover"
+                            />
+                          ) : (
+                            card.avatarText
+                          )}
                         </div>
 
                         <span className="mt-2.5 text-base font-extrabold text-slate-900 tracking-tight leading-tight truncate max-w-full">
