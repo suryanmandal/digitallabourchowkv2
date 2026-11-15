@@ -27,6 +27,9 @@ import {
   PhoneCall,
   ArrowUpRight,
   Calculator,
+  Play,
+  X,
+  Shield,
 } from "lucide-react";
 
 // =============================================================================
@@ -521,7 +524,7 @@ const CURTAIN_CARDS: CurtainCard[] = [
 
 export function CurtainRevealSection() {
   return (
-    <section className="w-full bg-white pt-16 sm:pt-20 pb-16 sm:pb-24 relative">
+    <section className="w-full bg-white pt-16 sm:pt-20 pb-6 relative">
       {/* SECTION HEADER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
         {/* Top Unified Platform Pill Badge */}
@@ -1285,18 +1288,30 @@ const CONTRACTOR_STEPS: StepItem[] = [
 ];
 
 export function HowItWorksSection() {
-  const [activeTab, setActiveTab] = useState<"contractor" | "worker">("contractor");
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeTab, setActiveTab] = useState<"worker" | "contractor">("worker");
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  const steps = activeTab === "contractor" ? CONTRACTOR_STEPS : WORKER_STEPS;
-  const currentStep = steps[activeStep] || steps[0];
+  // Close modal on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setVideoModalOpen(false);
+    };
+    if (videoModalOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
+  }, [videoModalOpen]);
 
   return (
-    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 border-t border-slate-200/80">
+    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 border-t border-slate-200/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
             <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
             <span>HOW IT WORKS</span>
@@ -1305,25 +1320,13 @@ export function HowItWorksSection() {
             How Digital Labour Chowk Works
           </h2>
           <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
-             Get started in 3 simple steps.
+            Whether you are a skilled craftsman seeking daily direct wages or a site contractor mobilizing 50+ verified tradesmen — get started in 3 simple steps.
           </p>
 
-          {/* Persona Switcher Tabs */}
+          {/* Persona Switcher Tabs - WORKER FIRST, CONTRACTOR SECOND */}
           <div className="inline-flex items-center bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-sm mt-8">
             <button
-              onClick={() => { setActiveTab("contractor"); setActiveStep(0); }}
-              className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
-                activeTab === "contractor"
-                  ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
-                  : "text-slate-600 hover:text-slate-900"
-              }`}
-            >
-              <HardHat className="w-4 h-4" />
-              <span>For Contractors & Builders</span>
-            </button>
-
-            <button
-              onClick={() => { setActiveTab("worker"); setActiveStep(0); }}
+              onClick={() => setActiveTab("worker")}
               className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
                 activeTab === "worker"
                   ? "bg-[#0C59D4] text-white shadow-md shadow-blue-600/25"
@@ -1333,143 +1336,526 @@ export function HowItWorksSection() {
               <Users className="w-4 h-4" />
               <span>For Workers & Craftsmen</span>
             </button>
+
+            <button
+              onClick={() => setActiveTab("contractor")}
+              className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
+                activeTab === "contractor"
+                  ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <HardHat className="w-4 h-4" />
+              <span>For Contractors & Builders</span>
+            </button>
           </div>
         </div>
 
-        {/* 2-Column Split Stepper Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        {/* 2-Column Split: Left Blueprint Canvas (3 Mockup Phones) + Right Video Guide Card */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
           
-          {/* Left Column: Interactive Step Cards */}
-          <div className="lg:col-span-7 space-y-4 sm:space-y-5">
-            {steps.map((step, idx) => {
-              const isActive = activeStep === idx;
-              return (
-                <div
-                  key={step.number}
-                  onClick={() => setActiveStep(idx)}
-                  className={`cursor-pointer rounded-2xl sm:rounded-3xl p-6 sm:p-7 border transition-all duration-300 ${
-                    isActive
-                      ? activeTab === "contractor"
-                        ? "bg-white border-[#D4A017] shadow-lg shadow-amber-500/10 ring-2 ring-[#D4A017]/20 scale-[1.01]"
-                        : "bg-white border-[#0C59D4] shadow-lg shadow-blue-500/10 ring-2 ring-[#0C59D4]/20 scale-[1.01]"
-                      : "bg-white/70 border-slate-200/80 hover:bg-white hover:border-slate-300"
-                  }`}
-                >
-                  <div className="flex items-start gap-4 sm:gap-5">
-                    <div
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-2xl font-black text-sm sm:text-base flex items-center justify-center shrink-0 transition-colors ${
-                        isActive
-                          ? activeTab === "contractor"
-                            ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
-                            : "bg-[#0C59D4] text-white shadow-md shadow-blue-600/25"
-                          : "bg-slate-100 text-slate-500"
-                      }`}
-                    >
-                      {step.number}
-                    </div>
-
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight">
-                          {step.title}
-                        </h3>
-                        {isActive && (
-                          <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full ${
-                            activeTab === "contractor" ? "bg-amber-50 text-[#B45309]" : "bg-blue-50 text-[#0C59D4]"
-                          }`}>
-                            ACTIVE STEP
-                          </span>
-                        )}
-                      </div>
-
-                      <p className="mt-1.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        {step.subtitle}
-                      </p>
-
-                      {isActive && (
-                        <div className="mt-4 pt-4 border-t border-slate-100 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                          {step.points.map((pt, pIdx) => (
-                            <div key={pIdx} className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                              <CheckCircle2 className={`w-3.5 h-3.5 shrink-0 ${
-                                activeTab === "contractor" ? "text-[#D4A017]" : "text-[#0C59D4]"
-                              }`} />
-                              <span>{pt}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Right Column: Visual Simulated App UI Preview */}
-          <div className="lg:col-span-5 flex justify-center">
-            <div className="relative w-full max-w-sm rounded-[2.5rem] bg-slate-900 p-4 sm:p-5 shadow-2xl border-4 border-slate-800">
-              {/* Phone Speaker Notch */}
-              <div className="w-24 h-4 bg-slate-800 rounded-full mx-auto mb-4" />
-
-              {/* Screen Content */}
-              <div className="bg-white rounded-3xl p-6 min-h-[400px] flex flex-col justify-between shadow-inner">
-                {/* Header */}
-                <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#0C59D4] flex items-center justify-center text-white font-black text-xs">
-                      DLC
-                    </div>
-                    <div>
-                      <div className="text-xs font-bold text-slate-900">Digital Labour Chowk</div>
-                      <div className="text-[10px] text-slate-400">Step {currentStep.number} of 03</div>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
-                    Live
+          {/* LEFT CONTAINER (Wide Blueprint Canvas with 3 Connected Phone Mockups) */}
+          <div
+            className={`lg:col-span-8 rounded-3xl p-5 sm:p-7 relative overflow-hidden shadow-2xl border transition-all duration-500 flex flex-col justify-between ${
+              activeTab === "worker"
+                ? "bg-gradient-to-br from-[#0C59D4] via-[#0947A8] to-[#062F70] border-blue-400/30"
+                : "bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#080D1A] border-amber-500/30"
+            }`}
+          >
+            {/* Blueprint Grid Texture Overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none opacity-20"
+              style={{
+                backgroundImage:
+                  "radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px)",
+                backgroundSize: "20px 20px",
+              }}
+            />
+            {/* Top Step Progress Header */}
+            <div className="relative z-10 flex flex-wrap sm:flex-nowrap items-center justify-between gap-3 mb-6 pb-4 border-b border-white/15">
+              <div className="flex items-center gap-2 sm:gap-4 flex-1">
+                {/* Step 1 */}
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/20 text-white w-fit border border-white/20">
+                    STEP 01
+                  </span>
+                  <span className="text-xs sm:text-[13px] font-extrabold text-white mt-1">
+                    {activeTab === "worker" ? "1-Min Mobile Registration" : "Post Site Requirement"}
                   </span>
                 </div>
 
-                {/* Body Preview */}
-                <div className="my-auto py-6 text-center">
-                  <div className={`w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-white mb-4 shadow-lg ${
-                    activeTab === "contractor" ? "bg-[#D4A017] shadow-amber-600/30" : "bg-[#0C59D4] shadow-blue-600/30"
-                  }`}>
-                    {activeTab === "contractor" ? <HardHat className="w-8 h-8" /> : <Users className="w-8 h-8" />}
-                  </div>
+                <ChevronRight className="w-4 h-4 text-white/40 shrink-0 hidden sm:block" />
 
-                  <span className={`inline-block text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-2 ${
-                    activeTab === "contractor" ? "bg-amber-50 text-[#B45309]" : "bg-blue-50 text-[#0C59D4]"
-                  }`}>
-                    {currentStep.mockupBadge}
+                {/* Step 2 */}
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/20 text-white w-fit border border-white/20">
+                    STEP 02
                   </span>
-
-                  <h4 className="text-lg font-black text-slate-900 tracking-tight">
-                    {currentStep.mockupTitle}
-                  </h4>
-                  <p className="text-xs text-slate-500 mt-1">
-                    {currentStep.mockupSubtitle}
-                  </p>
+                  <span className="text-xs sm:text-[13px] font-extrabold text-white mt-1">
+                    {activeTab === "worker" ? "Zero-Cost Aadhaar KYC" : "2-Hour Algorithmic Match"}
+                  </span>
                 </div>
 
-                {/* Footer Action */}
-                <div className="border-t border-slate-100 pt-3">
-                  <Link
-                    href="https://onboarding.digitallabourchowk.com/login"
-                    className={`w-full py-3 rounded-xl font-extrabold text-xs text-white uppercase tracking-wider shadow-md flex items-center justify-center gap-1.5 ${
-                      activeTab === "contractor" ? "bg-[#D4A017] hover:bg-[#B8860B]" : "bg-[#0C59D4] hover:bg-[#0947A8]"
-                    }`}
-                  >
-                    <span>{activeTab === "contractor" ? "Hire Workforce Now" : "Register as Craftsman"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </Link>
+                <ChevronRight className="w-4 h-4 text-white/40 shrink-0 hidden sm:block" />
+
+                {/* Step 3 */}
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full bg-white/20 text-white w-fit border border-white/20">
+                    STEP 03
+                  </span>
+                  <span className="text-xs sm:text-[13px] font-extrabold text-white mt-1">
+                    {activeTab === "worker" ? "Work, Wages & Benefits" : "Site Attendance & GST"}
+                  </span>
                 </div>
               </div>
+
+              {/* Status Badge */}
+              <div className="inline-flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-400/30 px-3 py-1 rounded-full shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span>{activeTab === "worker" ? "Instant Verification" : "2-Hour SLA Active"}</span>
+              </div>
+            </div>
+
+            {/* THREE PHONE MOCKUPS (Side by Side in 3 Columns) */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 relative z-10 items-stretch">
+              
+              {/* ==================== PHONE 1 ==================== */}
+              <div className="relative bg-slate-950 rounded-[2.2rem] p-2.5 border-2 border-slate-700/80 shadow-2xl flex flex-col justify-between overflow-hidden min-h-[460px]">
+                {/* Dynamic Island Notch */}
+                <div className="w-16 h-3 bg-black rounded-full mx-auto mb-2 flex items-center justify-end px-1.5">
+                  <div className="w-1 h-1 rounded-full bg-slate-700" />
+                </div>
+
+                {/* Inner Screen */}
+                <div className="bg-gradient-to-b from-[#FFFDF9] to-[#F5F8FF] rounded-[1.6rem] p-3.5 flex flex-col justify-between h-full text-slate-900 border border-slate-100 shadow-inner">
+                  {activeTab === "worker" ? (
+                    <>
+                      {/* Top Header */}
+                      <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+                        <div className="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 overflow-hidden relative shrink-0">
+                          <Image src="/images/popular-searches/mason-rajmistri.webp" alt="Worker profile" fill unoptimized priority className="object-cover" />
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-black text-[#0C59D4] leading-tight">DIGITAL LABOUR CHOWK</div>
+                          <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-orange-100 text-[#E65100]">
+                            WORKER REGISTRATION
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Inputs */}
+                      <div className="my-auto space-y-3 py-2">
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-1">
+                            Mobile Number
+                          </label>
+                          <div className="px-2.5 py-2 rounded-lg bg-white border border-slate-300 text-xs font-bold text-slate-800 flex items-center gap-1.5 shadow-xs">
+                            <span>🇮🇳 +91 98765 43210</span>
+                          </div>
+                        </div>
+
+                        <div>
+                          <div className="flex items-center justify-between text-[10px] text-slate-600 mb-1">
+                            <span className="font-bold">Enter 4-Digit OTP</span>
+                            <span className="text-orange-600 font-semibold">Resend in 24s</span>
+                          </div>
+                          <div className="grid grid-cols-4 gap-1.5 text-center">
+                            {["5", "9", "2", "8"].map((digit, i) => (
+                              <div
+                                key={i}
+                                className="h-9 rounded-lg bg-white border-2 border-orange-400 font-black text-sm flex items-center justify-center text-slate-900 shadow-xs"
+                              >
+                                {digit}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Action & Subtext */}
+                      <div className="pt-2 text-center">
+                        <button className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-extrabold text-[11px] uppercase tracking-wider shadow-md shadow-orange-500/25 flex items-center justify-center gap-1.5">
+                          <span>Verify & Continue</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                        <div className="text-[9.5px] font-bold text-slate-400 mt-2">
+                          100% Free for Workers
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Contractor Phone 1: Post Requirement */}
+                      <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+                        <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-[#B45309] shrink-0">
+                          <HardHat className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-black text-slate-900 leading-tight">DIGITAL LABOUR CHOWK</div>
+                          <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-amber-100 text-[#B45309]">
+                            POST SITE REQUIREMENT
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="my-auto space-y-2.5 py-2">
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-0.5">Required Trades</label>
+                          <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold text-slate-800 shadow-xs">
+                            Mason & Bar Benders
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-0.5">Headcount Needed</label>
+                          <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold text-[#0C59D4] shadow-xs">
+                            15 Verified Craftsmen
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-0.5">Site Location</label>
+                          <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-[11px] font-bold text-slate-700 shadow-xs">
+                            Sector 62, Noida Project
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 text-center">
+                        <button className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-amber-500 to-[#D4A017] text-white font-extrabold text-[11px] uppercase tracking-wider shadow-md shadow-amber-500/25 flex items-center justify-center gap-1.5">
+                          <span>Post Requirement</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                        <div className="text-[9.5px] font-bold text-slate-400 mt-2">
+                          2-Hour Matching SLA Guaranteed
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* ==================== PHONE 2 (With 3D Pop-out Card) ==================== */}
+              <div className="relative bg-slate-950 rounded-[2.2rem] p-2.5 border-2 border-slate-700/80 shadow-2xl flex flex-col justify-between overflow-visible min-h-[460px]">
+                {/* Dynamic Island Notch */}
+                <div className="w-16 h-3 bg-black rounded-full mx-auto mb-2 flex items-center justify-end px-1.5">
+                  <div className="w-1 h-1 rounded-full bg-slate-700" />
+                </div>
+
+                {/* Inner Screen */}
+                <div className="bg-gradient-to-b from-[#FFFDF9] to-[#F5F8FF] rounded-[1.6rem] p-3.5 flex flex-col justify-between h-full text-slate-900 border border-slate-100 shadow-inner relative overflow-visible">
+                  {activeTab === "worker" ? (
+                    <>
+                      <div className="text-center pt-2">
+                        <div className="w-10 h-10 rounded-2xl bg-orange-100 text-orange-600 mx-auto flex items-center justify-center mb-1.5 shadow-sm">
+                          <Shield className="w-5 h-5" />
+                        </div>
+                        <h4 className="text-xs font-black text-slate-900">Aadhaar Instant KYC</h4>
+                        <span className="inline-block text-[9.5px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full mt-1">
+                          ● Verified
+                        </span>
+                      </div>
+
+                      {/* 3D Pop-Out Aadhaar Card (Overlaying Screen) */}
+                      <div className="relative my-auto w-full bg-white rounded-xl p-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.22)] border border-slate-200 z-20">
+                        {/* Tri-color stripe */}
+                        <div className="h-1.5 w-full bg-gradient-to-r from-orange-500 via-white to-green-600 rounded-full mb-2" />
+                        
+                        <div className="flex items-center gap-2">
+                          <div className="w-11 h-13 rounded-lg bg-slate-100 border border-slate-200 overflow-hidden relative shrink-0">
+                            <Image src="/images/popular-searches/mason-rajmistri.webp" alt="Worker photo" fill unoptimized priority className="object-cover" />
+                          </div>
+                          
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[9px] font-black text-slate-800 tracking-wider">AADHAAR KYC</div>
+                            <div className="text-[10px] font-mono font-bold text-slate-700 mt-0.5">XXXX XXXX 2222</div>
+                            <div className="text-[8px] font-bold text-emerald-600 flex items-center gap-0.5 mt-0.5">
+                              <CheckCircle2 className="w-2.5 h-2.5 text-emerald-500" />
+                              Identity Verified
+                            </div>
+                          </div>
+
+                          <div className="w-8 h-8 bg-slate-50 border border-slate-200 rounded p-0.5 shrink-0 flex items-center justify-center">
+                            <QrCode className="w-7 h-7 text-slate-800" />
+                          </div>
+                        </div>
+
+                        {/* Floating Green Check Badge */}
+                        <div className="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shadow-lg border-2 border-white font-bold text-xs">
+                          ✓
+                        </div>
+                      </div>
+
+                      <div className="text-center pb-2">
+                        <div className="text-[9.5px] font-semibold text-slate-500">
+                          UIDAI Government Authenticated
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Contractor Phone 2: 2-Hour Algorithmic Match */}
+                      <div className="text-center pt-2">
+                        <div className="w-10 h-10 rounded-2xl bg-amber-100 text-[#B45309] mx-auto flex items-center justify-center mb-1.5 shadow-sm">
+                          <Users className="w-5 h-5" />
+                        </div>
+                        <h4 className="text-xs font-black text-slate-900">2-Hour Algorithmic Match</h4>
+                        <span className="inline-block text-[9.5px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full mt-1">
+                          ● 15 Craftsmen Assigned
+                        </span>
+                      </div>
+
+                      {/* 3D Pop-Out Contractor Dispatch Card */}
+                      <div className="relative my-auto w-full bg-white rounded-xl p-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.22)] border border-slate-200 z-20">
+                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
+                          <span className="text-[9px] font-extrabold text-slate-900">BATCH DISPATCH #408</span>
+                          <span className="text-[8.5px] font-bold text-emerald-600">On Time</span>
+                        </div>
+                        <div className="space-y-1.5 py-2">
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-slate-600 font-medium">8 Masons (Aadhaar KYC)</span>
+                            <span className="font-bold text-slate-900">₹850/d</span>
+                          </div>
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-slate-600 font-medium">7 Bar Benders (Verified)</span>
+                            <span className="font-bold text-slate-900">₹850/d</span>
+                          </div>
+                        </div>
+                        <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
+                          <span>Route: In Transit</span>
+                          <span className="font-bold text-blue-600">ETA: 35 Mins</span>
+                        </div>
+                        <div className="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-lg border-2 border-white font-bold text-xs">
+                          ✓
+                        </div>
+                      </div>
+
+                      <div className="text-center pb-2">
+                        <div className="text-[9.5px] font-semibold text-slate-500">
+                          100% Pre-Screened Site Workforce
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              {/* ==================== PHONE 3 (With Overlapping Cutout & Floating Badges) ==================== */}
+              <div className="relative bg-slate-950 rounded-[2.2rem] p-2.5 border-2 border-slate-700/80 shadow-2xl flex flex-col justify-between overflow-visible min-h-[460px]">
+                {/* Dynamic Island Notch */}
+                <div className="w-16 h-3 bg-black rounded-full mx-auto mb-2 flex items-center justify-end px-1.5">
+                  <div className="w-1 h-1 rounded-full bg-slate-700" />
+                </div>
+
+                {/* Inner Screen */}
+                <div className="bg-gradient-to-b from-[#FFFDF9] to-[#F5F8FF] rounded-[1.6rem] p-3.5 flex flex-col justify-between h-full text-slate-900 border border-slate-100 shadow-inner relative overflow-visible">
+                  {activeTab === "worker" ? (
+                    <>
+                      {/* Job Cards */}
+                      <div className="space-y-2 pt-1 relative z-10">
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">Mason / Rajmistri</div>
+                            <div className="text-[9px] text-slate-500">Sector 62, Noida Site</div>
+                          </div>
+                          <span className="text-[11px] font-black text-emerald-600">₹850/Day</span>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">Electrician</div>
+                            <div className="text-[9px] text-slate-500">Cyber City, Gurgaon</div>
+                          </div>
+                          <span className="text-[11px] font-black text-emerald-600">₹850/Day</span>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">Bank Direct Pay</div>
+                            <div className="text-[9px] text-slate-500">0% Commission Cut</div>
+                          </div>
+                          <span className="text-[10px] font-extrabold text-[#0C59D4]">Active DBT</span>
+                        </div>
+                      </div>
+
+                      {/* OVERLAPPING CUTOUT OF CRAFTSMAN (Smiling in Vest & Helmet) */}
+                      <div className="absolute -bottom-1 -right-5 w-48 h-64 z-20 pointer-events-none select-none">
+                        <img
+                          src="/images/craftsman_cutout.png"
+                          alt="Verified craftsman with hardhat"
+                          className="w-full h-full object-contain object-bottom drop-shadow-xl"
+                        />
+                      </div>
+
+                      {/* Floating 3D Badges */}
+                      <div className="relative z-30 pt-1 space-y-1.5 mt-auto">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-extrabold shadow-lg shadow-emerald-600/30">
+                          <Shield className="w-3 h-3" />
+                          <span>₹5,00,000 cover</span>
+                        </div>
+
+                        <div>
+                          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white text-slate-800 border border-slate-200 text-[10px] font-extrabold shadow-md">
+                            <span>💸 0% commission</span>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Contractor Phone 3: Attendance & GST */}
+                      <div className="space-y-2 pt-1 relative z-10">
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">Site Attendance</div>
+                            <div className="text-[9px] text-slate-500">Biometric Check-in</div>
+                          </div>
+                          <span className="text-[11px] font-black text-emerald-600">15 / 15 Present</span>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">GST Invoice</div>
+                            <div className="text-[9px] text-slate-500">Full Statutory Billing</div>
+                          </div>
+                          <span className="text-[10px] font-extrabold text-[#D4A017]">Download PDF</span>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">PF & ESIC Status</div>
+                            <div className="text-[9px] text-slate-500">100% BOCW Compliant</div>
+                          </div>
+                          <span className="text-[10px] font-extrabold text-emerald-600">Compliant</span>
+                        </div>
+                      </div>
+
+                      {/* OVERLAPPING CUTOUT OF CONTRACTOR / LEAD */}
+                      <div className="absolute -bottom-2 -right-4 w-44 h-56 z-20 pointer-events-none select-none">
+                        <img
+                          src="/images/ecosystem/contractor-builder.webp"
+                          alt="Contractor project lead"
+                          className="w-full h-full object-contain object-bottom drop-shadow-xl"
+                        />
+                      </div>
+
+                      {/* Floating 3D Badges */}
+                      <div className="relative z-30 pt-1 space-y-1.5 mt-auto">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#D4A017] text-white text-[10px] font-extrabold shadow-lg shadow-amber-600/30">
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>100% GST & PF/ESIC</span>
+                        </div>
+
+                        <div>
+                          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white text-slate-800 border border-slate-200 text-[10px] font-extrabold shadow-md">
+                            <span>⏱️ 2-Hour SLA Match</span>
+                          </div>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          {/* RIGHT CONTAINER: Vertical Video Guide Card (Exact Match to Mockup) */}
+          <div className="lg:col-span-4 rounded-3xl overflow-hidden shadow-2xl flex flex-col justify-between p-6 sm:p-7 min-h-[460px] relative border border-slate-800 group">
+            {/* Background Construction Image */}
+            <Image
+              src="/images/hero/construction_crew.jpg"
+              alt="Construction site workers and supervisor"
+              fill
+              priority
+              unoptimized
+              className="object-cover brightness-50 group-hover:scale-105 transition-transform duration-700"
+            />
+
+            {/* Dark Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/60 pointer-events-none" />
+
+            {/* Top Badges */}
+            <div className="relative z-10 flex items-center justify-between">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/25 text-white text-[11px] font-extrabold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span>{activeTab === "worker" ? "VIDEO GUIDE" : "CONTRACTOR GUIDE"}</span>
+              </span>
+
+              <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white text-[11px] font-mono font-bold">
+                {activeTab === "worker" ? "1:02 MIN" : "1:15 MIN"}
+              </span>
+            </div>
+
+            {/* Center: Glowing Red Play Button & Title */}
+            <div className="relative z-10 text-center my-auto py-8">
+              <button
+                onClick={() => setVideoModalOpen(true)}
+                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600 hover:bg-red-500 text-white flex items-center justify-center shadow-[0_0_40px_rgba(220,38,38,0.7)] transform group-hover:scale-110 active:scale-95 transition-all mx-auto mb-6 focus:outline-none focus:ring-4 focus:ring-red-400/50"
+                aria-label="Play Video Guide"
+              >
+                <Play className="w-8 h-8 fill-white translate-x-0.5" />
+              </button>
+
+              <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
+                {activeTab === "worker" ? "See How It Works on Site" : "See Site Mobilization in Action"}
+              </h3>
+              <p className="mt-2.5 text-xs sm:text-sm text-slate-300 max-w-xs mx-auto leading-relaxed">
+                {activeTab === "worker"
+                  ? "Step-by-step dispatch walkthrough for workers and site supervisors."
+                  : "How site engineers deploy 50+ verified tradesmen with biometric attendance."}
+              </p>
+            </div>
+
+            {/* Bottom Button */}
+            <div className="relative z-10">
+              <button
+                onClick={() => setVideoModalOpen(true)}
+                className="w-full py-3.5 px-6 rounded-2xl bg-white hover:bg-slate-100 text-slate-900 font-extrabold text-xs sm:text-sm uppercase tracking-wider shadow-xl flex items-center justify-center gap-2 transition-all transform active:scale-98"
+              >
+                <Play className="w-4 h-4 fill-red-600 text-red-600" />
+                <span>Watch 1-Min App Walkthrough</span>
+              </button>
             </div>
           </div>
 
         </div>
 
       </div>
+
+      {/* INTERACTIVE VIDEO MODAL (Vimeo Documentary Walkthrough) */}
+      {videoModalOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+          onClick={() => setVideoModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl bg-black rounded-2xl overflow-hidden shadow-2xl border border-slate-800"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              onClick={() => setVideoModalOpen(false)}
+              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/70 hover:bg-black text-white flex items-center justify-center border border-white/20 transition-all focus:outline-none"
+              aria-label="Close video"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* 16:9 Video Embed */}
+            <div className="relative w-full aspect-video">
+              <iframe
+                src="https://player.vimeo.com/video/1156756201?autoplay=1"
+                className="absolute inset-0 w-full h-full"
+                frameBorder="0"
+                allow="autoplay; fullscreen; picture-in-picture"
+                allowFullScreen
+                title="Digital Labour Chowk Walkthrough Video"
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
