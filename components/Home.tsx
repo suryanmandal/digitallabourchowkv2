@@ -24,45 +24,200 @@ import {
 } from "lucide-react";
 
 // =============================================================================
-// SECTION 1: HERO CANVAS (Vimeo 6:57 Cinematic Video with Mute/Unmute Toggle)
+// SECTION 1: HERO IMAGE CAROUSEL (3 Core Business Pillars with Autoplay)
 // =============================================================================
-export function Hero() {
-  const [isMuted, setIsMuted] = useState(true);
+interface HeroSlide {
+  id: number;
+  image: string;
+  badge: string;
+  title: string;
+  highlight: string;
+  description: string;
+  primaryCtaText: string;
+  primaryCtaHref: string;
+  secondaryCtaText: string;
+  secondaryCtaHref: string;
+}
 
-  const vimeoVideoId = "1156756201";
-  const vimeoHash = "7bce0b5203";
+const HERO_SLIDES: HeroSlide[] = [
+  {
+    id: 1,
+    image: "/images/ecosystem/enterprise-epc.webp",
+    badge: "EPC & General Contractors",
+    title: "India's Leading Construction",
+    highlight: "Workforce Platform",
+    description:
+      "Connecting EPCs, developers, and builders with over 3.5 Lakh pre-verified tradesmen across India with biometric attendance and statutory compliance.",
+    primaryCtaText: "Hire Manpower Now",
+    primaryCtaHref: "https://onboarding.digitallabourchowk.com/login",
+    secondaryCtaText: "Business Solutions",
+    secondaryCtaHref: "/business",
+  },
+  {
+    id: 2,
+    image: "/images/ecosystem/worker-tradesman.webp",
+    badge: "For Skilled Tradesmen & Craftsmen",
+    title: "Aaj Ka Rozgar, Zero Commission &",
+    highlight: "₹5 Lakhs Insurance",
+    description:
+      "Direct bank transfers (DBT), guaranteed daily wage rates, and dignified work opportunities without any middleman cuts.",
+    primaryCtaText: "Download Worker App",
+    primaryCtaHref: "https://play.google.com/store/apps/details?id=com.digitallabourchowk.dlc",
+    secondaryCtaText: "Worker Benefits",
+    secondaryCtaHref: "/worker",
+  },
+  {
+    id: 3,
+    image: "/images/ecosystem/contractor-builder.webp",
+    badge: "For Subcontractors & Jamadars",
+    title: "15-Minute Site Manpower Dispatch",
+    highlight: "Across 6,000+ Towns",
+    description:
+      "Eliminate site idle time and project delays with on-demand allocation of certified masons, bar benders, shuttering carpenters, and helpers.",
+    primaryCtaText: "Request Workforce",
+    primaryCtaHref: "https://onboarding.digitallabourchowk.com/login",
+    secondaryCtaText: "Contact Support",
+    secondaryCtaHref: "/contact",
+  },
+];
+
+export function Hero() {
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  // Automatic slide rotation every 5 seconds (pauses on hover)
+  useEffect(() => {
+    if (isPaused) return;
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  const prevSlide = () => {
+    setActiveSlide((prev) => (prev - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  };
+
+  const nextSlide = () => {
+    setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  };
 
   return (
     <section className="relative w-full m-0 p-0 overflow-hidden bg-black">
-      <div className="relative w-full aspect-video sm:aspect-auto sm:h-[420px] lg:h-[500px] overflow-hidden bg-black flex items-center justify-center m-0 p-0">
-        {/* Full-bleed stretched iframe: 100% width and height on mobile, ultrawide cover on desktop */}
-        <iframe
-          key={isMuted ? "muted" : "unmuted"}
-          src={`https://player.vimeo.com/video/${vimeoVideoId}?h=${vimeoHash}&autoplay=1&muted=${isMuted ? 1 : 0}&loop=1&autopause=0&controls=0&background=1&playsinline=1`}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full min-w-full min-h-full sm:w-[178vh] sm:h-[100vh] lg:w-[105vw] lg:h-[59vw] border-0 pointer-events-none object-cover"
-          allow="autoplay; fullscreen; picture-in-picture"
-          title="Digital Labour Chowk Video - 6:57 min"
-        />
+      {/* ========================================================================= */}
+      {/* 🛠️ CAROUSEL CONTAINER SIZE: ADJUST DIV HEIGHT HERE                       */}
+      {/* Current values: min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[500px] */}
+      {/* ========================================================================= */}
+      <div
+        className="relative w-full min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[500px] overflow-hidden bg-slate-950 flex items-center justify-center m-0 p-0 select-none"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
+        {/* Slides */}
+        {HERO_SLIDES.map((slide, index) => {
+          const isActive = index === activeSlide;
+          return (
+            <div
+              key={slide.id}
+              className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+                isActive ? "opacity-100 z-10 pointer-events-auto" : "opacity-0 z-0 pointer-events-none"
+              }`}
+            >
+              {/* Background Image */}
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                priority={index === 0}
+                sizes="100vw"
+                className="object-cover object-center"
+              />
 
-        {/* Floating Minimal Sound Button (Bottom-Right) */}
-        <div className="absolute bottom-3 right-3 sm:bottom-5 sm:right-6 z-20">
-          <button
-            onClick={() => setIsMuted(!isMuted)}
-            className="flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-black/60 hover:bg-black/85 backdrop-blur-md text-white border border-white/20 shadow-xl text-[11px] sm:text-xs font-bold transition-all duration-200 hover:scale-105 active:scale-95"
-            aria-label={isMuted ? "Unmute sound" : "Mute sound"}
-          >
-            {isMuted ? (
-              <>
-                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
-                <span>Unmute</span>
-              </>
-            ) : (
-              <>
-                <Volume2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-400" />
-                <span>Sound On</span>
-              </>
-            )}
-          </button>
+              {/* Dark Gradient Overlay for optimal text legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/90 via-black/60 to-black/30 z-10" />
+
+              {/* Slide Content */}
+              <div className="relative z-20 h-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col justify-center">
+                <div className="max-w-2xl sm:max-w-3xl">
+                  {/* Badge */}
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/30 border border-blue-400/30 text-blue-300 text-[11px] sm:text-xs font-semibold backdrop-blur-md mb-2 sm:mb-3">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
+                    <span>{slide.badge}</span>
+                  </span>
+
+                  {/* Headline */}
+                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight sm:leading-[1.15] mb-2 sm:mb-3">
+                    {slide.title} <br className="hidden sm:inline" />
+                    <span className="text-[#3b82f6]">{slide.highlight}</span>
+                  </h1>
+
+                  {/* Subtitle / Description */}
+                  <p className="text-xs sm:text-base text-slate-200 line-clamp-2 sm:line-clamp-none max-w-xl mb-4 sm:mb-6 leading-relaxed">
+                    {slide.description}
+                  </p>
+
+                  {/* Action CTAs */}
+                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5">
+                    <a
+                      href={slide.primaryCtaHref}
+                      className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-lg shadow-blue-900/40 transition-all duration-200 active:scale-95 flex items-center gap-2"
+                    >
+                      <span>{slide.primaryCtaText}</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                    <Link
+                      href={slide.secondaryCtaHref}
+                      className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 backdrop-blur-md transition-all duration-200"
+                    >
+                      {slide.secondaryCtaText}
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Previous Navigation Arrow */}
+        <button
+          type="button"
+          onClick={prevSlide}
+          aria-label="Previous slide"
+          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md transition-all active:scale-95"
+        >
+          <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+
+        {/* Next Navigation Arrow */}
+        <button
+          type="button"
+          onClick={nextSlide}
+          aria-label="Next slide"
+          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md transition-all active:scale-95"
+        >
+          <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+        </button>
+
+        {/* Pagination Dots (Bottom Center) */}
+        <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+          {HERO_SLIDES.map((_, idx) => (
+            <button
+              key={idx}
+              type="button"
+              onClick={() => setActiveSlide(idx)}
+              aria-label={`Go to slide ${idx + 1}`}
+              className={`transition-all duration-300 rounded-full ${
+                idx === activeSlide
+                  ? "w-7 sm:w-8 h-2 sm:h-2.5 bg-[#0C59D4]"
+                  : "w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/50 hover:bg-white/80"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Slide Counter (Bottom Right) */}
+        <div className="hidden sm:block absolute bottom-5 right-6 z-30 px-3 py-1 rounded-full bg-black/40 border border-white/15 text-white/80 font-mono text-xs backdrop-blur-md">
+          0{activeSlide + 1} / 0{HERO_SLIDES.length}
         </div>
       </div>
     </section>
