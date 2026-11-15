@@ -211,7 +211,7 @@ export default function GoogleTranslateProvider({
       />
 
       {/* Pre-define the initialization callback before script execution */}
-      <Script id="google-translate-init" strategy="beforeInteractive">
+      <Script id="google-translate-init" strategy="afterInteractive">
         {`
           window.googleTranslateElementInit = function() {
             try {
