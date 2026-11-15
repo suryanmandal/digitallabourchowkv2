@@ -1299,13 +1299,13 @@ export function HowItWorksSection() {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
             <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
-            <span>HOW IT WORKS • कार्यप्रणाली</span>
+            <span>HOW IT WORKS</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             How Digital Labour Chowk Works
           </h2>
           <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
-            Whether you are hiring 50+ tradesmen for an active EPC site or seeking daily wage work with 0% commission — get started in 3 simple steps.
+             Get started in 3 simple steps.
           </p>
 
           {/* Persona Switcher Tabs */}
@@ -1319,7 +1319,7 @@ export function HowItWorksSection() {
               }`}
             >
               <HardHat className="w-4 h-4" />
-              <span>For Contractors & Builders (मजदूर पाएं)</span>
+              <span>For Contractors & Builders</span>
             </button>
 
             <button
@@ -1331,7 +1331,7 @@ export function HowItWorksSection() {
               }`}
             >
               <Users className="w-4 h-4" />
-              <span>For Workers & Craftsmen (काम ढूंढें)</span>
+              <span>For Workers & Craftsmen</span>
             </button>
           </div>
         </div>
@@ -1495,7 +1495,7 @@ export function EnterprisePartnerWall() {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
             <Building2 className="w-3.5 h-3.5 text-slate-700" />
-            <span>ENTERPRISE CLIENTS • प्रमुख निर्माण भागीदार</span>
+            <span>ENTERPRISE CLIENTS</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Trusted by India’s Premier Builders & EPC Giants
@@ -1564,7 +1564,7 @@ export function ContractorSavingsCalculator() {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-[#B45309] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
             <Calculator className="w-3.5 h-3.5 text-[#B45309]" />
-            <span>ROI & TIME CALCULATOR • बचत कैलकुलेटर</span>
+            <span>ROI & TIME CALCULATOR</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Calculate Your Job Site Savings
@@ -1755,7 +1755,7 @@ export function HomeFAQSection() {
         <div className="text-center mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
             <HelpCircle className="w-3.5 h-3.5 text-[#0C59D4]" />
-            <span>GOT QUESTIONS? • अक्सर पूछे जाने वाले सवाल</span>
+            <span>GOT QUESTIONS?</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Frequently Asked Questions
@@ -1853,7 +1853,7 @@ export function NewsAndMediaSection() {
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
             <Award className="w-3.5 h-3.5 text-purple-600" />
-            <span>DLC IN THE NEWS • मीडिया और सम्मान</span>
+            <span>DLC IN THE NEWS</span>
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
             Recognized Across National Media
@@ -1907,19 +1907,19 @@ export function NewsAndMediaSection() {
 // SECTION 10: QUICK ENTERPRISE LEAD CAPTURE (Pre-Footer Dispatch Box)
 // =============================================================================
 export function QuickLeadCapture() {
-  const [selectedTrade, setSelectedTrade] = useState("Mason (राजमिस्त्री)");
+  const [selectedTrade, setSelectedTrade] = useState("Mason");
   const [phone, setPhone] = useState("");
   const [city, setCity] = useState("");
   const [submitted, setSubmitted] = useState(false);
 
   const trades = [
-    "Mason (राजमिस्त्री)",
-    "Carpenter (बढ़ई)",
-    "Painter (पेंटर)",
-    "Electrician (इलेक्ट्रीशियन)",
-    "Plumber (प्लम्बर)",
-    "Bar Bender (सरिया)",
-    "Helper (हेल्पर)",
+    "Mason",
+    "Carpenter",
+    "Painter",
+    "Electrician",
+    "Plumber",
+    "Bar Bender",
+    "Helper",
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -1937,7 +1937,7 @@ export function QuickLeadCapture() {
           <div className="max-w-2xl mb-8">
             <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-500/20 text-blue-300 border border-blue-500/30 text-xs font-bold uppercase tracking-wider mb-3">
               <PhoneCall className="w-3.5 h-3.5 text-blue-400" />
-              <span>Priority Workforce Dispatch • तुरंत कॉल पाएं</span>
+              <span>Priority Workforce Dispatch</span>
             </span>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">
