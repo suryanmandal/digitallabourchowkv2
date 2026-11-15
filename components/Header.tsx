@@ -269,7 +269,7 @@ export default function Header() {
               )}
             </div>
 
-            {/* 4. BUSINESS ▼ (Dropdown Card) */}
+            {/* 4. BUSINESS ▼ (Rich Media Visual Mega Menu Dropdown) */}
             <div
               className="relative py-6 flex items-center"
               onMouseEnter={() => handleMouseEnter("business")}
@@ -296,53 +296,252 @@ export default function Header() {
                 <span className="absolute bottom-3 left-0 right-0 h-[3.5px] bg-[#0C59D4] rounded-full transition-all" />
               )}
 
-              {/* Business Dropdown Card - Mockup Design Match */}
+              {/* Rich Media Visual Mega Menu Dropdown (Zypp Reference Design Match) */}
               {activeDropdown === "business" && (
                 <div
-                  className="absolute top-full left-0 z-50 pt-1 animate-in fade-in slide-in-from-top-1 duration-150"
+                  className="absolute top-full -left-[220px] xl:-left-[280px] z-50 pt-2 animate-in fade-in slide-in-from-top-1 duration-200"
                   onMouseEnter={() => handleMouseEnter("business")}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="bg-white rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.08)] border border-slate-100 overflow-hidden min-w-[270px] py-1.5 font-normal">
-                    {/* Contractor */}
-                    <Link
-                      href="/business#contractor"
-                      onClick={() => setActiveDropdown(null)}
-                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
-                    >
-                      <HardHat className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
-                      <span>Contractor</span>
-                    </Link>
+                  <div className="bg-white rounded-3xl shadow-[0_25px_70px_rgba(0,0,0,0.18)] border border-slate-100 p-6 xl:p-7 w-[880px] xl:w-[980px] max-w-[calc(100vw-32px)]">
+                    
+                    {/* 2-Column Responsive Grid */}
+                    <div className="grid grid-cols-12 gap-6 xl:gap-8">
+                      
+                      {/* ================================================================= */}
+                      {/* COLUMN 1: FOR CONTRACTORS (Matching "For Riders" layout)          */}
+                      {/* Left sub-column has 2 stacked cards, right sub-column has 1 tall card */}
+                      {/* ================================================================= */}
+                      <div className="col-span-6 border-r border-slate-100 pr-6 xl:pr-8 flex flex-col justify-between">
+                        
+                        {/* Column Header */}
+                        <div className="flex items-center justify-between mb-3.5">
+                          <h3 className="text-emerald-600 font-extrabold text-[15px] tracking-tight flex items-center gap-1.5">
+                            <span>For Contractors</span>
+                          </h3>
+                          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                            Supply On-Demand
+                          </span>
+                        </div>
 
-                    {/* General Contractor */}
-                    <Link
-                      href="/business#general-contractor"
-                      onClick={() => setActiveDropdown(null)}
-                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
-                    >
-                      <CrossedToolsIcon className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
-                      <span>General Contractor</span>
-                    </Link>
+                        {/* Subgrid: 2 Stacked Cards on left (col-span-6), 1 Tall Card on right (col-span-6) */}
+                        <div className="grid grid-cols-12 gap-3.5 h-[270px]">
+                          
+                          {/* Left Sub-Column: 2 Stacked Cards */}
+                          <div className="col-span-6 flex flex-col justify-between gap-3.5">
+                            
+                            {/* Card 1: Bulk Tradesmen Mobilization */}
+                            <Link
+                              href="/business#contractor"
+                              onClick={() => setActiveDropdown(null)}
+                              className="group relative h-[126px] rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block"
+                            >
+                              <Image
+                                src="/images/curtain-reveal/FIND-WORKER.webp"
+                                alt="Bulk Tradesmen on Demand"
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 p-3 flex flex-col justify-end">
+                                <span className="text-[9.5px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                                  Verified Tradesmen
+                                </span>
+                                <h4 className="text-[12.5px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                                  Deploy 50+ Workers in 2 Hrs
+                                </h4>
+                                <p className="text-[10px] text-slate-200 mt-0.5 line-clamp-1">
+                                  Aadhaar KYC • 0% Middlemen Cut
+                                </p>
+                              </div>
+                            </Link>
 
-                    {/* Builder & Developer */}
-                    <Link
-                      href="/business#builder-developer"
-                      onClick={() => setActiveDropdown(null)}
-                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors border-b border-slate-100 group"
-                    >
-                      <Building2 className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
-                      <span>Builder &amp; Developer</span>
-                    </Link>
+                            {/* Card 2: General Contractors & Civil Work */}
+                            <Link
+                              href="/business#general-contractor"
+                              onClick={() => setActiveDropdown(null)}
+                              className="group relative h-[126px] rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block"
+                            >
+                              <Image
+                                src="/images/ecosystem/contractor-builder.webp"
+                                alt="General Contractors & Civil Work"
+                                fill
+                                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 p-3 flex flex-col justify-end">
+                                <span className="text-[9.5px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                                  Civil & Structural
+                                </span>
+                                <h4 className="text-[12.5px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                                  General Contractors
+                                </h4>
+                                <p className="text-[10px] text-slate-200 mt-0.5 line-clamp-1">
+                                  Masons, Bar Benders, Carpenters
+                                </p>
+                              </div>
+                            </Link>
 
-                    {/* Staffing & Placement Agency */}
-                    <Link
-                      href="/business#staffing-agency"
-                      onClick={() => setActiveDropdown(null)}
-                      className="flex items-center gap-3.5 px-5 py-3 text-[14.5px] font-medium text-slate-800 hover:text-[#0C59D4] hover:bg-slate-50/80 transition-colors group"
-                    >
-                      <Users className="w-5 h-5 text-slate-700 group-hover:text-[#0C59D4] transition-colors flex-shrink-0" />
-                      <span>Staffing &amp; Placement Agency</span>
-                    </Link>
+                          </div>
+
+                          {/* Right Sub-Column: 1 Tall Vertical Card */}
+                          <div className="col-span-6 h-full">
+                            <Link
+                              href="/business#thekedar-app"
+                              onClick={() => setActiveDropdown(null)}
+                              className="group relative h-full rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block bg-slate-900"
+                            >
+                              <Image
+                                src="/images/dlc-phone-mockup.webp"
+                                alt="Digital Labour Chowk Thekedar App"
+                                fill
+                                className="object-cover object-top group-hover:scale-105 transition-transform duration-500 opacity-85"
+                              />
+                              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent p-3.5 flex flex-col justify-end">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500 text-slate-950 text-[9px] font-black uppercase tracking-wider w-fit mb-1.5 shadow-sm">
+                                  Mobile App
+                                </span>
+                                <h4 className="text-sm font-black text-white leading-tight group-hover:text-amber-300 transition-colors">
+                                  DLC Thekedar App
+                                </h4>
+                                <p className="text-[10px] text-slate-200 mt-1 leading-snug line-clamp-2">
+                                  Biometric attendance, muster rolls &amp; GST invoicing.
+                                </p>
+                                <div className="mt-2 text-[10px] font-bold text-amber-400 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+                                  <span>Download App</span>
+                                  <span>→</span>
+                                </div>
+                              </div>
+                            </Link>
+                          </div>
+
+                        </div>
+
+                      </div>
+
+                      {/* ================================================================= */}
+                      {/* COLUMN 2: FOR PARTNERS (Matching "For Partners" 2x2 grid)         */}
+                      {/* 4 Cards in 2x2 grid                                                */}
+                      {/* ================================================================= */}
+                      <div className="col-span-6 flex flex-col justify-between">
+                        
+                        {/* Column Header */}
+                        <div className="flex items-center justify-between mb-3.5">
+                          <h3 className="text-emerald-600 font-extrabold text-[15px] tracking-tight flex items-center gap-1.5">
+                            <span>For Partners</span>
+                          </h3>
+                          <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+                            Enterprise & EPC
+                          </span>
+                        </div>
+
+                        {/* 2x2 Grid of 4 Visual Cards */}
+                        <div className="grid grid-cols-2 gap-3.5 h-[270px]">
+                          
+                          {/* Card 4: EPC & Heavy Metro Infrastructure */}
+                          <Link
+                            href="/business#epc-infra"
+                            onClick={() => setActiveDropdown(null)}
+                            className="group relative h-[126px] rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block"
+                          >
+                            <Image
+                              src="/images/clients/lnt-metro.jpg"
+                              alt="EPC & Heavy Infrastructure"
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 p-3 flex flex-col justify-end">
+                              <span className="text-[9.5px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                                Heavy Civil & Rail
+                              </span>
+                              <h4 className="text-[12.5px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                                EPC Infrastructure
+                              </h4>
+                              <p className="text-[10px] text-slate-200 mt-0.5 line-clamp-1">
+                                Metro, Bridges & Highways
+                              </p>
+                            </div>
+                          </Link>
+
+                          {/* Card 5: Builders & Developer Townships */}
+                          <Link
+                            href="/business#builder-developer"
+                            onClick={() => setActiveDropdown(null)}
+                            className="group relative h-[126px] rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block"
+                          >
+                            <Image
+                              src="/images/clients/godrej-residential.jpg"
+                              alt="Builders & Developer Townships"
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 p-3 flex flex-col justify-end">
+                              <span className="text-[9.5px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                                Real Estate
+                              </span>
+                              <h4 className="text-[12.5px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                                Builders & High-Rises
+                              </h4>
+                              <p className="text-[10px] text-slate-200 mt-0.5 line-clamp-1">
+                                Compliant Deployments
+                              </p>
+                            </div>
+                          </Link>
+
+                          {/* Card 6: Staffing & Placement Agencies */}
+                          <Link
+                            href="/business#staffing-agency"
+                            onClick={() => setActiveDropdown(null)}
+                            className="group relative h-[126px] rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block"
+                          >
+                            <Image
+                              src="/images/clients/tata-projects.jpg"
+                              alt="Staffing & Placement Agencies"
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 p-3 flex flex-col justify-end">
+                              <span className="text-[9.5px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                                Institutional
+                              </span>
+                              <h4 className="text-[12.5px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                                Staffing Agencies
+                              </h4>
+                              <p className="text-[10px] text-slate-200 mt-0.5 line-clamp-1">
+                                Partner Network
+                              </p>
+                            </div>
+                          </Link>
+
+                          {/* Card 7: Workforce AI & Smart Biometrics */}
+                          <Link
+                            href="/business#workforce-ai"
+                            onClick={() => setActiveDropdown(null)}
+                            className="group relative h-[126px] rounded-2xl overflow-hidden border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-300 block"
+                          >
+                            <Image
+                              src="/images/ecosystem/enterprise-epc.webp"
+                              alt="Workforce AI & Smart Biometrics"
+                              fill
+                              className="object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/10 p-3 flex flex-col justify-end">
+                              <span className="text-[9.5px] font-extrabold text-emerald-400 uppercase tracking-wider mb-0.5">
+                                Workforce AI
+                              </span>
+                              <h4 className="text-[12.5px] font-black text-white leading-tight group-hover:text-emerald-300 transition-colors">
+                                Smart Compliance
+                              </h4>
+                              <p className="text-[10px] text-slate-200 mt-0.5 line-clamp-1">
+                                Biometrics & PF Billing
+                              </p>
+                            </div>
+                          </Link>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
                   </div>
                 </div>
               )}
@@ -585,38 +784,96 @@ export default function Header() {
                   />
                 </button>
                 {mobileExpandedSection === "business" && (
-                  <div className="p-2 bg-white border-t border-slate-100 flex flex-col">
+                  <div className="p-2.5 bg-white border-t border-slate-100 flex flex-col gap-2">
+                    <span className="text-[11px] font-black text-emerald-600 uppercase px-2 pt-1 tracking-wider">
+                      For Contractors
+                    </span>
                     <Link
                       href="/business#contractor"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors border border-slate-100"
                     >
-                      <HardHat className="w-4 h-4 text-slate-600 flex-shrink-0" />
-                      <span>Contractor</span>
+                      <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0">
+                        <Image src="/images/curtain-reveal/FIND-WORKER.webp" alt="Bulk Tradesmen" fill className="object-cover" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-slate-900 font-extrabold truncate">Deploy 50+ Workers in 2 Hrs</div>
+                        <div className="text-[10px] text-slate-500">Verified Tradesmen on Demand</div>
+                      </div>
                     </Link>
+
                     <Link
                       href="/business#general-contractor"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors border border-slate-100"
                     >
-                      <CrossedToolsIcon className="w-4 h-4 text-slate-600 flex-shrink-0" />
-                      <span>General Contractor</span>
+                      <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0">
+                        <Image src="/images/ecosystem/contractor-builder.webp" alt="General Contractors" fill className="object-cover" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-slate-900 font-extrabold truncate">General Contractors</div>
+                        <div className="text-[10px] text-slate-500">Civil & Structural Workforce</div>
+                      </div>
                     </Link>
+
+                    <Link
+                      href="/business#thekedar-app"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 p-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors border border-slate-100 bg-amber-50/40"
+                    >
+                      <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0">
+                        <Image src="/images/dlc-phone-mockup.webp" alt="DLC Thekedar App" fill className="object-cover" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-slate-900 font-extrabold truncate">DLC Thekedar App</div>
+                        <div className="text-[10px] text-amber-700 font-semibold">Biometric Attendance & Muster Roll</div>
+                      </div>
+                    </Link>
+
+                    <span className="text-[11px] font-black text-emerald-600 uppercase px-2 pt-2 border-t border-slate-100 tracking-wider">
+                      For Partners &amp; EPC
+                    </span>
+
+                    <Link
+                      href="/business#epc-infra"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="flex items-center gap-3 p-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors border border-slate-100"
+                    >
+                      <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0">
+                        <Image src="/images/clients/lnt-metro.jpg" alt="EPC Infrastructure" fill className="object-cover" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-slate-900 font-extrabold truncate">EPC Infrastructure</div>
+                        <div className="text-[10px] text-slate-500">Metro, Bridges &amp; Highways</div>
+                      </div>
+                    </Link>
+
                     <Link
                       href="/business#builder-developer"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 border-b border-slate-100 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors border border-slate-100"
                     >
-                      <Building2 className="w-4 h-4 text-slate-600 flex-shrink-0" />
-                      <span>Builder &amp; Developer</span>
+                      <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0">
+                        <Image src="/images/clients/godrej-residential.jpg" alt="Builders" fill className="object-cover" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-slate-900 font-extrabold truncate">Builders &amp; High-Rises</div>
+                        <div className="text-[10px] text-slate-500">Compliant Deployments</div>
+                      </div>
                     </Link>
+
                     <Link
                       href="/business#staffing-agency"
                       onClick={() => setIsMobileMenuOpen(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm text-slate-700 hover:text-[#0C59D4] hover:bg-slate-50 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-xl text-xs font-bold text-slate-800 hover:bg-slate-50 transition-colors border border-slate-100"
                     >
-                      <Users className="w-4 h-4 text-slate-600 flex-shrink-0" />
-                      <span>Staffing &amp; Placement Agency</span>
+                      <div className="w-10 h-10 rounded-lg overflow-hidden relative shrink-0">
+                        <Image src="/images/clients/tata-projects.jpg" alt="Staffing Agencies" fill className="object-cover" />
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-slate-900 font-extrabold truncate">Staffing Agencies</div>
+                        <div className="text-[10px] text-slate-500">Institutional Partner Network</div>
+                      </div>
                     </Link>
                   </div>
                 )}
