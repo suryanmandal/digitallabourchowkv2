@@ -109,7 +109,7 @@ export function Hero() {
       {/* Current values: min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[500px] */}
       {/* ========================================================================= */}
       <div
-        className="relative w-full min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[500px] overflow-hidden bg-slate-950 flex items-center justify-center m-0 p-0 select-none"
+        className="relative w-full min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[750px] overflow-hidden bg-slate-950 flex items-center justify-center m-0 p-0 select-none"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -463,246 +463,124 @@ export function SuperFounderBanner() {
 }
 
 // =============================================================================
-// SECTION 3: 3-PILLAR 3D BENTO GRID (Stakeholder Ecosystem Showcase)
+// SECTION 3: CURTAIN REVEAL SCROLL ANIMATION (3 Sticky Stacking Stakeholder Cards)
 // =============================================================================
-interface BentoCardProps {
+interface CurtainCard {
   id: string;
-  badge: string;
-  badgeHindi: string;
-  badgeBg: string;
-  badgeText: string;
-  badgeBorder: string;
-  icon: React.ReactNode;
-  title: string;
-  subtitle: string;
-  accentColor: string;
-  accentGradient: string;
-  borderHover: string;
+  buttonText: string;
+  buttonHref: string;
+  buttonColor: string;
+  buttonHoverColor: string;
+  buttonShadow: string;
   imageSrc: string;
   imageAlt: string;
-  chips: string[];
-  features: string[];
-  ctaText: string;
-  ctaHindi: string;
-  ctaHref: string;
-  ctaBg: string;
-  ctaHoverBg: string;
-  ctaShadow: string;
-  statNumber: string;
-  statLabel: string;
+  zIndex: number;
 }
 
-const BENTO_CARDS: BentoCardProps[] = [
+const CURTAIN_CARDS: CurtainCard[] = [
   {
     id: "find-job",
-    badge: "FOR WORKERS",
-    badgeHindi: "काम ढूंढें",
-    badgeBg: "bg-blue-50",
-    badgeText: "text-[#0C59D4]",
-    badgeBorder: "border-blue-200",
-    icon: <Users className="w-3.5 h-3.5 text-[#0C59D4]" />,
-    title: "Daily Work & Direct Wages",
-    subtitle: "0% commission, direct bank transfers, and free accident insurance for every craftsman.",
-    accentColor: "#0C59D4",
-    accentGradient: "from-blue-600 via-blue-500 to-indigo-500",
-    borderHover: "hover:border-[#0C59D4]/60 hover:shadow-[0_20px_45px_rgba(12,89,212,0.14)]",
+    buttonText: "FIND JOB",
+    buttonHref: "/worker",
+    buttonColor: "bg-[#0C59D4]",
+    buttonHoverColor: "hover:bg-[#0947A8]",
+    buttonShadow: "shadow-blue-600/35",
     imageSrc: "/images/curtain-reveal/find-job.webp",
     imageAlt: "Digital Labour Chowk - Find Job for skilled construction craftsmen",
-    chips: ["🛡️ ₹5L Bima Cover", "💸 0% Commission", "⚡ Direct Bank Pay"],
-    features: [
-      "Instant job alerts directly on your mobile — no physical chowk wait",
-      "Direct bank transfer (DBT) with zero middleman deductions",
-      "₹5,00,000 Suraksha insurance coverage on active project sites",
-    ],
-    ctaText: "FIND WORK NOW",
-    ctaHindi: "काम ढूंढें",
-    ctaHref: "https://onboarding.digitallabourchowk.com/login",
-    ctaBg: "bg-[#0C59D4]",
-    ctaHoverBg: "hover:bg-[#0947A8]",
-    ctaShadow: "shadow-blue-600/30 hover:shadow-blue-600/40",
-    statNumber: "350,000+",
-    statLabel: "Active Craftsmen",
+    zIndex: 10,
   },
   {
     id: "find-workers",
-    badge: "FOR CONTRACTORS",
-    badgeHindi: "मजदूर पाएं",
-    badgeBg: "bg-amber-50",
-    badgeText: "text-[#B45309]",
-    badgeBorder: "border-amber-200",
-    icon: <HardHat className="w-3.5 h-3.5 text-[#B45309]" />,
-    title: "Hire Verified Labour in 2 Hours",
-    subtitle: "Aadhaar KYC verified masons, carpenters, rebar fitters, plumbers and helpers on-demand.",
-    accentColor: "#D4A017",
-    accentGradient: "from-amber-500 via-amber-400 to-yellow-500",
-    borderHover: "hover:border-[#D4A017]/70 hover:shadow-[0_20px_45px_rgba(212,160,23,0.18)]",
-    imageSrc: "/images/curtain-reveal/find-worker.webp",
+    buttonText: "FIND WORKERS",
+    buttonHref: "https://onboarding.digitallabourchowk.com/login",
+    buttonColor: "bg-[#D4A017]",
+    buttonHoverColor: "hover:bg-[#B8860B]",
+    buttonShadow: "shadow-amber-600/35",
+    imageSrc: "/images/curtain-reveal/FIND-WORKER.webp",
     imageAlt: "Digital Labour Chowk - Find Workers for contractors and builders",
-    chips: ["⚡ 2-Hour SLA Match", "🆔 100% Aadhaar KYC", "⭐ Skill-Graded"],
-    features: [
-      "100% Aadhaar KYC & police-verified skilled workforce",
-      "Urgent site matching within 2 hours across India",
-      "Digital attendance & hassle-free daily wage ledger",
-    ],
-    ctaText: "FIND WORKERS NOW",
-    ctaHindi: "मजदूर पाएं",
-    ctaHref: "https://onboarding.digitallabourchowk.com/login",
-    ctaBg: "bg-[#D4A017]",
-    ctaHoverBg: "hover:bg-[#B8860B]",
-    ctaShadow: "shadow-amber-600/30 hover:shadow-amber-600/40",
-    statNumber: "20,000+",
-    statLabel: "Site Contractors",
+    zIndex: 20,
   },
   {
     id: "find-business",
-    badge: "FOR ENTERPRISES",
-    badgeHindi: "बिजनेस / EPC",
-    badgeBg: "bg-emerald-50",
-    badgeText: "text-[#16A34A]",
-    badgeBorder: "border-emerald-200",
-    icon: <Building2 className="w-3.5 h-3.5 text-[#16A34A]" />,
-    title: "Bulk Workforce & Compliance",
-    subtitle: "Pan-India deployment of 50 to 500+ workers with full GST, PF & ESIC compliance.",
-    accentColor: "#16A34A",
-    accentGradient: "from-emerald-600 via-emerald-500 to-teal-500",
-    borderHover: "hover:border-[#16A34A]/60 hover:shadow-[0_20px_45px_rgba(22,163,74,0.14)]",
+    buttonText: "FIND BUSINESS",
+    buttonHref: "/business",
+    buttonColor: "bg-[#16A34A]",
+    buttonHoverColor: "hover:bg-[#15803D]",
+    buttonShadow: "shadow-green-600/35",
     imageSrc: "/images/curtain-reveal/for-business.webp",
     imageAlt: "Digital Labour Chowk - Find Business for enterprise partners and developers",
-    chips: ["📑 100% GST & PF/ESIC", "👥 50-500+ Manpower", "🎯 Dedicated RM"],
-    features: [
-      "Bulk manpower mobilization across multiple project sites",
-      "Full statutory compliance: PF, ESIC, BOCW & GST bills",
-      "Dedicated Enterprise Account Manager & strict SLAs",
-    ],
-    ctaText: "PARTNER WITH US",
-    ctaHindi: "बिजनेस पार्टनर",
-    ctaHref: "https://onboarding.digitallabourchowk.com/login",
-    ctaBg: "bg-[#16A34A]",
-    ctaHoverBg: "hover:bg-[#15803D]",
-    ctaShadow: "shadow-green-600/30 hover:shadow-green-600/40",
-    statNumber: "50+",
-    statLabel: "Top Infra Giants",
+    zIndex: 30,
   },
 ];
 
 export function CurtainRevealSection() {
   return (
     <section className="w-full bg-white pt-16 sm:pt-20 pb-20 sm:pb-28 relative">
+      {/* SECTION HEADER */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
+        {/* Top Unified Platform Pill Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFF5EE] border border-[#FFD8BE] text-[#E65100] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3">
           <Sparkles className="w-3.5 h-3.5 text-[#E65100] fill-[#E65100]" />
-          <span>ONE UNIFIED PLATFORM • एक मंच, हर समाधान</span>
+          <span>ONE UNIFIED PLATFORM</span>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight break-normal px-2">
-          Connecting Every Construction Stakeholder
+        {/* Main Title */}
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
+          Connecting the Construction Workforce
         </h2>
         <p className="mt-3 sm:mt-4 text-sm sm:text-base md:text-lg text-slate-600 max-w-3xl mx-auto font-normal leading-relaxed">
-          Whether you are seeking daily wage work, hiring verified craftsmen for your job site, or deploying 100+ manpower for large EPC projects — Digital Labour Chowk powers India’s construction industry.
+          Empowering workers, contractors, and businesses with a transparent, direct hiring ecosystem.
         </p>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
-          {BENTO_CARDS.map((card) => (
+      {/* CURTAIN REVEAL CARDS STACKING TRACK */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 relative">
+        {CURTAIN_CARDS.map((card, index) => {
+          const isFirst = index === 0;
+          const isLast = index === CURTAIN_CARDS.length - 1;
+
+          return (
             <div
               key={card.id}
-              className={`group relative bg-white rounded-3xl border border-slate-200/90 ${card.borderHover} transition-all duration-300 hover:-translate-y-2 flex flex-col justify-between overflow-hidden shadow-[0_4px_20px_rgba(0,0,0,0.03)]`}
+              className={`sticky top-24 sm:top-28 md:top-32 ${
+                isLast ? "mb-6" : "mb-16 sm:mb-24"
+              }`}
+              style={{ zIndex: card.zIndex }}
             >
-              {/* Top Accent Color Line */}
-              <div className={`h-1.5 w-full bg-gradient-to-r ${card.accentGradient}`} />
-
-              {/* Card Header Content */}
-              <div className="p-6 sm:p-7 pb-4">
-                {/* Persona Tag + Stat Chip */}
-                <div className="flex items-center justify-between gap-2 mb-3.5">
-                  <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${card.badgeBg} border ${card.badgeBorder} ${card.badgeText} text-[11px] sm:text-xs font-bold uppercase tracking-wider`}>
-                    {card.icon}
-                    <span>{card.badge}</span>
-                    <span className="text-slate-300">•</span>
-                    <span className="font-semibold">{card.badgeHindi}</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-500">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span>{card.statNumber}</span>
-                  </div>
-                </div>
-
-                {/* Title & Subtitle */}
-                <h3 className="text-xl sm:text-[22px] font-black text-slate-900 tracking-tight leading-snug group-hover:text-slate-950 transition-colors h-[54px] flex items-center">
-                  {card.title}
-                </h3>
-                <p className="text-xs sm:text-[13px] text-slate-600 mt-2 leading-relaxed h-[42px] flex items-start">
-                  {card.subtitle}
-                </p>
-              </div>
-
-              {/* Visual Preview Frame with Ambient Chips */}
-              <div className="px-6 sm:px-7">
-                <div className="relative w-full h-[180px] sm:h-[200px] rounded-2xl bg-gradient-to-b from-slate-50 via-slate-100/40 to-slate-50 border border-slate-100 overflow-hidden flex items-end justify-center p-2">
+              {/* The Card Box with Curtain Cover Effect */}
+              <div
+                className={`relative w-full rounded-2xl sm:rounded-3xl border border-slate-200 bg-white overflow-hidden ${
+                  !isFirst
+                    ? "shadow-[0_-16px_36px_rgba(0,0,0,0.14),0_24px_48px_rgba(0,0,0,0.08)]"
+                    : "shadow-[0_16px_40px_rgba(0,0,0,0.08)]"
+                }`}
+              >
+                {/* Worker Image Cutout Container */}
+                <div className="relative w-full h-[220px] sm:h-[300px] md:h-[370px] lg:h-[410px] flex items-end justify-center bg-white">
                   <Image
                     src={card.imageSrc}
                     alt={card.imageAlt}
                     fill
-                    className="object-contain object-bottom select-none pointer-events-none group-hover:scale-105 transition-transform duration-500"
-                    sizes="(max-width: 1024px) 100vw, 400px"
+                    priority={index === 0}
+                    className="object-contain object-bottom select-none pointer-events-none"
+                    sizes="(max-width: 1024px) 100vw, 1024px"
                   />
 
-                  {/* Floating Micro Chips overlay */}
-                  <div className="absolute top-2.5 left-2.5 right-2.5 flex flex-wrap gap-1.5 z-10 pointer-events-none">
-                    {card.chips.map((chip, i) => (
-                      <span
-                        key={i}
-                        className="inline-flex items-center text-[10.5px] font-bold text-slate-800 bg-white/95 backdrop-blur-md border border-slate-200/80 px-2 py-0.5 rounded-md shadow-xs"
-                      >
-                        {chip}
-                      </span>
-                    ))}
+                  {/* FLOATING CTA BUTTON (Horizontally Centered at Bottom Edge) */}
+                  <div className="absolute bottom-3 sm:bottom-6 left-1/2 -translate-x-1/2 z-20">
+                    <Link
+                      href={card.buttonHref}
+                      className={`inline-flex items-center gap-2 px-8 sm:px-11 py-3 sm:py-3.5 rounded-full ${card.buttonColor} ${card.buttonHoverColor} text-white font-extrabold text-xs sm:text-sm md:text-base tracking-wider uppercase shadow-xl ${card.buttonShadow} transform hover:scale-105 active:scale-95 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-300`}
+                    >
+                      <span>{card.buttonText}</span>
+                      <ArrowRight className="w-4 h-4 ml-0.5" />
+                    </Link>
                   </div>
                 </div>
               </div>
-
-              {/* Features Bullet List */}
-              <div className="p-6 sm:p-7 pt-4 pb-2 flex-1 flex flex-col justify-center">
-                <ul className="space-y-3">
-                  {card.features.map((feat, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-[13px] text-slate-700 leading-normal min-h-[38px]">
-                      <CheckCircle2
-                        className={`w-4 h-4 shrink-0 mt-0.5 ${
-                          card.id === "find-job"
-                            ? "text-[#0C59D4]"
-                            : card.id === "find-workers"
-                            ? "text-[#D4A017]"
-                            : "text-[#16A34A]"
-                        }`}
-                      />
-                      <span>{feat}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* Action CTA & Trust footer */}
-              <div className="p-6 sm:p-7 pt-4 border-t border-slate-100 bg-slate-50/50">
-                <Link
-                  href={card.ctaHref}
-                  className={`group/btn w-full flex items-center justify-center gap-2 py-3 sm:py-3.5 px-6 rounded-xl ${card.ctaBg} ${card.ctaHoverBg} text-white font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-lg ${card.ctaShadow} transform active:scale-98 transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-slate-300`}
-                >
-                  <span>{card.ctaText}</span>
-                  <span className="text-white/80 font-normal">({card.ctaHindi})</span>
-                  <ArrowRight className="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
-                <div className="flex items-center justify-between text-[11px] text-slate-500 mt-2.5 px-1 font-medium">
-                  <span>{card.statLabel}</span>
-                  <span className="text-emerald-600 font-semibold flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-500" />
-                    Verified Platform
-                  </span>
-                </div>
-              </div>
             </div>
-          ))}
-        </div>
+          );
+        })}
       </div>
     </section>
   );
