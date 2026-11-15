@@ -967,217 +967,436 @@ export function StatsAndTestimonials() {
 }
 
 // =============================================================================
-// SECTION 5: APP DOWNLOAD CTA (3D Phone Mockup, QR Box & Floating Stat Badges)
+// PRESERVED: ORIGINAL 3D PHONE MODEL (Kept for future reuse or alternate views)
+// =============================================================================
+export function PreservedSingle3DPhoneMockup() {
+  return (
+    <div className="relative w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[490px] my-6 lg:-my-20 lg:scale-145 xl:scale-155 lg:translate-y-4 transform hover:scale-[1.58] transition-transform duration-500 z-30 overflow-visible">
+      <div className="relative w-full aspect-[896/1200] drop-shadow-[0_30px_60px_rgba(12,89,212,0.30)]">
+        <Image
+          src="/images/dlc-phone-mockup.webp"
+          alt="Digital Labour Chowk Smartphone App Mockup - Worker Profiles & Job Matching"
+          fill
+          priority
+          className="object-contain select-none pointer-events-none"
+          sizes="(max-width: 768px) 340px, (max-width: 1024px) 400px, 490px"
+        />
+      </div>
+    </div>
+  );
+}
+
+// =============================================================================
+// SECTION 5: APP DOWNLOAD CTA (Dual Apps: Rojgar & Thekedar with Flanked Phones)
 // =============================================================================
 export function AppDownloadSection() {
+  const [activeApp, setActiveApp] = useState<"rojgar" | "thekedar">("rojgar");
+
   return (
-    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 lg:py-36 overflow-visible">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
+    <section className="w-full bg-[#FAFAFC] py-16 sm:py-24 lg:py-28 overflow-hidden relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Wide Rounded Pastel Card with Pop-Out Phone */}
-        <div className="relative w-full rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-[#EEF4FF] via-[#E8F0FE] to-[#F1EDFF] border border-blue-100/90 shadow-xl overflow-visible p-6 sm:p-10 lg:px-14 lg:py-8">
+        {/* Wide Rounded Container with Dual Phone Mockups at Edges */}
+        <div className="relative w-full rounded-3xl sm:rounded-[2.5rem] bg-gradient-to-br from-[#EEF4FF] via-[#E8F0FE] to-[#F3EEFF] border border-blue-100/90 shadow-xl overflow-hidden p-6 sm:p-8 lg:p-10">
+          
           {/* Subtle Ambient Glow Spheres */}
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-10 w-80 h-80 bg-indigo-300/20 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-300/25 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-indigo-300/25 rounded-full blur-3xl pointer-events-none" />
 
-          {/* 3-Column Internal Grid */}
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center overflow-visible">
+          {/* 3-Column Responsive Grid: Left Phone (Rojgar) | Center CTA Hub | Right Phone (Thekedar) */}
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
             
-            {/* Left Column: Heading, Subheading & QR Box */}
-            <div className="lg:col-span-5 flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-blue-200/80 text-[#0C59D4] text-xs font-bold uppercase tracking-wider shadow-sm mb-4 w-fit">
-                <Smartphone className="w-3.5 h-3.5 text-[#0C59D4]" />
-                <span>One-Tap Mobile Hiring</span>
-              </div>
+            {/* ==================== LEFT FLANK PHONE: ROJGAR APP (For Workers) ==================== */}
+            <div className="lg:col-span-3 flex flex-col items-center justify-center order-2 lg:order-1">
+              <div className="w-full max-w-[270px] sm:max-w-[290px] relative transform lg:-rotate-2 hover:rotate-0 transition-all duration-500 group">
+                
+                {/* Floating Top Badge */}
+                <div className="absolute -top-3.5 left-4 z-30 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0C59D4] text-white text-[11px] font-extrabold shadow-lg shadow-blue-600/30">
+                  <Users className="w-3.5 h-3.5 text-white" />
+                  <span>Rojgar App • Workers</span>
+                </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-[42px] font-black text-slate-900 tracking-tight leading-[1.15]">
-                Download <span className="text-[#0C59D4]">Digital Labour Chowk</span> app!
-              </h2>
-
-              <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed max-w-lg">
-                Explore verified daily wage jobs, connect directly with top contractors, and get hired instantly across 6,000+ cities in India.
-              </p>
-
-              {/* QR Code Box */}
-              <div className="mt-8 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-100/90 max-w-md">
-                <p className="text-xs sm:text-sm font-extrabold text-slate-800 mb-4 flex items-center gap-2">
-                  <QrCode className="w-4 h-4 text-[#0C59D4]" />
-                  <span>Scan QR to download Digital Labour Chowk app</span>
-                </p>
-
-                <div className="flex flex-col sm:flex-row items-center gap-5">
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 shadow-inner flex-shrink-0">
-                    <svg
-                      viewBox="0 0 120 120"
-                      className="w-24 h-24 sm:w-28 sm:h-28"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <rect width="120" height="120" fill="white" rx="8" />
-                      <rect x="10" y="10" width="30" height="30" rx="4" fill="#0C59D4" />
-                      <rect x="16" y="16" width="18" height="18" fill="white" rx="2" />
-                      <rect x="21" y="21" width="8" height="8" rx="1" fill="#0C59D4" />
-
-                      <rect x="80" y="10" width="30" height="30" rx="4" fill="#0C59D4" />
-                      <rect x="86" y="16" width="18" height="18" fill="white" rx="2" />
-                      <rect x="91" y="21" width="8" height="8" rx="1" fill="#0C59D4" />
-
-                      <rect x="10" y="80" width="30" height="30" rx="4" fill="#0C59D4" />
-                      <rect x="16" y="86" width="18" height="18" fill="white" rx="2" />
-                      <rect x="21" y="91" width="8" height="8" rx="1" fill="#0C59D4" />
-
-                      <rect x="46" y="14" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="58" y="14" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="68" y="14" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="46" y="24" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="58" y="28" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="68" y="24" width="6" height="6" fill="#1E293B" rx="1" />
-                      
-                      <rect x="14" y="46" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="24" y="46" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="34" y="52" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="14" y="58" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="28" y="66" width="6" height="6" fill="#1E293B" rx="1" />
-
-                      <rect x="46" y="46" width="6" height="6" fill="#0C59D4" rx="1" />
-                      <rect x="56" y="46" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="68" y="50" width="6" height="6" fill="#0C59D4" rx="1" />
-                      <rect x="48" y="58" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="62" y="60" width="6" height="6" fill="#1E293B" rx="1" />
-
-                      <rect x="46" y="76" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="58" y="74" width="6" height="6" fill="#0C59D4" rx="1" />
-                      <rect x="68" y="78" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="46" y="88" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="58" y="90" width="8" height="8" fill="#0C59D4" rx="1" />
-                      <rect x="70" y="92" width="6" height="6" fill="#1E293B" rx="1" />
-
-                      <rect x="80" y="46" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="94" y="46" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="84" y="58" width="6" height="6" fill="#0C59D4" rx="1" />
-                      <rect x="96" y="60" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="82" y="74" width="8" height="8" fill="#1E293B" rx="1" />
-                      <rect x="94" y="76" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="84" y="88" width="6" height="6" fill="#1E293B" rx="1" />
-                      <rect x="94" y="90" width="8" height="8" fill="#0C59D4" rx="1" />
-
-                      {/* Small Center DLC Logo Icon */}
-                      <rect x="52" y="52" width="16" height="16" rx="4" fill="#0C59D4" />
-                      <circle cx="60" cy="58" r="2.5" fill="white" />
-                      <path d="M56 65C56 62.5 58 62 60 62C62 62 64 62.5 64 65" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
-                    </svg>
+                {/* iPhone Chassis */}
+                <div className="relative bg-slate-950 rounded-[2.2rem] p-2.5 border-2 border-blue-400/40 shadow-2xl flex flex-col justify-between overflow-hidden min-h-[440px]">
+                  {/* Dynamic Island Notch */}
+                  <div className="w-16 h-3 bg-black rounded-full mx-auto mb-2 flex items-center justify-end px-1.5">
+                    <div className="w-1 h-1 rounded-full bg-slate-700" />
                   </div>
 
-                  {/* App Store & Google Play Badges */}
-                  <div className="flex flex-col gap-3 w-full sm:w-auto">
+                  {/* Inner Screen */}
+                  <div className="bg-gradient-to-b from-[#FFFDF9] to-[#F5F8FF] rounded-[1.6rem] p-3.5 flex flex-col justify-between h-full text-slate-900 border border-slate-100 shadow-inner">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                      <div className="w-7 h-7 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-[#0C59D4] text-xs font-bold shrink-0">
+                        DLC
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-[10px] font-black text-slate-900 truncate">DIGITAL LABOUR CHOWK</div>
+                        <span className="text-[8.5px] font-extrabold px-1.5 py-0.2 rounded bg-blue-100 text-[#0C59D4]">
+                          ROJGAR APP
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Active Worker Profile Badge */}
+                    <div className="my-2 p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-slate-100 relative overflow-hidden shrink-0">
+                          <Image src="/images/popular-searches/mason-rajmistri.webp" alt="Worker profile" fill unoptimized className="object-cover" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[10.5px] font-black text-slate-900 truncate">Ramesh Sharma</div>
+                          <div className="text-[8.5px] font-bold text-emerald-600 flex items-center gap-0.5">
+                            <CheckCircle2 className="w-2.5 h-2.5" />
+                            Aadhaar KYC Verified
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Live Daily Job Feed */}
+                    <div className="space-y-1.5 flex-1">
+                      <div className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-900">Mason / Rajmistri</span>
+                          <span className="text-[10.5px] font-black text-emerald-600">₹850/Day</span>
+                        </div>
+                        <div className="text-[8.5px] text-slate-500 mt-0.5">Sector 62, Noida Project</div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-900">Shuttering Carpenter</span>
+                          <span className="text-[10.5px] font-black text-emerald-600">₹900/Day</span>
+                        </div>
+                        <div className="text-[8.5px] text-slate-500 mt-0.5">Gurgaon Cyber City</div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-900">Direct Bank Pay</span>
+                          <span className="text-[9px] font-extrabold text-[#0C59D4]">Active DBT</span>
+                        </div>
+                        <div className="text-[8.5px] text-slate-500 mt-0.5">0% Commission Deducted</div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Action */}
+                    <div className="pt-2">
+                      <div className="w-full py-2 rounded-xl bg-gradient-to-r from-[#0C59D4] to-[#0A47AA] text-white font-extrabold text-[10px] uppercase tracking-wider text-center shadow-md">
+                        Apply with 1-Tap →
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Floating Bottom Badge */}
+                <div className="absolute -bottom-3 right-4 z-30 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white text-slate-800 border border-slate-200 text-[10px] font-extrabold shadow-md">
+                  <span>💸 0% Commission Cut</span>
+                </div>
+              </div>
+            </div>
+
+            {/* ==================== CENTER COLUMN: HIGH-CONVERTING INTERACTIVE CTA HUB ==================== */}
+            <div className="lg:col-span-6 flex flex-col justify-center text-center items-center order-1 lg:order-2 px-2 sm:px-4">
+              
+              {/* Top Persona Switcher Tabs */}
+              <div className="inline-flex items-center bg-white p-1 rounded-2xl border border-slate-200 shadow-sm mb-4">
+                <button
+                  onClick={() => setActiveApp("rojgar")}
+                  className={`flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-[13px] font-extrabold tracking-wide transition-all ${
+                    activeApp === "rojgar"
+                      ? "bg-[#0C59D4] text-white shadow-md shadow-blue-600/25"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <Users className="w-3.5 h-3.5" />
+                  <span>Rojgar App (Workers)</span>
+                </button>
+
+                <button
+                  onClick={() => setActiveApp("thekedar")}
+                  className={`flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-[13px] font-extrabold tracking-wide transition-all ${
+                    activeApp === "thekedar"
+                      ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
+                      : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  <HardHat className="w-3.5 h-3.5" />
+                  <span>Thekedar App (Contractors)</span>
+                </button>
+              </div>
+
+              {/* Catchy Main Headline */}
+              <h2 className="text-3xl sm:text-4xl lg:text-[44px] font-black text-slate-900 tracking-tight leading-[1.12]">
+                Download the app now!
+              </h2>
+
+              <p className="mt-3 text-sm sm:text-base text-slate-600 max-w-lg leading-relaxed">
+                {activeApp === "rojgar"
+                  ? "Digital Labour Chowk Rojgar connects skilled craftsmen directly with contractors. Find verified daily wage work with 0% commission and same-day direct bank transfers."
+                  : "Digital Labour Chowk Thekedar empowers builders and contractors to deploy 50+ pre-screened tradesmen in 2 hours with biometric muster rolls and 100% GST/PF compliance."}
+              </p>
+
+              {/* Feature Highlights Checklist */}
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mt-4">
+                {activeApp === "rojgar" ? (
+                  <>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white/80 border border-slate-200 px-3 py-1 rounded-full">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                      Zero Middlemen Fee
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white/80 border border-slate-200 px-3 py-1 rounded-full">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                      Instant Aadhaar KYC
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white/80 border border-slate-200 px-3 py-1 rounded-full">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                      Same-Day Bank Pay
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white/80 border border-slate-200 px-3 py-1 rounded-full">
+                      <CheckCircle2 className="w-3 h-3 text-amber-500" />
+                      2-Hour Dispatch SLA
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white/80 border border-slate-200 px-3 py-1 rounded-full">
+                      <CheckCircle2 className="w-3 h-3 text-amber-500" />
+                      Biometric Attendance
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-700 bg-white/80 border border-slate-200 px-3 py-1 rounded-full">
+                      <CheckCircle2 className="w-3 h-3 text-amber-500" />
+                      100% GST & PF Invoicing
+                    </span>
+                  </>
+                )}
+              </div>
+
+              {/* Dual Action Download Area (QR Code + Store Badges) */}
+              <div className="mt-6 bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-xl border border-slate-200/80 w-full max-w-lg">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
+                  
+                  {/* Dynamic QR Code Module */}
+                  <div className="flex items-center gap-3.5">
+                    <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-200 shadow-inner flex-shrink-0">
+                      <svg
+                        viewBox="0 0 120 120"
+                        className="w-20 h-20 sm:w-24 sm:h-24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect width="120" height="120" fill="white" rx="8" />
+                        <rect x="10" y="10" width="30" height="30" rx="4" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+                        <rect x="16" y="16" width="18" height="18" fill="white" rx="2" />
+                        <rect x="21" y="21" width="8" height="8" rx="1" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+
+                        <rect x="80" y="10" width="30" height="30" rx="4" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+                        <rect x="86" y="16" width="18" height="18" fill="white" rx="2" />
+                        <rect x="91" y="21" width="8" height="8" rx="1" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+
+                        <rect x="10" y="80" width="30" height="30" rx="4" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+                        <rect x="16" y="86" width="18" height="18" fill="white" rx="2" />
+                        <rect x="21" y="91" width="8" height="8" rx="1" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+
+                        <rect x="46" y="14" width="6" height="6" fill="#1E293B" rx="1" />
+                        <rect x="58" y="14" width="6" height="6" fill="#1E293B" rx="1" />
+                        <rect x="68" y="14" width="6" height="6" fill="#1E293B" rx="1" />
+                        <rect x="46" y="24" width="6" height="6" fill="#1E293B" rx="1" />
+                        <rect x="58" y="28" width="6" height="6" fill="#1E293B" rx="1" />
+                        <rect x="68" y="24" width="6" height="6" fill="#1E293B" rx="1" />
+
+                        <rect x="46" y="46" width="6" height="6" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} rx="1" />
+                        <rect x="56" y="46" width="8" height="8" fill="#1E293B" rx="1" />
+                        <rect x="68" y="50" width="6" height="6" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} rx="1" />
+                        <rect x="48" y="58" width="8" height="8" fill="#1E293B" rx="1" />
+                        <rect x="62" y="60" width="6" height="6" fill="#1E293B" rx="1" />
+
+                        <rect x="46" y="76" width="8" height="8" fill="#1E293B" rx="1" />
+                        <rect x="58" y="74" width="6" height="6" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} rx="1" />
+                        <rect x="68" y="78" width="8" height="8" fill="#1E293B" rx="1" />
+                        <rect x="46" y="88" width="6" height="6" fill="#1E293B" rx="1" />
+                        <rect x="58" y="90" width="8" height="8" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} rx="1" />
+
+                        {/* Center DLC Logo Badge */}
+                        <rect x="52" y="52" width="16" height="16" rx="4" fill={activeApp === "rojgar" ? "#0C59D4" : "#D4A017"} />
+                        <circle cx="60" cy="58" r="2.5" fill="white" />
+                        <path d="M56 65C56 62.5 58 62 60 62C62 62 64 62.5 64 65" stroke="white" strokeWidth="1.5" strokeLinecap="round" />
+                      </svg>
+                    </div>
+
+                    <div className="text-left">
+                      <div className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+                        <QrCode className="w-3.5 h-3.5 text-[#0C59D4]" />
+                        <span>Instant QR Scan</span>
+                      </div>
+                      <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                        Point camera to install <br />
+                        <strong className="text-slate-800">
+                          {activeApp === "rojgar" ? "DLC Rojgar App" : "DLC Thekedar App"}
+                        </strong>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Direct Store Download Badges */}
+                  <div className="flex flex-col gap-2.5 w-full sm:w-auto">
+                    {/* Google Play Button */}
                     <a
-                      href="https://play.google.com/store/apps/details?id=com.digitallabourchowk.app"
+                      href={
+                        activeApp === "rojgar"
+                          ? "https://play.google.com/store/apps/details?id=com.digitallabourchowk.worker"
+                          : "https://play.google.com/store/apps/details?id=com.digitallabourchowk.app"
+                      }
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-900 active:scale-95 text-white shadow-md transition-all duration-200 group"
                     >
-                      <svg className="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
                         <path fill="#4285F4" d="M3.6 1.8L13.8 12L3.6 22.2C3.2 21.8 3 21.2 3 20.4V3.6C3 2.8 3.2 2.2 3.6 1.8Z" />
                         <path fill="#FBBC04" d="M17.4 8.4L13.8 12L17.4 15.6L20.8 13.7C21.7 13.2 21.7 12.3 20.8 11.8L17.4 8.4Z" />
                         <path fill="#EA4335" d="M13.8 12L3.6 1.8C4.1 1.4 4.8 1.4 5.6 1.8L17.4 8.4L13.8 12Z" />
                         <path fill="#34A853" d="M13.8 12L17.4 15.6L5.6 22.2C4.8 22.6 4.1 22.6 3.6 22.2L13.8 12Z" />
                       </svg>
                       <div className="flex flex-col text-left">
-                        <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold leading-none">
+                        <span className="text-[8.5px] uppercase tracking-wider text-neutral-400 font-semibold leading-none">
                           GET IT ON
                         </span>
-                        <span className="text-xs sm:text-[13px] font-bold text-white tracking-tight leading-tight mt-0.5">
+                        <span className="text-xs font-bold text-white tracking-tight leading-tight mt-0.5">
                           Google Play
                         </span>
                       </div>
                     </a>
 
+                    {/* Apple App Store Button */}
                     <a
                       href="https://apps.apple.com/app/digital-labour-chowk"
                       target="_blank"
                       rel="noreferrer"
                       className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-black hover:bg-neutral-900 active:scale-95 text-white shadow-md transition-all duration-200 group"
                     >
-                      <svg className="w-5 h-5 flex-shrink-0 fill-white" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 flex-shrink-0 fill-white" viewBox="0 0 24 24">
                         <path d="M18.71 19.5C17.88 20.74 17 21.95 15.66 21.97C14.32 22 13.89 21.18 12.37 21.18C10.84 21.18 10.37 21.95 9.09 22C7.79 22.05 6.8 20.68 5.96 19.47C4.25 17 2.94 12.45 4.7 9.39C5.57 7.87 7.13 6.91 8.82 6.88C10.1 6.86 11.32 7.75 12.11 7.75C12.89 7.75 14.37 6.68 15.92 6.84C16.57 6.87 18.39 7.1 19.56 8.82C19.47 8.88 17.39 10.1 17.41 12.63C17.44 15.65 20.06 16.66 20.13 16.69C20.1 16.79 19.7 18.17 18.71 19.5ZM14.88 5.25C15.54 4.45 16 3.32 15.87 2.2C14.9 2.24 13.69 2.85 13 3.65C12.4 4.34 11.88 5.5 12.03 6.6C13.12 6.68 14.23 6.05 14.88 5.25Z" />
                       </svg>
                       <div className="flex flex-col text-left">
-                        <span className="text-[9px] uppercase tracking-wider text-neutral-400 font-semibold leading-none">
+                        <span className="text-[8.5px] uppercase tracking-wider text-neutral-400 font-semibold leading-none">
                           Download on the
                         </span>
-                        <span className="text-xs sm:text-[13px] font-bold text-white tracking-tight leading-tight mt-0.5">
+                        <span className="text-xs font-bold text-white tracking-tight leading-tight mt-0.5">
                           App Store
                         </span>
                       </div>
                     </a>
                   </div>
+
                 </div>
               </div>
+
+              {/* Bottom Trust & Rating Strip */}
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 mt-5 text-xs text-slate-500 font-semibold">
+                <div className="flex items-center gap-1.5">
+                  <div className="flex text-amber-500">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <span className="font-extrabold text-slate-800">4.8 / 5 Rating</span>
+                </div>
+                <div className="w-1 h-1 rounded-full bg-slate-300" />
+                <div className="flex items-center gap-1 text-slate-700">
+                  <Download className="w-3.5 h-3.5 text-[#0C59D4]" />
+                  <span>350,000+ Downloads Across India</span>
+                </div>
+              </div>
+
             </div>
 
-            {/* Center Column: 3D Smartphone Mockup (Pop-Out Effect) */}
-            <div className="lg:col-span-4 flex items-center justify-center relative overflow-visible">
-              <div className="relative w-full max-w-[340px] sm:max-w-[400px] lg:max-w-[490px] my-6 lg:-my-20 lg:scale-145 xl:scale-155 lg:translate-y-4 transform hover:scale-[1.58] transition-transform duration-500 z-30 overflow-visible">
-                <div className="relative w-full aspect-[896/1200] drop-shadow-[0_30px_60px_rgba(12,89,212,0.30)]">
-                  <Image
-                    src="/images/dlc-phone-mockup.webp"
-                    alt="Digital Labour Chowk Smartphone App Mockup - Worker Profiles & Job Matching"
-                    fill
-                    priority
-                    className="object-contain select-none pointer-events-none"
-                    sizes="(max-width: 768px) 340px, (max-width: 1024px) 400px, 490px"
-                  />
+            {/* ==================== RIGHT FLANK PHONE: THEKEDAR APP (For Contractors) ==================== */}
+            <div className="lg:col-span-3 flex flex-col items-center justify-center order-3">
+              <div className="w-full max-w-[270px] sm:max-w-[290px] relative transform lg:rotate-2 hover:rotate-0 transition-all duration-500 group">
+                
+                {/* Floating Top Badge */}
+                <div className="absolute -top-3.5 right-4 z-30 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A017] text-white text-[11px] font-extrabold shadow-lg shadow-amber-600/30">
+                  <HardHat className="w-3.5 h-3.5 text-white" />
+                  <span>Thekedar App • Builders</span>
                 </div>
-              </div>
-            </div>
 
-            {/* Right Column: Floating Stat Badges */}
-            <div className="lg:col-span-3 flex flex-col sm:flex-row lg:flex-col justify-center items-center lg:items-start gap-4 sm:gap-6 z-20">
-              {/* Top Badge: 4.5+ User Ratings */}
-              <div className="w-full sm:w-auto lg:w-full bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-xl border border-white/90 hover:scale-105 transition-all duration-300">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-center shadow-sm flex-shrink-0">
-                    <Star className="w-6 h-6 text-amber-500 fill-amber-500" />
+                {/* iPhone Chassis */}
+                <div className="relative bg-slate-950 rounded-[2.2rem] p-2.5 border-2 border-amber-400/40 shadow-2xl flex flex-col justify-between overflow-hidden min-h-[440px]">
+                  {/* Dynamic Island Notch */}
+                  <div className="w-16 h-3 bg-black rounded-full mx-auto mb-2 flex items-center justify-end px-1.5">
+                    <div className="w-1 h-1 rounded-full bg-slate-700" />
                   </div>
-                  <div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
-                        4.5+
-                      </span>
-                    </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider block mt-1">
-                      User Ratings
-                    </span>
-                  </div>
-                </div>
-                <div className="flex text-amber-400 mt-2.5 pt-2.5 border-t border-slate-100 text-xs gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  ))}
-                  <span className="text-[11px] font-semibold text-slate-500 ml-1.5">Play Store & iOS</span>
-                </div>
-              </div>
 
-              {/* Bottom Badge: 3.5 Lakh+ App Downloads */}
-              <div className="w-full sm:w-auto lg:w-full bg-white/95 backdrop-blur-md rounded-2xl p-4 sm:p-5 shadow-xl border border-white/90 hover:scale-105 transition-all duration-300">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-blue-50 border border-blue-200/80 flex items-center justify-center shadow-sm flex-shrink-0">
-                    <Download className="w-6 h-6 text-[#0C59D4]" />
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-1">
-                      <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
-                        3.5 Lakh+
-                      </span>
+                  {/* Inner Screen */}
+                  <div className="bg-gradient-to-b from-[#FFFDF9] to-[#FDF8EE] rounded-[1.6rem] p-3.5 flex flex-col justify-between h-full text-slate-900 border border-slate-100 shadow-inner">
+                    {/* Header */}
+                    <div className="flex items-center gap-2 pb-2 border-b border-slate-100">
+                      <div className="w-7 h-7 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-[#B45309] text-xs font-bold shrink-0">
+                        DLC
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <div className="text-[10px] font-black text-slate-900 truncate">DIGITAL LABOUR CHOWK</div>
+                        <span className="text-[8.5px] font-extrabold px-1.5 py-0.2 rounded bg-amber-100 text-[#B45309]">
+                          THEKEDAR APP
+                        </span>
+                      </div>
                     </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-slate-500 uppercase tracking-wider block mt-1">
-                      App Downloads
-                    </span>
+
+                    {/* Active Contractor Project Badge */}
+                    <div className="my-2 p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-amber-100 text-[#B45309] flex items-center justify-center text-xs font-black shrink-0">
+                          🏗️
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <div className="text-[10.5px] font-black text-slate-900 truncate">Godrej Site Project</div>
+                          <div className="text-[8.5px] font-bold text-amber-700 flex items-center gap-0.5">
+                            Sector 150 • Active Dispatch
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Contractor Requirement & Attendance Feed */}
+                    <div className="space-y-1.5 flex-1">
+                      <div className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-900">Batch #408 Requirement</span>
+                          <span className="text-[9px] font-extrabold text-emerald-600">Matched</span>
+                        </div>
+                        <div className="text-[8.5px] text-slate-500 mt-0.5">15 Bar Benders & Masons</div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-900">Biometric Muster Roll</span>
+                          <span className="text-[10.5px] font-black text-emerald-600">15 / 15 Present</span>
+                        </div>
+                        <div className="text-[8.5px] text-slate-500 mt-0.5">100% On-Time Check-In</div>
+                      </div>
+
+                      <div className="p-2 rounded-xl bg-white border border-slate-200/90 shadow-2xs">
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-bold text-slate-900">Statutory Billing</span>
+                          <span className="text-[9px] font-extrabold text-[#D4A017]">GST & PF</span>
+                        </div>
+                        <div className="text-[8.5px] text-slate-500 mt-0.5">BOCW Compliant Invoice</div>
+                      </div>
+                    </div>
+
+                    {/* Bottom Action */}
+                    <div className="pt-2">
+                      <div className="w-full py-2 rounded-xl bg-gradient-to-r from-amber-500 to-[#D4A017] text-white font-extrabold text-[10px] uppercase tracking-wider text-center shadow-md">
+                        Post Requirement →
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center gap-1.5 mt-2.5 pt-2.5 border-t border-slate-100 text-xs text-slate-600 font-medium">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
-                  <span className="text-[11px]">350,000+ Registered Workers</span>
+
+                {/* Floating Bottom Badge */}
+                <div className="absolute -bottom-3 left-4 z-30 inline-flex items-center gap-1 px-3 py-1 rounded-full bg-white text-slate-800 border border-slate-200 text-[10px] font-extrabold shadow-md">
+                  <span>⏱️ 2-Hour Matching SLA</span>
                 </div>
               </div>
             </div>
