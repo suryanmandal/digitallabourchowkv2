@@ -36,7 +36,8 @@ yarn-error.log*
 # scratch files & unused raw asset dumps
 /general/
 rought.txt
-public/images/ecosystem/
+public/images/ecosystem/*.png
+public/images/ecosystem/*.jpg
 public/images/super-founder-banner.png
 public/images/dlc-phone-mockup.png
 public/images/for-collaboration/**/*.png
