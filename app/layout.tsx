@@ -17,7 +17,13 @@ export const metadata: Metadata = {
   description:
     "A disruption-driven construction workforce platform connecting contractors, builders, and verified skilled trades across India.",
   icons: {
-    icon: "/images/logo.png",
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
 };
 
