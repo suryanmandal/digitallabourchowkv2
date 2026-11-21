@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import AboutHeroFilmScroll from "@/components/AboutHeroFilmScroll";
+import LeadershipBookCarousel from "@/components/LeadershipBookCarousel";
 import {
   Sparkles,
   ArrowRight,
@@ -331,7 +332,12 @@ export default function AboutUsPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 3. EXPLORE THE 8 SUBPAGES OF ABOUT US                                     */}
+      {/* 3. LEADERSHIP & CORE ARCHITECTS BOOK MONOGRAPH CAROUSEL                   */}
+      {/* ========================================================================= */}
+      <LeadershipBookCarousel />
+
+      {/* ========================================================================= */}
+      {/* 4. EXPLORE THE 8 SUBPAGES OF ABOUT US                                     */}
       {/* ========================================================================= */}
       <section className="w-full py-16 bg-white border-y border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
