@@ -537,9 +537,9 @@ export default function AboutHeroFilmScroll() {
         {/* =================================================================== */}
         {/* MOBILE DOCK: Prominent Platform Statistics Flush Below Film        */}
         {/* =================================================================== */}
-        <div className="sm:hidden flex-1 w-full bg-white border-t border-slate-200/90 flex flex-col justify-between p-3.5 z-30 shadow-md">
+        <div className="sm:hidden flex-1 w-full bg-white border-t border-slate-200/90 flex flex-col justify-between p-3.5 pb-4 z-30 shadow-md">
           {/* Section Trust Header */}
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100 shrink-0">
             <span className="text-[11px] font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               DLC Platform Scale
@@ -549,43 +549,45 @@ export default function AboutHeroFilmScroll() {
             </span>
           </div>
 
-          {/* 4 PROMINENT PLATFORM STATISTICS IN 2x2 GRID */}
-          <div className="grid grid-cols-2 gap-2.5 my-auto">
+          {/* 4 PROMINENT PLATFORM STATISTICS EXPANDED TO FILL SPACE */}
+          <div className="flex-1 grid grid-cols-2 gap-3 py-2.5">
             {STATS.map((s, idx) => {
               const IconComp = s.icon;
               return (
                 <div
                   key={idx}
-                  className="flex flex-col justify-between bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-xl p-3 border border-slate-200/80 shadow-xs"
+                  className="flex flex-col justify-between bg-gradient-to-br from-slate-50 to-blue-50/40 rounded-2xl p-3.5 border border-blue-100/80 shadow-xs h-full"
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-2xl font-black text-[#0C59D4] tracking-tight leading-none">
+                  <div className="flex items-center justify-between">
+                    <span className="text-3xl font-black text-[#0C59D4] tracking-tight leading-none">
                       {s.value}
                     </span>
-                    <div className="w-6 h-6 rounded-lg bg-blue-100/70 flex items-center justify-center text-[#0C59D4]">
-                      <IconComp className="w-3.5 h-3.5" />
+                    <div className="w-7 h-7 rounded-xl bg-blue-100/80 flex items-center justify-center text-[#0C59D4] shrink-0">
+                      <IconComp className="w-4 h-4" />
                     </div>
                   </div>
-                  <span className="text-xs font-bold text-slate-900 leading-tight">
-                    {s.label}
-                  </span>
-                  <span className="text-[10px] text-slate-500 font-normal leading-tight mt-0.5">
-                    {s.sub}
-                  </span>
+                  <div className="mt-2">
+                    <span className="text-xs sm:text-sm font-black text-slate-900 leading-snug block">
+                      {s.label}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] text-slate-500 font-medium leading-tight block mt-0.5">
+                      {s.sub}
+                    </span>
+                  </div>
                 </div>
               );
             })}
           </div>
 
           {/* Trust Highlights & Scroll Prompt */}
-          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500 font-medium">
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-500 font-medium shrink-0">
             <div className="flex items-center gap-1 text-[#0C59D4] font-bold">
-              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
               <span>0% Fee • Aadhaar KYC Verified</span>
             </div>
             <div className="flex items-center gap-1 font-bold text-slate-400">
               <span>Scroll down</span>
-              <ChevronDown className="w-3 h-3 animate-bounce text-[#0C59D4]" />
+              <ChevronDown className="w-3.5 h-3.5 animate-bounce text-[#0C59D4]" />
             </div>
           </div>
         </div>
