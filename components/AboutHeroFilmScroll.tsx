@@ -3,7 +3,19 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Download, Sparkles, CheckCircle2 } from "lucide-react";
+import {
+  ArrowRight,
+  ChevronDown,
+  ChevronLeft,
+  ChevronRight,
+  Download,
+  Sparkles,
+  CheckCircle2,
+  Users,
+  HardHat,
+  Building2,
+  MapPin,
+} from "lucide-react";
 
 interface SceneMeta {
   id: number;
@@ -59,10 +71,30 @@ const SCENES: SceneMeta[] = [
 ];
 
 const STATS = [
-  { value: "3,50,000+", label: "Verified Workers", sub: "Across 6,000+ Indian towns" },
-  { value: "20,000+", label: "Trusted Contractors", sub: "General & sub-contractors" },
-  { value: "850+", label: "Enterprise Builders", sub: "Turnkey EPCs & Developers" },
-  { value: "15+", label: "Industrial Hubs", sub: "From Delhi NCR to Bengaluru" },
+  {
+    value: "3,50,000+",
+    label: "Verified Workers",
+    sub: "Across 6,000+ Indian towns",
+    icon: Users,
+  },
+  {
+    value: "20,000+",
+    label: "Trusted Contractors",
+    sub: "General & sub-contractors",
+    icon: HardHat,
+  },
+  {
+    value: "850+",
+    label: "Enterprise Builders",
+    sub: "Turnkey EPCs & Developers",
+    icon: Building2,
+  },
+  {
+    value: "15+",
+    label: "Industrial Hubs",
+    sub: "From Delhi NCR to Bengaluru",
+    icon: MapPin,
+  },
 ];
 
 interface Leaf {
@@ -426,68 +458,73 @@ export default function AboutHeroFilmScroll() {
             </div>
           )}
 
-          {/* DESKTOP-ONLY APP CTA (Scene 5 & 6) */}
+          {/* =============================================================== */}
+          {/* READY TO DEPLOY: Overlays over main section in the last act/scene */}
+          {/* =============================================================== */}
           {progress >= 0.72 && (
             <div
-              className="hidden sm:flex absolute inset-x-0 bottom-20 z-30 items-center justify-center p-3 pointer-events-auto transition-opacity duration-300"
+              className="absolute inset-x-2 sm:inset-x-0 top-2 sm:top-auto sm:bottom-20 z-35 flex items-center justify-center p-0.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
               style={{
                 opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
               }}
             >
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl p-4 shadow-xl max-w-lg w-full flex items-center justify-between gap-4">
-                <div>
-                  <h4 className="text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-xl max-w-lg w-full flex items-center justify-between gap-2 sm:gap-4">
+                <div className="min-w-0">
+                  <h4 className="text-[10px] sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1 sm:gap-1.5 truncate">
                     <span>Ready to Deploy or Work?</span>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-600 shrink-0" />
                   </h4>
-                  <p className="text-[11px] text-slate-500 font-medium">
+                  <p className="text-[8px] sm:text-[11px] text-slate-500 font-medium truncate">
                     Join 350,000+ verified workers and 20,000+ contractors on DLC.
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <a
                     href="https://play.google.com/store/apps"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[9px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
                   >
-                    <Download className="w-3.5 h-3.5" />
+                    <Download className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
                     <span>Get App</span>
                   </a>
                   <a
                     href="https://onboarding.digitallabourchowk.com/login"
-                    className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] transition-colors"
+                    className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[9px] sm:text-[11px] transition-colors"
                   >
-                    <span>Web Portal</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <span>Portal</span>
+                    <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   </a>
                 </div>
               </div>
             </div>
           )}
 
-          {/* DESKTOP-ONLY FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR */}
-          <div className="hidden sm:flex absolute inset-x-0 bottom-6 z-30 flex-col items-center px-6 pointer-events-none">
-            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-6 py-2.5 shadow-2xl flex items-center gap-4 max-w-2xl w-full justify-between pointer-events-auto">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-2 py-0.5 rounded shrink-0">
+          {/* =============================================================== */}
+          {/* FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR (Act Slider)      */}
+          {/* Overlays at the bottom of the main film section on mobile & desktop */}
+          {/* =============================================================== */}
+          <div className="absolute inset-x-0 bottom-2 sm:bottom-6 z-30 flex flex-col items-center px-2 sm:px-6 pointer-events-none">
+            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/20 text-white rounded-full px-2.5 py-1 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-2 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                <span className="text-[9px] sm:text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-1.5 sm:px-2 py-0.5 rounded shrink-0">
                   0{activeScene + 1}/06
                 </span>
-                <p className="text-xs md:text-sm font-medium text-slate-200 truncate">
+                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-200 truncate">
                   {SCENES[activeScene].storyLine}
                 </p>
               </div>
 
               {/* Scene jump dots */}
-              <div className="flex items-center gap-1.5 shrink-0">
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 {SCENES.map((s, idx) => (
                   <button
                     key={s.id}
                     type="button"
                     onClick={() => scrollToScene(idx)}
                     className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeScene === idx ? "w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
+                      activeScene === idx ? "w-3.5 sm:w-5 bg-blue-400" : "w-1.5 bg-white/35 hover:bg-white/60"
                     }`}
                     aria-label={`Jump to scene ${idx + 1}`}
                   />
@@ -498,89 +535,59 @@ export default function AboutHeroFilmScroll() {
         </div>
 
         {/* =================================================================== */}
-        {/* MOBILE DOCK: Narrative, 4 Statistics & Action Flush Below Film      */}
+        {/* MOBILE DOCK: Prominent Platform Statistics Flush Below Film        */}
         {/* =================================================================== */}
         <div className="sm:hidden flex-1 w-full bg-white border-t border-slate-200/90 flex flex-col justify-between p-3.5 z-30 shadow-md">
-          {/* Active Scene Header & Progress */}
-          <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-2.5 shadow-xs">
-            <div className="flex items-center justify-between gap-2 mb-1">
-              <span className="inline-flex items-center gap-1.5 text-[10px] font-black text-[#0C59D4] uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#0C59D4] animate-pulse" />
-                {SCENES[activeScene].actTitle}
-              </span>
-              <div className="flex items-center gap-1">
-                {SCENES.map((s, idx) => (
-                  <button
-                    key={s.id}
-                    type="button"
-                    onClick={() => scrollToScene(idx)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      activeScene === idx ? "w-4 bg-[#0C59D4]" : "w-1.5 bg-slate-300"
-                    }`}
-                    aria-label={`Go to scene ${idx + 1}`}
-                  />
-                ))}
-              </div>
-            </div>
-            <p className="text-[11px] font-medium text-slate-700 leading-snug line-clamp-2">
-              {SCENES[activeScene].storyLine}
-            </p>
+          {/* Section Trust Header */}
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+            <span className="text-[11px] font-black text-slate-900 uppercase tracking-wider flex items-center gap-1.5">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+              DLC Platform Scale
+            </span>
+            <span className="text-[9px] font-bold text-[#0C59D4] bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100 uppercase tracking-wider">
+              Live Network
+            </span>
           </div>
 
-          {/* 4 PLATFORM STATISTICS IN 2x2 GRID */}
+          {/* 4 PROMINENT PLATFORM STATISTICS IN 2x2 GRID */}
           <div className="grid grid-cols-2 gap-2.5 my-auto">
-            {STATS.map((s, idx) => (
-              <div key={idx} className="flex flex-col border-l-2 border-[#0C59D4] pl-2.5 py-0.5">
-                <span className="text-lg font-black text-[#0C59D4] tracking-tight leading-none">
-                  {s.value}
-                </span>
-                <span className="text-[11px] font-bold text-slate-900 mt-1 leading-tight">
-                  {s.label}
-                </span>
-                <span className="text-[9px] text-slate-500 font-normal leading-tight">
-                  {s.sub}
-                </span>
-              </div>
-            ))}
+            {STATS.map((s, idx) => {
+              const IconComp = s.icon;
+              return (
+                <div
+                  key={idx}
+                  className="flex flex-col justify-between bg-gradient-to-br from-slate-50 to-blue-50/30 rounded-xl p-3 border border-slate-200/80 shadow-xs"
+                >
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-2xl font-black text-[#0C59D4] tracking-tight leading-none">
+                      {s.value}
+                    </span>
+                    <div className="w-6 h-6 rounded-lg bg-blue-100/70 flex items-center justify-center text-[#0C59D4]">
+                      <IconComp className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                  <span className="text-xs font-bold text-slate-900 leading-tight">
+                    {s.label}
+                  </span>
+                  <span className="text-[10px] text-slate-500 font-normal leading-tight mt-0.5">
+                    {s.sub}
+                  </span>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Bottom Contextual Action */}
-          {activeScene >= 4 ? (
-            <div className="bg-blue-50/80 border border-blue-200/80 rounded-xl p-2 flex items-center justify-between gap-2">
-              <div className="min-w-0">
-                <span className="text-[10px] font-black text-slate-900 flex items-center gap-1">
-                  <span>Ready to Deploy?</span>
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                </span>
-                <span className="text-[8px] text-slate-500 block truncate">
-                  Join 350,000+ workers
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5 shrink-0">
-                <a
-                  href="https://play.google.com/store/apps"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#0C59D4] text-white font-bold text-[9px] uppercase tracking-wider shadow-xs active:scale-95"
-                >
-                  <Download className="w-2.5 h-2.5" />
-                  <span>Get App</span>
-                </a>
-                <a
-                  href="https://onboarding.digitallabourchowk.com/login"
-                  className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-white border border-slate-200 text-slate-800 font-bold text-[9px]"
-                >
-                  <span>Portal</span>
-                  <ArrowRight className="w-2.5 h-2.5" />
-                </a>
-              </div>
+          {/* Trust Highlights & Scroll Prompt */}
+          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500 font-medium">
+            <div className="flex items-center gap-1 text-[#0C59D4] font-bold">
+              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+              <span>0% Fee • Aadhaar KYC Verified</span>
             </div>
-          ) : (
-            <div className="flex items-center justify-center gap-1.5 text-[10px] font-bold text-slate-400 py-0.5">
-              <span>Scroll down to continue journey</span>
+            <div className="flex items-center gap-1 font-bold text-slate-400">
+              <span>Scroll down</span>
               <ChevronDown className="w-3 h-3 animate-bounce text-[#0C59D4]" />
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
