@@ -421,39 +421,39 @@ export default function AboutUsPage() {
       {/* ========================================================================= */}
       {/* 4. FREQUENTLY ASKED QUESTIONS (Home-Styled Luxury Accordion & Assistant)  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-[#08090C] py-20 sm:py-28 border-t border-white/[0.08] relative overflow-hidden font-sans">
+      <section className="w-full bg-[#08090C] py-12 sm:py-16 border-t border-white/[0.08] relative overflow-hidden font-sans">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Top Header: Badge + Split Title & Subtitle */}
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 sm:mb-16">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-8 sm:mb-10">
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-semibold uppercase tracking-wider mb-4">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-semibold uppercase tracking-wider mb-3">
                 <span className="text-blue-400">✦</span>
                 <span>FAQ</span>
               </div>
-              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.05]">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-[1.1]">
                 Questions,<br />
                 <span className="text-white/40">answered.</span>
               </h2>
             </div>
 
-            <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-md lg:pb-1 font-normal">
+            <p className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-md lg:pb-1 font-normal">
               Everything you need to know about our mission, hiring verified tradesmen, KYC verification, and zero-commission worker welfare. Can&apos;t find an answer? Ask our team directly.
             </p>
           </div>
 
           {/* 2-Column Main Layout: Accordion (Left) + Blue Video Card (Right) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
             
             {/* Left Column: Numbered Minimalist Accordion List */}
-            <div className="lg:col-span-7 space-y-3">
+            <div className="lg:col-span-7 space-y-2.5 flex flex-col justify-center">
               {faqs.map((item, idx) => {
                 const isOpen = openFaq === idx;
                 const num = String(idx + 1).padStart(2, "0");
                 return (
                   <div
                     key={idx}
-                    className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                    className={`rounded-xl sm:rounded-2xl border transition-all duration-200 overflow-hidden ${
                       isOpen
                         ? "bg-[#14151B] border-white/15 shadow-xl"
                         : "bg-[#0F1015]/80 border-white/5 hover:border-white/10 hover:bg-[#121319]"
@@ -462,33 +462,33 @@ export default function AboutUsPage() {
                     <button
                       type="button"
                       onClick={() => setOpenFaq(isOpen ? null : idx)}
-                      className="w-full py-4.5 sm:py-5 px-5 sm:px-6 text-left flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
+                      className="w-full py-3.5 sm:py-4 px-4.5 sm:px-5 text-left flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
                     >
-                      <div className="flex items-center gap-3.5 sm:gap-4 flex-1">
+                      <div className="flex items-center gap-3 sm:gap-3.5 flex-1">
                         <span className="text-xs font-mono font-medium text-slate-500 shrink-0">
                           {num}
                         </span>
                         <span
                           style={{ color: isOpen ? "#ffffff" : "#cbd5e1" }}
-                          className="text-sm sm:text-base font-bold transition-colors"
+                          className="text-xs sm:text-sm font-bold transition-colors"
                         >
                           {item.q}
                         </span>
                       </div>
 
-                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                      <div className={`w-6 h-6 sm:w-7 sm:h-7 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
                         isOpen
                           ? "bg-white/10 border-white/20 text-white"
                           : "bg-white/5 border-white/5 text-slate-400"
                       }`}>
-                        {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                        {isOpen ? <Minus className="w-3 h-3 sm:w-3.5 sm:h-3.5" /> : <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />}
                       </div>
                     </button>
 
                     {isOpen && (
                       <div
                         style={{ color: "#94a3b8" }}
-                        className="px-5 sm:px-6 pb-5 pt-1 pl-12 sm:pl-14 text-xs sm:text-sm leading-relaxed border-t border-white/5 animate-in fade-in duration-200"
+                        className="px-4.5 sm:px-5 pb-3.5 pt-0.5 pl-10 sm:pl-11 text-xs sm:text-[13px] leading-relaxed border-t border-white/5 animate-in fade-in duration-200"
                       >
                         {item.a}
                       </div>
@@ -499,8 +499,8 @@ export default function AboutUsPage() {
             </div>
 
             {/* Right Column: Blue Fluid Video Card with Frosted Glass Search Assistant */}
-            <div className="lg:col-span-5 lg:sticky lg:top-28">
-              <div className="relative rounded-3xl sm:rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl min-h-[460px] sm:min-h-[500px] flex items-center justify-center p-5 sm:p-7 bg-[#05060A]">
+            <div className="lg:col-span-5 flex">
+              <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-xl flex items-center justify-center p-4 sm:p-5 bg-[#05060A]">
                 
                 {/* Blue Pattern Fluid Loop Video */}
                 <video
@@ -510,47 +510,47 @@ export default function AboutUsPage() {
                   loop
                   muted
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                  className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-85"
                 />
 
                 {/* Ambient Glow */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/30 pointer-events-none" />
 
                 {/* Interactive Frosted Glass Assistant Box */}
-                <div className="relative z-10 w-full rounded-2xl bg-[#080A12]/92 backdrop-blur-2xl border border-white/15 p-5 sm:p-6 shadow-2xl">
-                  <div className="flex items-center gap-2.5 mb-2.5">
-                    <div className="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0">
-                      <Sparkles className="w-4 h-4 text-blue-400" />
+                <div className="relative z-10 w-full rounded-xl sm:rounded-2xl bg-[#080A12]/92 backdrop-blur-2xl border border-white/15 p-4 sm:p-5 shadow-2xl">
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-3.5 h-3.5 text-blue-400" />
                     </div>
-                    <h4 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                    <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
                       Still have questions?
                     </h4>
                   </div>
 
-                  <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed mb-4">
-                    Ask DLC anything about workforce mobilization, worker KYC, attendance, or billing — or reach our team directly.
+                  <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mb-3">
+                    Ask DLC anything about workforce mobilization, worker KYC, attendance, or billing — or reach our desk.
                   </p>
 
                   {/* Interactive Search / Ask Form */}
-                  <form onSubmit={handleAskSubmit} className="relative mb-3.5">
+                  <form onSubmit={handleAskSubmit} className="relative mb-2.5">
                     <input
                       type="text"
                       value={askQuery}
                       onChange={(e) => setAskQuery(e.target.value)}
                       placeholder={PROMPTS[promptIdx]}
-                      className="w-full pl-3.5 pr-11 py-2.5 sm:py-3 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#0C59D4] focus:bg-white/15 transition-all"
+                      className="w-full pl-3 pr-10 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#0C59D4] focus:bg-white/15 transition-all"
                     />
                     <button
                       type="submit"
-                      className="absolute right-1.5 top-1.5 bottom-1.5 w-8 rounded-lg bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                      className="absolute right-1 top-1 bottom-1 w-7 rounded-md bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
                       aria-label="Submit question"
                     >
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </form>
 
                   {/* Quick Prompt Pill Chips */}
-                  <div className="flex flex-wrap gap-1.5 mb-4">
+                  <div className="flex flex-wrap gap-1.5 mb-3">
                     {[
                       "Deployment SLA?",
                       "Aadhaar KYC?",
@@ -570,19 +570,19 @@ export default function AboutUsPage() {
 
                   {/* AI / Instant Response Box */}
                   {aiResponse && (
-                    <div className="mb-4 p-3 rounded-xl bg-blue-950/70 border border-blue-500/30 text-xs text-blue-200 animate-in fade-in duration-200 leading-relaxed">
+                    <div className="mb-3 p-2.5 rounded-lg bg-blue-950/70 border border-blue-500/30 text-[11px] text-blue-200 animate-in fade-in duration-200 leading-relaxed">
                       {aiResponse}
                     </div>
                   )}
 
                   {/* Support Contact Footer */}
-                  <div className="flex items-center justify-between pt-3 border-t border-white/10 text-xs">
+                  <div className="flex items-center justify-between pt-2.5 border-t border-white/10 text-[11px] sm:text-xs">
                     <Link
                       href="/contact"
-                      className="inline-flex items-center gap-1.5 text-white hover:text-blue-300 font-semibold transition-colors group"
+                      className="inline-flex items-center gap-1 text-white hover:text-blue-300 font-semibold transition-colors group"
                     >
                       <span>Contact support</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                      <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
                     </Link>
                     <a
                       href="tel:+917070999175"
