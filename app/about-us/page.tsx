@@ -186,8 +186,8 @@ export default function AboutUsPage() {
       {/* ========================================================================= */}
       <AboutHeroFilmScroll />
 
-      {/* QUICK PLATFORM METRICS BAR (Seamless Handoff from Hero Film to Content) */}
-      <div className="w-full bg-white border-b border-slate-200/80 shadow-xs py-8 px-4 sm:px-8">
+      {/* QUICK PLATFORM METRICS BAR (Seamless Handoff from Hero Film to Content on Desktop) */}
+      <div className="hidden sm:block w-full bg-white border-b border-slate-200/80 shadow-xs py-8 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
           {stats.map((s, idx) => (
             <div key={idx} className="flex flex-col border-l-2 border-[#0C59D4]/40 pl-4">
