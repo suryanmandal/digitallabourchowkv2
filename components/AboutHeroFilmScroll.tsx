@@ -330,36 +330,26 @@ export default function AboutHeroFilmScroll() {
           />
 
           {/* =============================================================== */}
-          {/* SCENE 1 BRAND TITLE: Visible ONLY in Scene 1, instantly vanishes upon scroll */}
+          {/* SCENE 1 BRAND TITLE: "Digital Labour Chowk" + Short Single Punchline */}
           {/* =============================================================== */}
           {isScene1TextVisible && (
             <div className="absolute inset-y-0 left-0 w-full sm:w-[58%] lg:w-[48%] p-6 sm:p-12 lg:p-16 flex flex-col justify-center z-25 pointer-events-none transition-opacity duration-150">
-              {/* Brand Category Tag */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-2.5 sm:mb-3.5 shadow-xs w-fit">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-2.5 sm:mb-3 shadow-xs w-fit">
                 <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
-                <span>India&apos;s 1st Construction Workforce Platform</span>
+                <span>One Nation • One Labour Chowk</span>
               </div>
 
-              {/* Primary Hero Title */}
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08] mb-2 sm:mb-3 drop-shadow-xs">
                 Digital Labour <span className="text-[#0C59D4]">Chowk</span>
               </h1>
 
-              {/* Brand Moniker / Motto */}
-              <p className="text-xs sm:text-sm md:text-base font-bold text-slate-700 tracking-wide uppercase mb-2 sm:mb-2.5 flex items-center gap-2">
-                <span className="w-5 sm:w-6 h-[2px] bg-[#0C59D4]" />
-                <span>One Nation • One Labour Chowk</span>
+              {/* Short Single Punchline */}
+              <p className="text-sm sm:text-base md:text-lg font-bold text-slate-700 tracking-tight leading-snug max-w-md">
+                India&apos;s 1st Digital Construction Workforce Platform.
               </p>
 
-              {/* Contextual Narrative Paragraph */}
-              <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal max-w-lg mb-4 sm:mb-5 drop-shadow-xs">
-                Replacing roadside uncertainty with dignity, speed, and trust. 
-                Every morning, millions gather at physical chowks—DLC brings them directly to verified projects.
-              </p>
-
-              {/* Animated Scroll Down Prompt */}
-              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#0C59D4] bg-white/90 backdrop-blur-sm px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-blue-200 shadow-xs w-fit">
-                <span>Scroll down to play the story</span>
+              <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-xs font-bold text-[#0C59D4] bg-white/90 backdrop-blur-sm px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-blue-200 shadow-xs w-fit">
+                <span>Scroll to play story</span>
                 <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
               </div>
             </div>
