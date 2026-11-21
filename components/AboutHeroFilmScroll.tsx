@@ -114,17 +114,27 @@ export default function AboutHeroFilmScroll() {
 
     const handleScroll = () => {
       if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
-      if (totalScrollable <= 0) return;
+      if (window.innerWidth >= 640) {
+        // Desktop full-screen RAF scroll tracking across 450vh
+        const rect = containerRef.current.getBoundingClientRect();
+        const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
+        if (totalScrollable <= 0) return;
 
-      const currentScroll = -rect.top;
-      const p = Math.max(0, Math.min(1, currentScroll / totalScrollable));
-      setProgress(p);
+        const currentScroll = -rect.top;
+        const p = Math.max(0, Math.min(1, currentScroll / totalScrollable));
+        setProgress(p);
 
-      // Determine active scene (0 to 5)
-      const sceneIdx = Math.min(SCENES.length - 1, Math.floor(p * SCENES.length));
-      setActiveScene(sceneIdx);
+        const sceneIdx = Math.min(SCENES.length - 1, Math.floor(p * SCENES.length));
+        setActiveScene(sceneIdx);
+      } else {
+        // Mobile scroll tracking: As user scrolls down past the hero into the stats,
+        // map scroll offset smoothly to scene progress!
+        const scrollY = window.scrollY;
+        const p = Math.max(0, Math.min(1, scrollY / 320));
+        setProgress(p);
+        const sceneIdx = Math.min(SCENES.length - 1, Math.floor(p * SCENES.length));
+        setActiveScene(sceneIdx);
+      }
     };
 
     const onScroll = () => {
@@ -143,14 +153,19 @@ export default function AboutHeroFilmScroll() {
 
   // Jump to specific scene dot
   const scrollToScene = (sceneIdx: number) => {
-    if (!containerRef.current) return;
-    const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
-    const targetProgress = sceneIdx / (SCENES.length - 1);
-    const targetY = containerRef.current.offsetTop + targetProgress * totalScrollable;
-    window.scrollTo({ top: targetY, behavior: "smooth" });
+    if (window.innerWidth >= 640 && containerRef.current) {
+      const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
+      const targetProgress = sceneIdx / (SCENES.length - 1);
+      const targetY = containerRef.current.offsetTop + targetProgress * totalScrollable;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    } else {
+      const targetProgress = sceneIdx / (SCENES.length - 1);
+      setProgress(targetProgress);
+      setActiveScene(sceneIdx);
+    }
   };
 
-  // Touch swipe support (horizontal swipe jumps scenes via smooth scroll)
+  // Touch swipe support (horizontal swipe jumps scenes smoothly)
   const touchStartX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
 
@@ -164,13 +179,13 @@ export default function AboutHeroFilmScroll() {
     const deltaX = e.changedTouches[0].clientX - touchStartX.current;
     const deltaY = e.changedTouches[0].clientY - touchStartY.current;
 
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 40) {
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 35) {
       if (deltaX < 0) {
         // Swiped left -> next scene
-        scrollToScene(Math.min(SCENES.length - 1, activeScene + 1));
+        scrollToScene((activeScene + 1) % SCENES.length);
       } else {
         // Swiped right -> prev scene
-        scrollToScene(Math.max(0, activeScene - 1));
+        scrollToScene((activeScene - 1 + SCENES.length) % SCENES.length);
       }
     }
     touchStartX.current = null;
@@ -325,17 +340,17 @@ export default function AboutHeroFilmScroll() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[250vh] sm:h-[450vh] bg-[#EBF3FB] m-0 p-0"
+      className="relative w-full h-auto aspect-[16/9] sm:aspect-auto sm:h-[450vh] bg-[#EBF3FB] m-0 p-0"
       style={{
         ['--header-height' as string]: `${headerHeight}px`,
       }}
       aria-label="DLC Visual Journey Scroll Story"
     >
-      {/* STAGE: Sticky on mobile and desktop, filling screen below header */}
+      {/* STAGE: 16:9 on mobile (0 empty dead space); Sticky full-viewport on desktop */}
       <div
-        className="sticky w-full h-[calc(100vh-var(--header-height))] overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start"
+        className="relative sm:sticky w-full h-full overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start sm:justify-center aspect-[16/9] sm:aspect-auto sm:h-[calc(100vh-var(--header-height))]"
         style={{
-          top: `${headerHeight}px`,
+          top: isMobile ? undefined : `${headerHeight}px`,
         }}
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
@@ -344,9 +359,9 @@ export default function AboutHeroFilmScroll() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#E2EFFB] via-[#EAF3FA] to-[#DCEBFA] pointer-events-none" />
 
         {/* =================================================================== */}
-        {/* 16:9 CINEMATIC STAGE: Identical 16:9 Ratio on Mobile; Full on Desktop */}
+        {/* 16:9 CINEMATIC STAGE: Identical 16:9 Ratio on Mobile & Desktop     */}
         {/* =================================================================== */}
-        <div className="relative w-full aspect-[16/9] sm:aspect-auto sm:h-full overflow-hidden shrink-0">
+        <div className="relative w-full h-full overflow-hidden shrink-0">
           
           {/* STACKED 6 SCENE FRAMES */}
           {SCENES.map((scene, idx) => {
@@ -379,6 +394,24 @@ export default function AboutHeroFilmScroll() {
             ref={canvasRef}
             className="absolute inset-0 w-full h-full pointer-events-none z-20"
           />
+
+          {/* Mobile Navigation Chevron Arrows */}
+          <button
+            type="button"
+            onClick={() => scrollToScene((activeScene - 1 + SCENES.length) % SCENES.length)}
+            className="sm:hidden absolute left-2 top-1/2 -translate-y-1/2 z-35 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md cursor-pointer"
+            aria-label="Previous scene"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollToScene((activeScene + 1) % SCENES.length)}
+            className="sm:hidden absolute right-2 top-1/2 -translate-y-1/2 z-35 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md cursor-pointer"
+            aria-label="Next scene"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
 
           {/* =============================================================== */}
           {/* SCENE 1 BRAND TITLE: "Digital Labour Chowk" + Short Single Punchline */}
@@ -413,28 +446,71 @@ export default function AboutHeroFilmScroll() {
           )}
 
           {/* =============================================================== */}
-          {/* DESKTOP FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR           */}
+          {/* SCENES 5 & 6 INTERACTIVE APP DOWNLOAD / CTA OVERLAY             */}
           {/* =============================================================== */}
-          <div className="hidden sm:flex absolute inset-x-0 bottom-6 z-30 flex-col items-center px-6 pointer-events-none">
-            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-6 py-2.5 shadow-2xl flex items-center gap-4 max-w-2xl w-full justify-between pointer-events-auto">
-              <div className="flex items-center gap-2.5 min-w-0">
-                <span className="text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-2 py-0.5 rounded shrink-0">
+          {progress >= 0.72 && (
+            <div
+              className="absolute inset-x-0 top-1.5 sm:top-auto sm:bottom-20 z-30 flex items-center justify-center p-1.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
+              style={{
+                opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
+              }}
+            >
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 shadow-xl max-w-lg w-auto sm:w-full flex items-center justify-between gap-2 sm:gap-4">
+                <div className="hidden sm:block">
+                  <h4 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                    <span>Ready to Deploy or Work?</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  </h4>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
+                    Join 350,000+ verified workers and 20,000+ contractors on DLC.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                  <a
+                    href="https://play.google.com/store/apps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[9px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
+                  >
+                    <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span>Get App</span>
+                  </a>
+                  <a
+                    href="https://onboarding.digitallabourchowk.com/login"
+                    className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[9px] sm:text-[11px] transition-colors"
+                  >
+                    <span>Web Portal</span>
+                    <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =============================================================== */}
+          {/* FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR                   */}
+          {/* =============================================================== */}
+          <div className="absolute inset-x-0 bottom-1 sm:bottom-6 z-30 flex flex-col items-center px-1.5 sm:px-6 pointer-events-none">
+            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-2.5 py-1 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-1.5 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                <span className="text-[9px] sm:text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-1.5 sm:px-2 py-0.5 rounded shrink-0">
                   0{activeScene + 1}/06
                 </span>
-                <p className="text-xs md:text-sm font-medium text-slate-200 truncate">
+                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-200 truncate">
                   {SCENES[activeScene].storyLine}
                 </p>
               </div>
 
               {/* Scene jump dots */}
-              <div className="flex items-center gap-1.5 shrink-0">
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
                 {SCENES.map((s, idx) => (
                   <button
                     key={s.id}
                     type="button"
                     onClick={() => scrollToScene(idx)}
                     className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeScene === idx ? "w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
+                      activeScene === idx ? "w-3 sm:w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
                     }`}
                     aria-label={`Jump to scene ${idx + 1}`}
                   />
@@ -443,141 +519,6 @@ export default function AboutHeroFilmScroll() {
             </div>
           </div>
 
-          {/* =============================================================== */}
-          {/* DESKTOP SCENES 5 & 6 INTERACTIVE APP DOWNLOAD / CTA OVERLAY     */}
-          {/* =============================================================== */}
-          {progress >= 0.72 && (
-            <div
-              className="hidden sm:flex absolute inset-x-0 bottom-20 z-30 items-center justify-center p-3 pointer-events-auto transition-opacity duration-300"
-              style={{
-                opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
-              }}
-            >
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-2xl p-4 shadow-xl max-w-lg w-full flex items-center justify-between gap-4">
-                <div>
-                  <h4 className="text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-                    <span>Ready to Deploy or Work?</span>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  </h4>
-                  <p className="text-[11px] text-slate-500 font-medium">
-                    Join 350,000+ verified workers and 20,000+ contractors on DLC.
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href="https://play.google.com/store/apps"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>Get App</span>
-                  </a>
-                  <a
-                    href="https://onboarding.digitallabourchowk.com/login"
-                    className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] transition-colors"
-                  >
-                    <span>Web Portal</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
-
-        </div>
-
-        {/* =============================================================== */}
-        {/* MOBILE NARRATIVE & METRICS DOCK (Fills bottom screen - 0 blank space!) */}
-        {/* =============================================================== */}
-        <div className="sm:hidden flex-1 w-full bg-white flex flex-col justify-between p-3.5 border-t border-slate-200/90 shadow-xs overflow-hidden select-none">
-          {/* Active Scene Story Narration */}
-          <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
-              <span className="text-[10px] font-black uppercase tracking-wider text-[#0C59D4] bg-blue-50 border border-blue-200 px-2 py-0.5 rounded-md">
-                {SCENES[activeScene].actTitle}
-              </span>
-              <span className="text-[10px] font-mono font-bold text-slate-400">
-                0{activeScene + 1} / 06
-              </span>
-            </div>
-
-            <p className="text-xs font-semibold text-slate-800 leading-snug line-clamp-2">
-              {SCENES[activeScene].storyLine}
-            </p>
-
-            {/* Scene jump dots on mobile */}
-            <div className="flex items-center gap-1.5 pt-0.5">
-              {SCENES.map((s, idx) => (
-                <button
-                  key={s.id}
-                  type="button"
-                  onClick={() => scrollToScene(idx)}
-                  className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                    activeScene === idx ? "w-5 bg-[#0C59D4]" : "w-1.5 bg-slate-200"
-                  }`}
-                  aria-label={`Jump to scene ${idx + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Scene 5 & 6 Quick Download CTA (when activeScene >= 4) OR Platform Metrics Grid */}
-          {activeScene >= 4 ? (
-            <div className="bg-blue-50/80 border border-blue-200 rounded-xl p-2.5 flex items-center justify-between gap-2 mt-1">
-              <div className="min-w-0">
-                <h5 className="text-[11px] font-black text-slate-900 leading-tight">
-                  Ready to Deploy Manpower?
-                </h5>
-                <p className="text-[9px] text-slate-500 font-medium truncate">
-                  350k+ workers • 20k+ contractors
-                </p>
-              </div>
-              <div className="flex items-center gap-1.5 shrink-0">
-                <a
-                  href="https://play.google.com/store/apps"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#0C59D4] text-white font-bold text-[9px] uppercase tracking-wider shadow-xs"
-                >
-                  <Download className="w-2.5 h-2.5" />
-                  <span>Get App</span>
-                </a>
-                <a
-                  href="https://onboarding.digitallabourchowk.com/login"
-                  className="inline-flex items-center gap-1 px-2 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 font-bold text-[9px]"
-                >
-                  <span>Portal</span>
-                  <ArrowRight className="w-2 h-2" />
-                </a>
-              </div>
-            </div>
-          ) : (
-            /* Quick Platform Metrics Grid (Brought directly closer on mobile!) */
-            <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-100">
-              <div className="flex flex-col border-l-2 border-[#0C59D4] pl-2">
-                <span className="text-sm font-black text-[#0C59D4] leading-tight">3,50,000+</span>
-                <span className="text-[10px] font-bold text-slate-800">Verified Workers</span>
-                <span className="text-[8px] text-slate-400">Across 6,000+ towns</span>
-              </div>
-              <div className="flex flex-col border-l-2 border-[#0C59D4] pl-2">
-                <span className="text-sm font-black text-[#0C59D4] leading-tight">20,000+</span>
-                <span className="text-[10px] font-bold text-slate-800">Contractors</span>
-                <span className="text-[8px] text-slate-400">Trusted on-site</span>
-              </div>
-              <div className="flex flex-col border-l-2 border-[#0C59D4] pl-2">
-                <span className="text-sm font-black text-[#0C59D4] leading-tight">850+</span>
-                <span className="text-[10px] font-bold text-slate-800">Builders</span>
-                <span className="text-[8px] text-slate-400">Turnkey EPCs</span>
-              </div>
-              <div className="flex flex-col border-l-2 border-[#0C59D4] pl-2">
-                <span className="text-sm font-black text-[#0C59D4] leading-tight">15+</span>
-                <span className="text-[10px] font-bold text-slate-800">Hubs</span>
-                <span className="text-[8px] text-slate-400">Delhi to Bengaluru</span>
-              </div>
-            </div>
-          )}
         </div>
 
       </div>
