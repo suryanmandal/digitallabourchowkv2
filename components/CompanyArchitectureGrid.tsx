@@ -20,7 +20,7 @@ import {
 
 export default function CompanyArchitectureGrid() {
   return (
-    <section className="w-full py-16 sm:py-20 lg:py-24 bg-[#FAFAFC] relative overflow-hidden border-y border-slate-200 select-none">
+    <section id="company-architecture" className="w-full py-16 sm:py-20 lg:py-24 bg-[#FAFAFC] relative overflow-hidden border-y border-slate-200 select-none scroll-mt-24">
       {/* Background Architectural Blueprint Grid Lines */}
       <div className="absolute inset-0 pointer-events-none opacity-[0.035]">
         <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
