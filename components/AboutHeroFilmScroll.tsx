@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, Download, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronLeft, ChevronRight, Download, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface SceneMeta {
   id: number;
@@ -78,6 +78,20 @@ export default function AboutHeroFilmScroll() {
   const [progress, setProgress] = useState(0);
   const [activeScene, setActiveScene] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(105);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Auto-play timer ref for mobile
+  const autoPlayTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Detect mobile viewport (< 640px)
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 640);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Measure dynamic site header height to eliminate any margin between header and film
   useEffect(() => {
@@ -93,13 +107,13 @@ export default function AboutHeroFilmScroll() {
   }, []);
 
   // ---------------------------------------------------------------------------
-  // 1. SCROLL PROGRESS ENGINE (Smooth RAF Tracking)
+  // 1. SCROLL PROGRESS ENGINE (Desktop Only - Smooth RAF Tracking)
   // ---------------------------------------------------------------------------
   useEffect(() => {
     let animId: number;
 
     const handleScroll = () => {
-      if (!containerRef.current) return;
+      if (window.innerWidth < 640 || !containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
       const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
       if (totalScrollable <= 0) return;
@@ -126,6 +140,76 @@ export default function AboutHeroFilmScroll() {
       cancelAnimationFrame(animId);
     };
   }, []);
+
+  // ---------------------------------------------------------------------------
+  // 2. MOBILE STORYTELLING: Auto-Play Slideshow & Touch Navigation
+  // ---------------------------------------------------------------------------
+  const resetAutoPlay = useCallback(() => {
+    if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+    if (!isMobile) return;
+    autoPlayTimerRef.current = setInterval(() => {
+      setActiveScene((prev) => {
+        const next = (prev + 1) % SCENES.length;
+        setProgress(next / (SCENES.length - 1));
+        return next;
+      });
+    }, 4500);
+  }, [isMobile]);
+
+  useEffect(() => {
+    if (isMobile) {
+      resetAutoPlay();
+    }
+    return () => {
+      if (autoPlayTimerRef.current) clearInterval(autoPlayTimerRef.current);
+    };
+  }, [isMobile, resetAutoPlay]);
+
+  const handleManualSceneChange = (sceneIdx: number) => {
+    setActiveScene(sceneIdx);
+    setProgress(sceneIdx / (SCENES.length - 1));
+    resetAutoPlay();
+  };
+
+  const scrollToScene = (sceneIdx: number) => {
+    if (!isMobile && containerRef.current) {
+      const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
+      const targetProgress = sceneIdx / (SCENES.length - 1);
+      const targetY = containerRef.current.offsetTop + targetProgress * totalScrollable;
+      window.scrollTo({ top: targetY, behavior: "smooth" });
+    } else {
+      handleManualSceneChange(sceneIdx);
+    }
+  };
+
+  // Touch swipe detection for mobile
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
+    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 35) {
+      if (deltaX < 0) {
+        // Swiped left -> next scene
+        const next = (activeScene + 1) % SCENES.length;
+        handleManualSceneChange(next);
+      } else {
+        // Swiped right -> prev scene
+        const prev = (activeScene - 1 + SCENES.length) % SCENES.length;
+        handleManualSceneChange(prev);
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
 
   // ---------------------------------------------------------------------------
   // 2. BLOWING LEAVES PARTICLE SYSTEM (Active ONLY during Scene 1)
@@ -184,7 +268,13 @@ export default function AboutHeroFilmScroll() {
       ctx.clearRect(0, 0, width, height);
 
       // Leaves blow ONLY in Scene 1 (progress <= 0.12), fading completely to 0 by progress 0.18
-      const globalLeafOpacity = progress <= 0.12 ? 1 : Math.max(0, 1 - (progress - 0.12) / 0.06);
+      const globalLeafOpacity = isMobile
+        ? activeScene === 0
+          ? 1
+          : 0
+        : progress <= 0.12
+        ? 1
+        : Math.max(0, 1 - (progress - 0.12) / 0.06);
 
       if (globalLeafOpacity > 0.01) {
         for (let i = 0; i < leaves.length; i++) {
@@ -234,7 +324,7 @@ export default function AboutHeroFilmScroll() {
       window.removeEventListener("resize", handleResize);
       cancelAnimationFrame(animId);
     };
-  }, [progress]);
+  }, [progress, activeScene, isMobile]);
 
   // ---------------------------------------------------------------------------
   // 3. ZERO-FLICKER MATHEMATICAL CROSSFADE
@@ -261,35 +351,34 @@ export default function AboutHeroFilmScroll() {
   // ---------------------------------------------------------------------------
   // 4. SCENE 1 BRAND TITLE: Prominently visible in Scene 1; smoothly vanishes upon scrolling towards Scene 2
   // ---------------------------------------------------------------------------
-  // Fully visible when at rest in Scene 1 (progress <= 0.02).
-  // Smoothly fades out as user scrolls, completely vanishing by progress = 0.08.
-  const scene1TextOpacity = activeScene === 0 ? Math.max(0, 1 - progress / 0.08) : 0;
+  // Fully visible when at rest in Scene 1.
+  // Smoothly fades out as user scrolls or transitions to Scene 2+.
+  const scene1TextOpacity = isMobile
+    ? activeScene === 0
+      ? 1
+      : 0
+    : activeScene === 0
+    ? Math.max(0, 1 - progress / 0.08)
+    : 0;
   const isScene1TextVisible = scene1TextOpacity > 0.001;
-
-  // Jump to specific scene dot
-  const scrollToScene = (sceneIdx: number) => {
-    if (!containerRef.current) return;
-    const totalScrollable = containerRef.current.offsetHeight - window.innerHeight;
-    const targetProgress = sceneIdx / (SCENES.length - 1);
-    const targetY = containerRef.current.offsetTop + targetProgress * totalScrollable;
-    window.scrollTo({ top: targetY, behavior: "smooth" });
-  };
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[220vh] sm:h-[450vh] bg-[#EBF3FB] m-0 p-0"
+      className="relative w-full h-auto aspect-[16/9] sm:aspect-auto sm:h-[450vh] bg-[#EBF3FB] m-0 p-0"
       style={{
         ['--header-height' as string]: `${headerHeight}px`,
       }}
       aria-label="DLC Visual Journey Scroll Story"
     >
-      {/* STICKY STAGE: Strictly 16:9 on mobile (0 empty dead space); Full-viewport on desktop */}
+      {/* STAGE: 16:9 on mobile (0 empty dead space); Sticky full-viewport on desktop */}
       <div
-        className="sticky w-full overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start sm:justify-center aspect-[16/9] sm:aspect-auto sm:h-[calc(100vh-var(--header-height))]"
+        className="relative sm:sticky w-full h-full overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start sm:justify-center aspect-[16/9] sm:aspect-auto sm:h-[calc(100vh-var(--header-height))]"
         style={{
-          top: `${headerHeight}px`,
+          top: isMobile ? undefined : `${headerHeight}px`,
         }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
       >
         {/* Soft Background Morning Atmosphere */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#E2EFFB] via-[#EAF3FA] to-[#DCEBFA] pointer-events-none" />
@@ -301,11 +390,13 @@ export default function AboutHeroFilmScroll() {
           
           {/* STACKED 6 SCENE FRAMES */}
           {SCENES.map((scene, idx) => {
-            const op = opacities[idx];
+            const op = isMobile ? (activeScene === idx ? 1 : 0) : opacities[idx];
             return (
               <div
                 key={scene.id}
-                className="absolute inset-0 w-full h-full will-change-transform"
+                className={`absolute inset-0 w-full h-full will-change-transform ${
+                  isMobile ? "transition-opacity duration-700 ease-in-out" : ""
+                }`}
                 style={{
                   opacity: op,
                   pointerEvents: op > 0.5 ? "auto" : "none",
@@ -331,34 +422,52 @@ export default function AboutHeroFilmScroll() {
             className="absolute inset-0 w-full h-full pointer-events-none z-20"
           />
 
+          {/* Mobile Navigation Touch Arrows */}
+          <button
+            type="button"
+            onClick={() => handleManualSceneChange((activeScene - 1 + SCENES.length) % SCENES.length)}
+            className="sm:hidden absolute left-2 top-1/2 -translate-y-1/2 z-35 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md"
+            aria-label="Previous scene"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <button
+            type="button"
+            onClick={() => handleManualSceneChange((activeScene + 1) % SCENES.length)}
+            className="sm:hidden absolute right-2 top-1/2 -translate-y-1/2 z-35 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md"
+            aria-label="Next scene"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+
           {/* =============================================================== */}
           {/* SCENE 1 BRAND TITLE: "Digital Labour Chowk" + Short Single Punchline */}
           {/* =============================================================== */}
           {isScene1TextVisible && (
             <div
-              className="absolute inset-y-0 left-0 w-[68%] sm:w-[58%] lg:w-[48%] p-3.5 sm:p-12 lg:p-16 flex flex-col justify-center pointer-events-none transition-opacity duration-150"
+              className="absolute inset-y-0 left-0 w-[72%] sm:w-[58%] lg:w-[48%] p-3 sm:p-12 lg:p-16 flex flex-col justify-center pointer-events-none transition-opacity duration-300"
               style={{
                 zIndex: 40,
                 opacity: scene1TextOpacity,
               }}
             >
-              <div className="inline-flex items-center gap-1 sm:gap-2 px-2.5 sm:px-3.5 py-0.5 sm:py-1 rounded-full bg-white/95 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[9px] sm:text-xs font-black uppercase tracking-wider mb-1 sm:mb-3.5 shadow-sm w-fit">
+              <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3.5 py-0.5 sm:py-1 rounded-full bg-white/95 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[8px] sm:text-xs font-black uppercase tracking-wider mb-1 sm:mb-3.5 shadow-sm w-fit">
                 <Sparkles className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 text-[#0C59D4]" />
                 <span>One Nation • One Labour Chowk</span>
               </div>
 
-              <h1 className="text-xl sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08] mb-1 sm:mb-3 drop-shadow-sm">
+              <h1 className="text-base sm:text-5xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.08] mb-0.5 sm:mb-3 drop-shadow-sm">
                 Digital Labour <span className="text-[#0C59D4]">Chowk</span>
               </h1>
 
               {/* Short Single Punchline */}
-              <p className="text-xs sm:text-xl lg:text-2xl font-black text-slate-800 tracking-tight leading-snug max-w-md drop-shadow-xs">
+              <p className="text-[10px] sm:text-xl lg:text-2xl font-black text-slate-800 tracking-tight leading-snug max-w-md drop-shadow-xs">
                 India&apos;s 1st Digital Construction Workforce Platform.
               </p>
 
-              <div className="mt-2.5 sm:mt-6 inline-flex items-center gap-1 sm:gap-2 text-[9px] sm:text-xs font-bold text-[#0C59D4] bg-white/95 backdrop-blur-sm px-2.5 sm:px-4 py-1 sm:py-2 rounded-lg sm:rounded-xl border border-blue-200 shadow-sm w-fit">
-                <span>Scroll to explore</span>
-                <ChevronDown className="w-3 h-3 sm:w-3.5 sm:h-3.5 animate-bounce" />
+              <div className="mt-1.5 sm:mt-6 inline-flex items-center gap-1 sm:gap-2 text-[8px] sm:text-xs font-bold text-[#0C59D4] bg-white/95 backdrop-blur-sm px-2 sm:px-4 py-0.5 sm:py-2 rounded-md sm:rounded-xl border border-blue-200 shadow-sm w-fit">
+                <span>{isMobile ? "Swipe or tap to explore" : "Scroll to explore"}</span>
+                <ChevronDown className="hidden sm:block w-3 h-3 sm:w-3.5 sm:h-3.5 animate-bounce" />
               </div>
             </div>
           )}
@@ -366,14 +475,20 @@ export default function AboutHeroFilmScroll() {
           {/* =============================================================== */}
           {/* SCENES 5 & 6 INTERACTIVE APP DOWNLOAD / CTA OVERLAY             */}
           {/* =============================================================== */}
-          {progress >= 0.72 && (
+          {(isMobile ? activeScene >= 4 : progress >= 0.72) && (
             <div
-              className="absolute inset-x-0 top-2.5 sm:top-auto sm:bottom-20 z-30 flex items-center justify-center p-2 sm:p-3 pointer-events-auto transition-opacity duration-300"
+              className="absolute inset-x-0 top-1.5 sm:top-auto sm:bottom-20 z-30 flex items-center justify-center p-1.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
               style={{
-                opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
+                opacity: isMobile
+                  ? activeScene >= 4
+                    ? 1
+                    : 0
+                  : progress >= 0.75
+                  ? Math.min(1, (progress - 0.75) / 0.1)
+                  : 0,
               }}
             >
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-xl max-w-lg w-auto sm:w-full flex items-center justify-between gap-2.5 sm:gap-4">
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 shadow-xl max-w-lg w-auto sm:w-full flex items-center justify-between gap-2 sm:gap-4">
                 <div className="hidden sm:block">
                   <h4 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
                     <span>Ready to Deploy or Work?</span>
@@ -389,14 +504,14 @@ export default function AboutHeroFilmScroll() {
                     href="https://play.google.com/store/apps"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[9px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
                   >
                     <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     <span>Get App</span>
                   </a>
                   <a
                     href="https://onboarding.digitallabourchowk.com/login"
-                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[10px] sm:text-[11px] transition-colors"
+                    className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[9px] sm:text-[11px] transition-colors"
                   >
                     <span>Web Portal</span>
                     <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
@@ -409,8 +524,8 @@ export default function AboutHeroFilmScroll() {
           {/* =============================================================== */}
           {/* FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR                   */}
           {/* =============================================================== */}
-          <div className="absolute inset-x-0 bottom-2 sm:bottom-6 z-30 flex flex-col items-center px-2.5 sm:px-6 pointer-events-none">
-            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-3 py-1.5 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-2 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
+          <div className="absolute inset-x-0 bottom-1 sm:bottom-6 z-30 flex flex-col items-center px-1.5 sm:px-6 pointer-events-none">
+            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-2.5 py-1 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-1.5 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
               <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
                 <span className="text-[9px] sm:text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-1.5 sm:px-2 py-0.5 rounded shrink-0">
                   0{activeScene + 1}/06
@@ -428,7 +543,7 @@ export default function AboutHeroFilmScroll() {
                     type="button"
                     onClick={() => scrollToScene(idx)}
                     className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeScene === idx ? "w-3.5 sm:w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
+                      activeScene === idx ? "w-3 sm:w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
                     }`}
                     aria-label={`Jump to scene ${idx + 1}`}
                   />
