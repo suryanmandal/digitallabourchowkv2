@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import AboutHeroFilmScroll from "@/components/AboutHeroFilmScroll";
 import {
   Sparkles,
   ArrowRight,
@@ -181,53 +182,22 @@ export default function AboutUsPage() {
     <div className="w-full bg-slate-50 min-h-screen text-slate-900" ref={containerRef}>
       
       {/* ========================================================================= */}
-      {/* 1. HERO SECTION                                                           */}
+      {/* 1. SCROLL-DRIVEN FILM HERO SECTION                                        */}
       {/* ========================================================================= */}
-      <section className="relative w-full bg-gradient-to-b from-white via-blue-50/30 to-slate-50 pt-12 pb-16 lg:pt-20 lg:pb-24 border-b border-slate-200/70 overflow-hidden">
-        
-        {/* Subtle Decorative Background Rings */}
-        <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-blue-100/40 blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 rounded-full bg-indigo-100/30 blur-3xl pointer-events-none" />
+      <AboutHeroFilmScroll />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
-          
-          {/* Breadcrumb Pill */}
-          <div className="about-hero-element flex items-center gap-2 text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">
-            <Link href="/" className="hover:text-[#0C59D4] transition-colors">Home</Link>
-            <span>/</span>
-            <span className="text-[#0C59D4]">About Us</span>
-          </div>
-
-          <div className="max-w-3xl">
-            <div className="about-hero-element inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs font-bold uppercase tracking-wider mb-5">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>India&apos;s 1st Construction Workforce Platform</span>
+      {/* QUICK PLATFORM METRICS BAR (Seamless Handoff from Hero Film to Content) */}
+      <div className="w-full bg-white border-b border-slate-200/80 shadow-xs py-8 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          {stats.map((s, idx) => (
+            <div key={idx} className="flex flex-col border-l-2 border-[#0C59D4]/40 pl-4">
+              <span className="text-2xl sm:text-3xl font-black text-[#0C59D4] tracking-tight">{s.value}</span>
+              <span className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">{s.label}</span>
+              <span className="text-[11px] text-slate-500 font-normal">{s.sub}</span>
             </div>
-
-            <h1 className="about-hero-element text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight leading-[1.15] mb-6">
-              Transforming Construction Labour Through <span className="text-[#0C59D4]">Dignity, Technology & Trust</span>.
-            </h1>
-
-            <p className="about-hero-element text-base sm:text-lg text-slate-600 leading-relaxed font-normal mb-8">
-              Founded in 2020 by Chandrashekhar Mandal, Digital Labour Chowk bridges the gap between 
-              India&apos;s unorganized daily-wage workers and top builders. We replace roadside labor chowks 
-              with verified digital trade profiles, guaranteed daily wages, and zero-middleman exploitation.
-            </p>
-
-            {/* Quick Metrics Bar */}
-            <div className="about-hero-element grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-6 border-t border-slate-200/80">
-              {stats.map((s, idx) => (
-                <div key={idx} className="flex flex-col">
-                  <span className="text-2xl sm:text-3xl font-black text-[#0C59D4]">{s.value}</span>
-                  <span className="text-xs sm:text-sm font-bold text-slate-900 mt-0.5">{s.label}</span>
-                  <span className="text-[11px] text-slate-500 font-normal">{s.sub}</span>
-                </div>
-              ))}
-            </div>
-
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
 
       {/* ========================================================================= */}
       {/* 2. THE BENTO GRID SHOWCASE                                                */}
