@@ -23,12 +23,49 @@ import {
   Smartphone,
   HelpCircle,
   ChevronDown,
+  Plus,
+  Minus,
 } from "lucide-react";
 import gsap from "gsap";
 
 export default function AboutUsPage() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [openFaq, setOpenFaq] = React.useState<number | null>(0);
+  const [askQuery, setAskQuery] = React.useState("");
+  const [aiResponse, setAiResponse] = React.useState<string | null>(null);
+  const [promptIdx, setPromptIdx] = React.useState(0);
+
+  const PROMPTS = [
+    "How quickly can workers be deployed?",
+    "How is Aadhaar KYC verified?",
+    "What is the biometric attendance process?",
+    "How do statutory PF & ESIC deposits work?",
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPromptIdx((prev) => (prev + 1) % PROMPTS.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [PROMPTS.length]);
+
+  const handleAskSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!askQuery.trim()) return;
+
+    const qLower = askQuery.toLowerCase();
+    if (qLower.includes("fast") || qLower.includes("deploy") || qLower.includes("time") || qLower.includes("sla")) {
+      setAiResponse("Verified workers are dispatched within 2 to 24 hours depending on batch size. Emergency 2-hour backup worker replacement is guaranteed.");
+    } else if (qLower.includes("kyc") || qLower.includes("aadhaar") || qLower.includes("police") || qLower.includes("verify")) {
+      setAiResponse("100% of tradesmen undergo government Aadhaar biometric KYC and prior contractor performance rating before dispatch.");
+    } else if (qLower.includes("attendance") || qLower.includes("biometric") || qLower.includes("muster") || qLower.includes("app")) {
+      setAiResponse("DLC Thekedar app records biometric face and fingerprint attendance on-site with GPS geofencing, automatically compiling daily muster rolls.");
+    } else if (qLower.includes("pf") || qLower.includes("esic") || qLower.includes("compliance") || qLower.includes("bocw") || qLower.includes("gst")) {
+      setAiResponse("We provide full statutory compliance: consolidated GST invoices, PF/ESIC deposits, and BOCW welfare documentation with 1-click export.");
+    } else {
+      setAiResponse("We received your question! Our site coordinator is available right now on +91 7070999175 to assist with your project manpower needs.");
+    }
+  };
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -382,50 +419,185 @@ export default function AboutUsPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. FREQUENTLY ASKED QUESTIONS (From Legacy Site)                          */}
+      {/* 4. FREQUENTLY ASKED QUESTIONS (Home-Styled Luxury Accordion & Assistant)  */}
       {/* ========================================================================= */}
-      <section className="w-full py-16 sm:py-20 px-4 sm:px-8 lg:px-12 max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <span className="text-xs font-black tracking-widest text-[#0C59D4] uppercase">
-            Got Questions?
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight mt-1">
-            Frequently Asked Questions
-          </h2>
-        </div>
-
-        <div className="flex flex-col space-y-3">
-          {faqs.map((faq, index) => {
-            const isOpen = openFaq === index;
-            return (
-              <div
-                key={index}
-                className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-xs"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaq(isOpen ? null : index)}
-                  className="w-full p-4 sm:p-5 text-left font-bold text-sm sm:text-base text-slate-900 flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors"
-                >
-                  <span className="flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4 text-[#0C59D4] flex-shrink-0" />
-                    <span>{faq.q}</span>
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-500 transition-transform duration-200 flex-shrink-0 ${
-                      isOpen ? "rotate-180 text-[#0C59D4]" : ""
-                    }`}
-                  />
-                </button>
-
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-slate-600 font-normal leading-relaxed border-t border-slate-100 bg-slate-50/40">
-                    {faq.a}
-                  </div>
-                )}
+      <section className="w-full bg-[#08090C] py-20 sm:py-28 border-t border-white/[0.08] relative overflow-hidden font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Top Header: Badge + Split Title & Subtitle */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 sm:mb-16">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-semibold uppercase tracking-wider mb-4">
+                <span className="text-blue-400">✦</span>
+                <span>FAQ</span>
               </div>
-            );
-          })}
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.05]">
+                Questions,<br />
+                <span className="text-white/40">answered.</span>
+              </h2>
+            </div>
+
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-md lg:pb-1 font-normal">
+              Everything you need to know about our mission, hiring verified tradesmen, KYC verification, and zero-commission worker welfare. Can&apos;t find an answer? Ask our team directly.
+            </p>
+          </div>
+
+          {/* 2-Column Main Layout: Accordion (Left) + Blue Video Card (Right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            
+            {/* Left Column: Numbered Minimalist Accordion List */}
+            <div className="lg:col-span-7 space-y-3">
+              {faqs.map((item, idx) => {
+                const isOpen = openFaq === idx;
+                const num = String(idx + 1).padStart(2, "0");
+                return (
+                  <div
+                    key={idx}
+                    className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                      isOpen
+                        ? "bg-[#14151B] border-white/15 shadow-xl"
+                        : "bg-[#0F1015]/80 border-white/5 hover:border-white/10 hover:bg-[#121319]"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setOpenFaq(isOpen ? null : idx)}
+                      className="w-full py-4.5 sm:py-5 px-5 sm:px-6 text-left flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3.5 sm:gap-4 flex-1">
+                        <span className="text-xs font-mono font-medium text-slate-500 shrink-0">
+                          {num}
+                        </span>
+                        <span
+                          style={{ color: isOpen ? "#ffffff" : "#cbd5e1" }}
+                          className="text-sm sm:text-base font-bold transition-colors"
+                        >
+                          {item.q}
+                        </span>
+                      </div>
+
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                        isOpen
+                          ? "bg-white/10 border-white/20 text-white"
+                          : "bg-white/5 border-white/5 text-slate-400"
+                      }`}>
+                        {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div
+                        style={{ color: "#94a3b8" }}
+                        className="px-5 sm:px-6 pb-5 pt-1 pl-12 sm:pl-14 text-xs sm:text-sm leading-relaxed border-t border-white/5 animate-in fade-in duration-200"
+                      >
+                        {item.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right Column: Blue Fluid Video Card with Frosted Glass Search Assistant */}
+            <div className="lg:col-span-5 lg:sticky lg:top-28">
+              <div className="relative rounded-3xl sm:rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl min-h-[460px] sm:min-h-[500px] flex items-center justify-center p-5 sm:p-7 bg-[#05060A]">
+                
+                {/* Blue Pattern Fluid Loop Video */}
+                <video
+                  src="/videos/faq-blue-pattern.mp4"
+                  poster="/images/faq-blue-poster.jpg"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                />
+
+                {/* Ambient Glow */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+
+                {/* Interactive Frosted Glass Assistant Box */}
+                <div className="relative z-10 w-full rounded-2xl bg-[#080A12]/92 backdrop-blur-2xl border border-white/15 p-5 sm:p-6 shadow-2xl">
+                  <div className="flex items-center gap-2.5 mb-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <h4 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Still have questions?
+                    </h4>
+                  </div>
+
+                  <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed mb-4">
+                    Ask DLC anything about workforce mobilization, worker KYC, attendance, or billing — or reach our team directly.
+                  </p>
+
+                  {/* Interactive Search / Ask Form */}
+                  <form onSubmit={handleAskSubmit} className="relative mb-3.5">
+                    <input
+                      type="text"
+                      value={askQuery}
+                      onChange={(e) => setAskQuery(e.target.value)}
+                      placeholder={PROMPTS[promptIdx]}
+                      className="w-full pl-3.5 pr-11 py-2.5 sm:py-3 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#0C59D4] focus:bg-white/15 transition-all"
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-1.5 top-1.5 bottom-1.5 w-8 rounded-lg bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                      aria-label="Submit question"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </form>
+
+                  {/* Quick Prompt Pill Chips */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {[
+                      "Deployment SLA?",
+                      "Aadhaar KYC?",
+                      "Biometric muster?",
+                      "PF & ESIC?",
+                    ].map((chip) => (
+                      <button
+                        type="button"
+                        key={chip}
+                        onClick={() => setAskQuery(chip)}
+                        className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer"
+                      >
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* AI / Instant Response Box */}
+                  {aiResponse && (
+                    <div className="mb-4 p-3 rounded-xl bg-blue-950/70 border border-blue-500/30 text-xs text-blue-200 animate-in fade-in duration-200 leading-relaxed">
+                      {aiResponse}
+                    </div>
+                  )}
+
+                  {/* Support Contact Footer */}
+                  <div className="flex items-center justify-between pt-3 border-t border-white/10 text-xs">
+                    <Link
+                      href="/contact"
+                      className="inline-flex items-center gap-1.5 text-white hover:text-blue-300 font-semibold transition-colors group"
+                    >
+                      <span>Contact support</span>
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                    </Link>
+                    <a
+                      href="tel:+917070999175"
+                      className="text-slate-400 hover:text-white transition-colors font-medium"
+                    >
+                      +91 7070999175
+                    </a>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
         </div>
       </section>
 
