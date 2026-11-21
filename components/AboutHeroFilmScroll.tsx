@@ -278,15 +278,17 @@ export default function AboutHeroFilmScroll() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[450vh] bg-[#EBF3FB] m-0 p-0"
+      className="relative w-full h-[220vh] sm:h-[450vh] bg-[#EBF3FB] m-0 p-0"
+      style={{
+        ['--header-height' as string]: `${headerHeight}px`,
+      }}
       aria-label="DLC Visual Journey Scroll Story"
     >
-      {/* FULL-SCREEN STICKY STAGE (Directly touches Header with 0 margin) */}
+      {/* STICKY STAGE: Strictly 16:9 on mobile (0 empty dead space); Full-viewport on desktop */}
       <div
-        className="sticky w-full overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start sm:justify-center"
+        className="sticky w-full overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start sm:justify-center aspect-[16/9] sm:aspect-auto sm:h-[calc(100vh-var(--header-height))]"
         style={{
           top: `${headerHeight}px`,
-          height: `calc(100vh - ${headerHeight}px)`,
         }}
       >
         {/* Soft Background Morning Atmosphere */}
@@ -294,10 +296,8 @@ export default function AboutHeroFilmScroll() {
 
         {/* =================================================================== */}
         {/* 16:9 CINEMATIC STAGE: Identical 16:9 Ratio on Mobile & Desktop     */}
-        {/* Mobile: Strictly locked to aspect-[16/9] for complete wide scene  */}
-        {/* Desktop: Full-bleed edge-to-edge stage (sm:aspect-auto sm:h-full) */}
         {/* =================================================================== */}
-        <div className="relative w-full aspect-[16/9] sm:aspect-auto sm:h-full overflow-hidden shrink-0">
+        <div className="relative w-full h-full overflow-hidden shrink-0">
           
           {/* STACKED 6 SCENE FRAMES */}
           {SCENES.map((scene, idx) => {
@@ -368,13 +368,13 @@ export default function AboutHeroFilmScroll() {
           {/* =============================================================== */}
           {progress >= 0.72 && (
             <div
-              className="absolute inset-x-0 bottom-16 sm:bottom-20 z-30 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-300"
+              className="absolute inset-x-0 top-2.5 sm:top-auto sm:bottom-20 z-30 flex items-center justify-center p-2 sm:p-3 pointer-events-auto transition-opacity duration-300"
               style={{
                 opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
               }}
             >
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-2xl max-w-lg w-full flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-                <div>
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-xl max-w-lg w-auto sm:w-full flex items-center justify-between gap-2.5 sm:gap-4">
+                <div className="hidden sm:block">
                   <h4 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
                     <span>Ready to Deploy or Work?</span>
                     <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
@@ -384,22 +384,22 @@ export default function AboutHeroFilmScroll() {
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                   <a
                     href="https://play.google.com/store/apps"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[11px] uppercase tracking-wider shadow-md transition-all active:scale-95"
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
                   >
-                    <Download className="w-3.5 h-3.5" />
+                    <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
                     <span>Get App</span>
                   </a>
                   <a
                     href="https://onboarding.digitallabourchowk.com/login"
-                    className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] transition-colors"
+                    className="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[10px] sm:text-[11px] transition-colors"
                   >
                     <span>Web Portal</span>
-                    <ArrowRight className="w-3 h-3" />
+                    <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                   </a>
                 </div>
               </div>
@@ -409,13 +409,13 @@ export default function AboutHeroFilmScroll() {
           {/* =============================================================== */}
           {/* FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR                   */}
           {/* =============================================================== */}
-          <div className="absolute inset-x-0 bottom-3 sm:bottom-6 z-30 flex flex-col items-center px-3 sm:px-6 pointer-events-none">
-            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-4 py-2 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-2.5 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
-              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                <span className="text-[10px] sm:text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-2 py-0.5 rounded shrink-0">
+          <div className="absolute inset-x-0 bottom-2 sm:bottom-6 z-30 flex flex-col items-center px-2.5 sm:px-6 pointer-events-none">
+            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-3 py-1.5 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-2 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
+              <div className="flex items-center gap-1.5 sm:gap-2.5 min-w-0">
+                <span className="text-[9px] sm:text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-1.5 sm:px-2 py-0.5 rounded shrink-0">
                   0{activeScene + 1}/06
                 </span>
-                <p className="text-[11px] sm:text-xs md:text-sm font-medium text-slate-200 truncate">
+                <p className="text-[10px] sm:text-xs md:text-sm font-medium text-slate-200 truncate">
                   {SCENES[activeScene].storyLine}
                 </p>
               </div>
@@ -428,7 +428,7 @@ export default function AboutHeroFilmScroll() {
                     type="button"
                     onClick={() => scrollToScene(idx)}
                     className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                      activeScene === idx ? "w-4 sm:w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
+                      activeScene === idx ? "w-3.5 sm:w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
                     }`}
                     aria-label={`Jump to scene ${idx + 1}`}
                   />
