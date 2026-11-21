@@ -82,7 +82,7 @@ export const BOOK_SLIDES: BookSlide[] = [
     authorRole: "Chief Technology Officer",
     profileLink: "/about-us/leadership",
     palette: {
-      bg: "#0F172A", // Slate Navy
+      bg: "#0F172A", // Slate Navy 0F172A
       text: "#FFFFFF",
       wordmarkColor: "rgba(56, 189, 248, 0.15)",
       accent: "#38BDF8", // Cyan
@@ -752,8 +752,9 @@ export default function LeadershipBookCarousel() {
                   }`}
                 >
                   <span
-                    className="w-2 h-2 rounded-full"
-                    style={{ backgroundColor: slide.palette.bg }}
+                    className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                      isActive ? "bg-sky-400" : "bg-white/30"
+                    }`}
                   />
                   <span>{slide.tabLabel}</span>
                 </button>
@@ -761,8 +762,8 @@ export default function LeadershipBookCarousel() {
             })}
           </div>
 
-          {/* Miniature Circular Preview Dots (Matching reference site bottom dots) */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10">
+          {/* Minimalist Monochrome Pagination Dots (Clean Neutral Indicators) */}
+          <div className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-xs">
             {BOOK_SLIDES.map((slide, idx) => {
               const isActive = currentIdx === idx;
               return (
@@ -772,17 +773,12 @@ export default function LeadershipBookCarousel() {
                   onClick={() => triggerFlip(idx > currentIdx ? "next" : "prev", idx)}
                   disabled={isFlipping}
                   aria-label={`Flip to ${slide.tabLabel}`}
-                  className={`rounded-full transition-all duration-300 flex items-center justify-center cursor-pointer ${
+                  className={`transition-all duration-300 rounded-full cursor-pointer ${
                     isActive
-                      ? "w-7 h-7 scale-125 ring-2 ring-white shadow-lg"
-                      : "w-5 h-5 opacity-60 hover:opacity-100"
+                      ? "w-7 h-2.5 bg-white shadow-[0_0_12px_rgba(255,255,255,0.7)]"
+                      : "w-2.5 h-2.5 bg-white/25 hover:bg-white/50"
                   }`}
-                  style={{ backgroundColor: slide.palette.bg }}
-                >
-                  {isActive && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-white animate-ping" />
-                  )}
-                </button>
+                />
               );
             })}
           </div>
