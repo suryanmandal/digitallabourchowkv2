@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import AboutHeroFilmScroll from "@/components/AboutHeroFilmScroll";
 import LeadershipBookCarousel from "@/components/LeadershipBookCarousel";
+import CompanyArchitectureGrid from "@/components/CompanyArchitectureGrid";
 import {
   Sparkles,
   ArrowRight,
@@ -337,62 +338,9 @@ export default function AboutUsPage() {
       <LeadershipBookCarousel />
 
       {/* ========================================================================= */}
-      {/* 4. EXPLORE THE 8 SUBPAGES OF ABOUT US                                     */}
+      {/* 4. COMPANY ARCHITECTURE: 8 UNIFIED PILLARS (Continuous Contour Flow)      */}
       {/* ========================================================================= */}
-      <section className="w-full py-16 bg-white border-y border-slate-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 lg:px-12">
-          
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs font-black tracking-widest text-[#0C59D4] uppercase">
-              Company Architecture
-            </span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight mt-1">
-              Explore Our Core Foundations
-            </h2>
-            <p className="text-sm text-slate-600 mt-2 font-normal">
-              Dive deeper into our history, values, leadership team, national presence, and awards.
-            </p>
-          </div>
-
-          {/* 8 Grid Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {subPages.map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <Link
-                  key={idx}
-                  href={item.href}
-                  className="group bg-slate-50 hover:bg-white rounded-xl p-6 border border-slate-200/80 hover:border-[#0C59D4]/40 hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="w-10 h-10 rounded-lg bg-blue-50 group-hover:bg-[#0C59D4] text-[#0C59D4] group-hover:text-white flex items-center justify-center transition-colors">
-                        <Icon className="w-5 h-5" />
-                      </div>
-                      <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 rounded-full bg-slate-200/60 text-slate-700">
-                        {item.tag}
-                      </span>
-                    </div>
-
-                    <h3 className="text-base font-bold text-slate-900 group-hover:text-[#0C59D4] transition-colors mb-1.5">
-                      {item.title}
-                    </h3>
-                    <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                      {item.desc}
-                    </p>
-                  </div>
-
-                  <div className="mt-5 pt-3 border-t border-slate-200/60 flex items-center text-xs font-bold text-[#0C59D4] group-hover:translate-x-1 transition-transform">
-                    <span>Learn More</span>
-                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-
-        </div>
-      </section>
+      <CompanyArchitectureGrid />
 
       {/* ========================================================================= */}
       {/* 4. FREQUENTLY ASKED QUESTIONS (Home-Styled Luxury Accordion & Assistant)  */}
