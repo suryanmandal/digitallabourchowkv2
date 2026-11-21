@@ -412,7 +412,7 @@ export default function AboutHeroFilmScroll() {
           <button
             type="button"
             onClick={() => scrollToScene((activeScene - 1 + SCENES.length) % SCENES.length)}
-            className="sm:hidden absolute left-2 top-1/2 -translate-y-1/2 z-35 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md cursor-pointer"
+            className="sm:hidden absolute left-2 top-1/2 -translate-y-1/2 z-40 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md cursor-pointer"
             aria-label="Previous scene"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -420,7 +420,7 @@ export default function AboutHeroFilmScroll() {
           <button
             type="button"
             onClick={() => scrollToScene((activeScene + 1) % SCENES.length)}
-            className="sm:hidden absolute right-2 top-1/2 -translate-y-1/2 z-35 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md cursor-pointer"
+            className="sm:hidden absolute right-2 top-1/2 -translate-y-1/2 z-40 w-7 h-7 rounded-full bg-black/45 backdrop-blur-xs text-white flex items-center justify-center border border-white/20 active:scale-90 transition-transform shadow-md cursor-pointer"
             aria-label="Next scene"
           >
             <ChevronRight className="w-4 h-4" />
@@ -462,20 +462,20 @@ export default function AboutHeroFilmScroll() {
           {/* READY TO DEPLOY: Overlays at bottom of main section in last scene */}
           {/* Present in both phone and desktop previews                      */}
           {/* =============================================================== */}
-          {progress >= 0.72 && (
+          {(activeScene >= 4 || progress >= 0.70) && (
             <div
-              className="absolute inset-x-2 sm:inset-x-0 bottom-10 sm:bottom-20 z-35 flex items-center justify-center p-0.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
+              className="absolute inset-x-2 sm:inset-x-0 bottom-11 sm:bottom-22 z-40 flex items-center justify-center p-0.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
               style={{
-                opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
+                opacity: activeScene >= 4 || progress >= 0.75 ? 1 : Math.min(1, (progress - 0.70) / 0.05),
               }}
             >
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 shadow-xl max-w-lg w-full flex items-center justify-between gap-2 sm:gap-4">
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-2xl max-w-lg w-full flex items-center justify-between gap-2.5 sm:gap-4">
                 <div className="min-w-0">
-                  <h4 className="text-[10px] sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1 sm:gap-1.5 truncate">
+                  <h4 className="text-[11px] sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1 sm:gap-1.5 truncate">
                     <span>Ready to Deploy?</span>
-                    <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-600 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                   </h4>
-                  <p className="text-[8px] sm:text-[11px] text-slate-500 font-medium truncate">
+                  <p className="text-[9px] sm:text-[11px] text-slate-500 font-medium truncate mt-0.5">
                     Join 350,000+ workers
                   </p>
                 </div>
@@ -485,14 +485,14 @@ export default function AboutHeroFilmScroll() {
                     href="https://play.google.com/store/apps"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[9px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
+                    className="inline-flex items-center gap-1 sm:gap-1.5 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-wider shadow-sm transition-all active:scale-95"
                   >
-                    <Download className="w-2.5 h-2.5 sm:w-3.5 sm:h-3.5" />
-                    <span>Get App</span>
+                    <Download className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+                    <span>GET APP</span>
                   </a>
                   <a
                     href="https://onboarding.digitallabourchowk.com/login"
-                    className="inline-flex items-center gap-1 px-2 sm:px-3 py-1 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[9px] sm:text-[11px] transition-colors"
+                    className="inline-flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-lg sm:rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[10px] sm:text-[11px] transition-colors"
                   >
                     <span>Portal</span>
                     <ArrowRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
