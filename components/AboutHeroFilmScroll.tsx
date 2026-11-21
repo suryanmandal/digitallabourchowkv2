@@ -259,10 +259,12 @@ export default function AboutHeroFilmScroll() {
   const opacities = getSceneOpacities(progress);
 
   // ---------------------------------------------------------------------------
-  // 4. SCENE 1 BRAND TITLE: Completely visible ONLY in Scene 1 at rest (p < 0.008)
-  // Becomes invisible INSTANTLY as soon as scrolling starts
+  // 4. SCENE 1 BRAND TITLE: Prominently visible in Scene 1; smoothly vanishes upon scrolling towards Scene 2
   // ---------------------------------------------------------------------------
-  const isScene1TextVisible = progress < 0.008;
+  // Fully visible when at rest in Scene 1 (progress <= 0.02).
+  // Smoothly fades out as user scrolls, completely vanishing by progress = 0.08.
+  const scene1TextOpacity = activeScene === 0 ? Math.max(0, 1 - progress / 0.08) : 0;
+  const isScene1TextVisible = scene1TextOpacity > 0.001;
 
   // Jump to specific scene dot
   const scrollToScene = (sceneIdx: number) => {
@@ -315,7 +317,7 @@ export default function AboutHeroFilmScroll() {
                   alt={scene.alt}
                   fill
                   priority={idx <= 1}
-                  quality={90}
+                  quality={75}
                   sizes="100vw"
                   className="object-cover object-top select-none w-full h-full"
                 />
@@ -333,23 +335,29 @@ export default function AboutHeroFilmScroll() {
           {/* SCENE 1 BRAND TITLE: "Digital Labour Chowk" + Short Single Punchline */}
           {/* =============================================================== */}
           {isScene1TextVisible && (
-            <div className="absolute inset-y-0 left-0 w-full sm:w-[58%] lg:w-[48%] p-6 sm:p-12 lg:p-16 flex flex-col justify-center z-25 pointer-events-none transition-opacity duration-150">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-2.5 sm:mb-3 shadow-xs w-fit">
+            <div
+              className="absolute inset-y-0 left-0 w-full sm:w-[58%] lg:w-[48%] p-6 sm:p-12 lg:p-16 flex flex-col justify-center pointer-events-none transition-opacity duration-150"
+              style={{
+                zIndex: 40,
+                opacity: scene1TextOpacity,
+              }}
+            >
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/95 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-2.5 sm:mb-3.5 shadow-sm w-fit">
                 <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
                 <span>One Nation • One Labour Chowk</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08] mb-2 sm:mb-3 drop-shadow-xs">
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black text-slate-900 tracking-tight leading-[1.05] mb-2.5 sm:mb-3 drop-shadow-sm">
                 Digital Labour <span className="text-[#0C59D4]">Chowk</span>
               </h1>
 
               {/* Short Single Punchline */}
-              <p className="text-sm sm:text-base md:text-lg font-bold text-slate-700 tracking-tight leading-snug max-w-md">
+              <p className="text-base sm:text-xl lg:text-2xl font-black text-slate-800 tracking-tight leading-snug max-w-md drop-shadow-xs">
                 India&apos;s 1st Digital Construction Workforce Platform.
               </p>
 
-              <div className="mt-4 sm:mt-5 inline-flex items-center gap-2 text-xs font-bold text-[#0C59D4] bg-white/90 backdrop-blur-sm px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-blue-200 shadow-xs w-fit">
-                <span>Scroll to play story</span>
+              <div className="mt-5 sm:mt-6 inline-flex items-center gap-2 text-xs font-bold text-[#0C59D4] bg-white/95 backdrop-blur-sm px-4 py-2 rounded-xl border border-blue-200 shadow-sm w-fit">
+                <span>Scroll to explore</span>
                 <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
               </div>
             </div>
