@@ -3,7 +3,7 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, ChevronDown, Download, Smartphone, Sparkles, CheckCircle2 } from "lucide-react";
+import { ArrowRight, ChevronDown, Download, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface SceneMeta {
   id: number;
@@ -77,6 +77,20 @@ export default function AboutHeroFilmScroll() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [progress, setProgress] = useState(0);
   const [activeScene, setActiveScene] = useState(0);
+  const [headerHeight, setHeaderHeight] = useState(105);
+
+  // Measure dynamic site header height to eliminate any margin between header and film
+  useEffect(() => {
+    const updateHeaderHeight = () => {
+      const headerEl = document.querySelector("header");
+      if (headerEl) {
+        setHeaderHeight(headerEl.getBoundingClientRect().height);
+      }
+    };
+    updateHeaderHeight();
+    window.addEventListener("resize", updateHeaderHeight);
+    return () => window.removeEventListener("resize", updateHeaderHeight);
+  }, []);
 
   // ---------------------------------------------------------------------------
   // 1. SCROLL PROGRESS ENGINE (Smooth RAF Tracking)
@@ -114,7 +128,7 @@ export default function AboutHeroFilmScroll() {
   }, []);
 
   // ---------------------------------------------------------------------------
-  // 2. BLOWING LEAVES PARTICLE SYSTEM (Inspired by scene1.gif)
+  // 2. BLOWING LEAVES PARTICLE SYSTEM (Active ONLY during Scene 1)
   // ---------------------------------------------------------------------------
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -138,7 +152,6 @@ export default function AboutHeroFilmScroll() {
     const NUM_LEAVES = 28;
 
     const spawnLeaf = (resetAnywhere = false): Leaf => {
-      // Spawn predominantly from the tree area in top-right (x: 55% - 98%, y: 0% - 35%)
       const startX = resetAnywhere
         ? Math.random() * width
         : width * 0.55 + Math.random() * (width * 0.45);
@@ -150,8 +163,8 @@ export default function AboutHeroFilmScroll() {
         x: startX,
         y: startY,
         size: 7 + Math.random() * 8,
-        vx: -(1.2 + Math.random() * 1.6), // Drift towards left
-        vy: 0.8 + Math.random() * 1.3, // Fall down
+        vx: -(1.2 + Math.random() * 1.6),
+        vy: 0.8 + Math.random() * 1.3,
         rotation: Math.random() * Math.PI * 2,
         vRot: (Math.random() - 0.5) * 0.05,
         flip: Math.random() * Math.PI,
@@ -170,35 +183,29 @@ export default function AboutHeroFilmScroll() {
       time += 0.02;
       ctx.clearRect(0, 0, width, height);
 
-      // Leaves are most prominent during Scenes 1 - 4 (the tree chowk scenes)
-      // They gently fade as scene 5 & 6 take over
-      const globalLeafOpacity = progress < 0.7 ? 1 : Math.max(0, 1 - (progress - 0.7) / 0.15);
+      // Leaves blow ONLY in Scene 1 (progress <= 0.12), fading completely to 0 by progress 0.18
+      const globalLeafOpacity = progress <= 0.12 ? 1 : Math.max(0, 1 - (progress - 0.12) / 0.06);
 
       if (globalLeafOpacity > 0.01) {
         for (let i = 0; i < leaves.length; i++) {
           const l = leaves[i];
 
-          // Gentle sinusoidal breeze sway
           l.x += l.vx + Math.sin(time + l.flip) * 0.9;
           l.y += l.vy;
           l.rotation += l.vRot;
           l.flip += l.vFlip;
 
-          // Recycle when out of bounds
           if (l.y > height + 30 || l.x < -30) {
             leaves[i] = spawnLeaf(false);
             continue;
           }
 
-          // Draw realistic botanical leaf with 3D flip transform
           ctx.save();
           ctx.translate(l.x, l.y);
           ctx.rotate(l.rotation);
-          // ScaleX by cos(flip) creates a tranquil 3D tumbling effect
           ctx.scale(Math.cos(l.flip), 1);
           ctx.globalAlpha = l.opacity * globalLeafOpacity;
 
-          // Leaf shape
           ctx.beginPath();
           const s = l.size;
           ctx.moveTo(0, -s);
@@ -207,7 +214,6 @@ export default function AboutHeroFilmScroll() {
           ctx.fillStyle = l.color;
           ctx.fill();
 
-          // Leaf vein
           ctx.beginPath();
           ctx.moveTo(0, -s * 0.85);
           ctx.lineTo(0, s * 0.95);
@@ -231,8 +237,7 @@ export default function AboutHeroFilmScroll() {
   }, [progress]);
 
   // ---------------------------------------------------------------------------
-  // 3. ZERO-FLICKER CROSSFADE OPACITY CALCULATION
-  // Sum of crossfading adjacent scenes is strictly 1.0 (Zero dip, zero black)
+  // 3. ZERO-FLICKER MATHEMATICAL CROSSFADE
   // ---------------------------------------------------------------------------
   const getSceneOpacities = useCallback((p: number) => {
     const num = SCENES.length;
@@ -244,7 +249,6 @@ export default function AboutHeroFilmScroll() {
     if (base >= num - 1) {
       opacities[num - 1] = 1;
     } else {
-      // Smooth cosine easing
       const ease = (1 - Math.cos(frac * Math.PI)) / 2;
       opacities[base] = 1 - ease;
       opacities[base + 1] = ease;
@@ -255,13 +259,10 @@ export default function AboutHeroFilmScroll() {
   const opacities = getSceneOpacities(progress);
 
   // ---------------------------------------------------------------------------
-  // 4. SCENE 1 BRAND TITLE WIPE-OUT (Slides left & fades out as user scrolls)
+  // 4. SCENE 1 BRAND TITLE: Completely visible ONLY in Scene 1 at rest (p < 0.008)
+  // Becomes invisible INSTANTLY as soon as scrolling starts
   // ---------------------------------------------------------------------------
-  // Fully visible when p < 0.04. Smoothly slides left and wipes out by p = 0.18
-  const wipeProgress = Math.max(0, Math.min(1, (progress - 0.03) / 0.14));
-  const scene1TextOpacity = Math.max(0, 1 - wipeProgress);
-  const scene1TextTranslateX = -wipeProgress * 65; // Shift left 65px as it wipes out
-  const isScene1TextVisible = scene1TextOpacity > 0.01;
+  const isScene1TextVisible = progress < 0.008;
 
   // Jump to specific scene dot
   const scrollToScene = (sceneIdx: number) => {
@@ -275,207 +276,166 @@ export default function AboutHeroFilmScroll() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[450vh] bg-[#0A0E17]"
+      className="relative w-full h-[450vh] bg-[#EBF3FB] m-0 p-0"
       aria-label="DLC Visual Journey Scroll Story"
     >
-      {/* STICKY FULL-VIEWPORT STAGE */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center bg-[#EBF3FB] select-none">
-        
+      {/* FULL-SCREEN STICKY STAGE (Directly touches Header with 0 margin) */}
+      <div
+        className="sticky w-full overflow-hidden select-none bg-[#EBF3FB] flex flex-col justify-start sm:justify-center"
+        style={{
+          top: `${headerHeight}px`,
+          height: `calc(100vh - ${headerHeight}px)`,
+        }}
+      >
         {/* Soft Background Morning Atmosphere */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#E2EFFB] via-[#EAF3FA] to-[#DCEBFA] pointer-events-none" />
 
         {/* =================================================================== */}
-        {/* TOP BRAND NAV BAR (Minimalist Glass Strip)                           */}
+        {/* FULL-SCREEN FILM STAGE (Horizontally stretched, cuts lower bottom)  */}
+        {/* Mobile: Full-width aspect-ratio preserving composition identical to desktop */}
+        {/* Desktop: Edge-to-edge full viewport stage */}
         {/* =================================================================== */}
-        <div className="absolute top-4 sm:top-6 left-4 sm:left-8 right-4 sm:right-8 z-30 flex items-center justify-between pointer-events-auto">
-          {/* Breadcrumb Pill */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-xs text-xs font-semibold text-slate-700">
-            <Link href="/" className="hover:text-[#0C59D4] transition-colors">Home</Link>
-            <span className="text-slate-400">/</span>
-            <span className="text-[#0C59D4] font-bold">About Us</span>
-            <span className="text-slate-300">•</span>
-            <span className="text-[11px] text-slate-500 uppercase tracking-wider font-mono">
-              The Film
-            </span>
-          </div>
-
-          {/* Scene Progress Indicator Pills */}
-          <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/80 backdrop-blur-md border border-slate-200/80 shadow-xs">
-            {SCENES.map((s, idx) => {
-              const isCurrent = activeScene === idx;
-              return (
-                <button
-                  type="button"
-                  key={s.id}
-                  onClick={() => scrollToScene(idx)}
-                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                    isCurrent
-                      ? "w-7 bg-[#0C59D4]"
-                      : "w-2 bg-slate-300 hover:bg-slate-400"
-                  }`}
-                  aria-label={`Jump to ${s.actTitle}`}
-                  title={s.actTitle}
+        <div className="relative w-full h-full overflow-hidden">
+          
+          {/* STACKED 6 SCENE FRAMES */}
+          {SCENES.map((scene, idx) => {
+            const op = opacities[idx];
+            return (
+              <div
+                key={scene.id}
+                className="absolute inset-0 w-full h-full will-change-transform"
+                style={{
+                  opacity: op,
+                  pointerEvents: op > 0.5 ? "auto" : "none",
+                  zIndex: Math.round(op * 10),
+                }}
+              >
+                <Image
+                  src={scene.img}
+                  alt={scene.alt}
+                  fill
+                  priority={idx <= 1}
+                  quality={90}
+                  sizes="100vw"
+                  className="object-cover object-top select-none w-full h-full"
                 />
-              );
-            })}
-            <span className="text-[11px] font-mono font-bold text-slate-600 ml-2">
-              0{activeScene + 1} / 06
-            </span>
-          </div>
-        </div>
+              </div>
+            );
+          })}
 
-        {/* =================================================================== */}
-        {/* 16:9 WIDESCREEN CINEMATIC STAGE (The Film Viewport)                 */}
-        {/* =================================================================== */}
-        <div className="relative w-full max-w-[1400px] h-full max-h-[78vh] sm:max-h-[82vh] aspect-[16/9] mx-auto sm:px-6 flex items-center justify-center">
-          
-          <div className="relative w-full h-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-slate-300/60 bg-[#E8F2FA]">
-            
-            {/* STACKED 6 SCENE FRAMES (Absolute overlay with mathematical crossfade) */}
-            {SCENES.map((scene, idx) => {
-              const op = opacities[idx];
-              return (
-                <div
-                  key={scene.id}
-                  className="absolute inset-0 w-full h-full will-change-transform"
-                  style={{
-                    opacity: op,
-                    pointerEvents: op > 0.5 ? "auto" : "none",
-                    zIndex: Math.round(op * 10),
-                  }}
-                >
-                  <Image
-                    src={scene.img}
-                    alt={scene.alt}
-                    fill
-                    priority={idx <= 1}
-                    quality={88}
-                    sizes="(max-width: 1400px) 100vw, 1400px"
-                    className="object-cover object-center select-none"
+          {/* CANVAS OVERLAY: Calming Wind-Blown Leaves Simulation (Scene 1 Only) */}
+          <canvas
+            ref={canvasRef}
+            className="absolute inset-0 w-full h-full pointer-events-none z-20"
+          />
+
+          {/* =============================================================== */}
+          {/* SCENE 1 BRAND TITLE: Visible ONLY in Scene 1, instantly vanishes upon scroll */}
+          {/* =============================================================== */}
+          {isScene1TextVisible && (
+            <div className="absolute inset-y-0 left-0 w-full sm:w-[58%] lg:w-[48%] p-6 sm:p-12 lg:p-16 flex flex-col justify-center z-25 pointer-events-none transition-opacity duration-150">
+              {/* Brand Category Tag */}
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-2.5 sm:mb-3.5 shadow-xs w-fit">
+                <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
+                <span>India&apos;s 1st Construction Workforce Platform</span>
+              </div>
+
+              {/* Primary Hero Title */}
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08] mb-2 sm:mb-3 drop-shadow-xs">
+                Digital Labour <span className="text-[#0C59D4]">Chowk</span>
+              </h1>
+
+              {/* Brand Moniker / Motto */}
+              <p className="text-xs sm:text-sm md:text-base font-bold text-slate-700 tracking-wide uppercase mb-2 sm:mb-2.5 flex items-center gap-2">
+                <span className="w-5 sm:w-6 h-[2px] bg-[#0C59D4]" />
+                <span>One Nation • One Labour Chowk</span>
+              </p>
+
+              {/* Contextual Narrative Paragraph */}
+              <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal max-w-lg mb-4 sm:mb-5 drop-shadow-xs">
+                Replacing roadside uncertainty with dignity, speed, and trust. 
+                Every morning, millions gather at physical chowks—DLC brings them directly to verified projects.
+              </p>
+
+              {/* Animated Scroll Down Prompt */}
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#0C59D4] bg-white/90 backdrop-blur-sm px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-xl border border-blue-200 shadow-xs w-fit">
+                <span>Scroll down to play the story</span>
+                <ChevronDown className="w-3.5 h-3.5 animate-bounce" />
+              </div>
+            </div>
+          )}
+
+          {/* =============================================================== */}
+          {/* SCENES 5 & 6 INTERACTIVE APP DOWNLOAD / CTA OVERLAY             */}
+          {/* =============================================================== */}
+          {progress >= 0.72 && (
+            <div
+              className="absolute inset-x-0 bottom-16 sm:bottom-20 z-30 flex items-center justify-center p-3 pointer-events-auto transition-opacity duration-300"
+              style={{
+                opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
+              }}
+            >
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl p-3.5 sm:p-4 shadow-2xl max-w-lg w-full flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+                <div>
+                  <h4 className="text-xs sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1.5">
+                    <span>Ready to Deploy or Work?</span>
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                  </h4>
+                  <p className="text-[10px] sm:text-[11px] text-slate-500 font-medium">
+                    Join 350,000+ verified workers and 20,000+ contractors on DLC.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <a
+                    href="https://play.google.com/store/apps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-[11px] uppercase tracking-wider shadow-md transition-all active:scale-95"
+                  >
+                    <Download className="w-3.5 h-3.5" />
+                    <span>Get App</span>
+                  </a>
+                  <a
+                    href="https://onboarding.digitallabourchowk.com/login"
+                    className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-[11px] transition-colors"
+                  >
+                    <span>Web Portal</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* =============================================================== */}
+          {/* FLOATING BOTTOM STORY SUBTITLE & PROGRESS BAR                   */}
+          {/* =============================================================== */}
+          <div className="absolute inset-x-0 bottom-3 sm:bottom-6 z-30 flex flex-col items-center px-3 sm:px-6 pointer-events-none">
+            <div className="bg-[#080C16]/88 backdrop-blur-md border border-white/15 text-white rounded-full px-4 py-2 sm:px-6 sm:py-2.5 shadow-2xl flex items-center gap-2.5 sm:gap-4 max-w-2xl w-full justify-between pointer-events-auto">
+              <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <span className="text-[10px] sm:text-xs font-mono font-bold text-blue-400 uppercase tracking-wider bg-blue-500/20 border border-blue-400/30 px-2 py-0.5 rounded shrink-0">
+                  0{activeScene + 1}/06
+                </span>
+                <p className="text-[11px] sm:text-xs md:text-sm font-medium text-slate-200 truncate">
+                  {SCENES[activeScene].storyLine}
+                </p>
+              </div>
+
+              {/* Scene jump dots */}
+              <div className="flex items-center gap-1 sm:gap-1.5 shrink-0">
+                {SCENES.map((s, idx) => (
+                  <button
+                    key={s.id}
+                    type="button"
+                    onClick={() => scrollToScene(idx)}
+                    className={`h-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                      activeScene === idx ? "w-4 sm:w-5 bg-blue-400" : "w-1.5 bg-white/30 hover:bg-white/60"
+                    }`}
+                    aria-label={`Jump to scene ${idx + 1}`}
                   />
-                </div>
-              );
-            })}
-
-            {/* CANVAS OVERLAY: Calming Wind-Blown Leaves Simulation */}
-            <canvas
-              ref={canvasRef}
-              className="absolute inset-0 w-full h-full pointer-events-none z-20"
-            />
-
-            {/* =============================================================== */}
-            {/* SCENE 1 OVERLAY: "Digital Labour Chowk" Typography (Wipes Out)    */}
-            {/* =============================================================== */}
-            {isScene1TextVisible && (
-              <div
-                className="absolute inset-y-0 left-0 w-full md:w-[54%] p-6 sm:p-10 lg:p-14 flex flex-col justify-center z-25 pointer-events-none will-change-transform"
-                style={{
-                  opacity: scene1TextOpacity,
-                  transform: `translateX(${scene1TextTranslateX}px)`,
-                  transition: "opacity 0.05s linear",
-                }}
-              >
-                {/* Brand Category Tag */}
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-blue-200/80 text-[#0C59D4] text-[11px] sm:text-xs font-black uppercase tracking-wider mb-3 sm:mb-4 shadow-xs w-fit">
-                  <Sparkles className="w-3.5 h-3.5 text-[#0C59D4]" />
-                  <span>India&apos;s 1st Construction Workforce Platform</span>
-                </div>
-
-                {/* Primary Hero Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 tracking-tight leading-[1.08] mb-3 sm:mb-4 drop-shadow-xs">
-                  Digital Labour <span className="text-[#0C59D4]">Chowk</span>
-                </h1>
-
-                {/* Brand Moniker / Motto */}
-                <p className="text-xs sm:text-sm md:text-base font-bold text-slate-700 tracking-wide uppercase mb-3 flex items-center gap-2">
-                  <span className="w-6 h-[2px] bg-[#0C59D4]" />
-                  <span>One Nation • One Labour Chowk</span>
-                </p>
-
-                {/* Contextual Narrative Paragraph */}
-                <p className="text-xs sm:text-sm md:text-base text-slate-600 leading-relaxed font-normal max-w-lg mb-6 drop-shadow-xs">
-                  Replacing roadside uncertainty with dignity, speed, and trust. 
-                  Every morning, millions gather at physical chowks—DLC brings them directly to verified projects.
-                </p>
-
-                {/* Animated Scroll Down Prompt */}
-                <div className="inline-flex items-center gap-2 text-xs font-bold text-[#0C59D4] bg-white/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-blue-200 shadow-xs w-fit animate-pulse">
-                  <span>Scroll down to play the story</span>
-                  <ChevronDown className="w-4 h-4 animate-bounce" />
-                </div>
+                ))}
               </div>
-            )}
-
-            {/* =============================================================== */}
-            {/* SCENES 5 & 6 INTERACTIVE APP DOWNLOAD / CTA OVERLAY             */}
-            {/* =============================================================== */}
-            {progress >= 0.72 && (
-              <div
-                className="absolute inset-x-0 bottom-4 sm:bottom-6 z-30 flex items-center justify-center p-3 sm:p-4 pointer-events-auto transition-all duration-300"
-                style={{
-                  opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
-                }}
-              >
-                <div className="bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl p-4 sm:p-5 shadow-2xl max-w-xl w-full flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div>
-                    <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight flex items-center gap-1.5">
-                      <span>Ready to Deploy or Work?</span>
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                    </h4>
-                    <p className="text-[11px] sm:text-xs text-slate-500 font-medium">
-                      Join 350,000+ verified workers and 20,000+ contractors on DLC today.
-                    </p>
-                  </div>
-
-                  <div className="flex items-center gap-2 shrink-0">
-                    <a
-                      href="https://play.google.com/store/apps"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider shadow-md hover:shadow-lg transition-all active:scale-95"
-                    >
-                      <Download className="w-3.5 h-3.5" />
-                      <span>Get App</span>
-                    </a>
-                    <a
-                      href="https://onboarding.digitallabourchowk.com/login"
-                      className="inline-flex items-center gap-1 px-3.5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
-                    >
-                      <span>Web Portal</span>
-                      <ArrowRight className="w-3 h-3" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            )}
-
-          </div>
-
-        </div>
-
-        {/* =================================================================== */}
-        {/* BOTTOM STORY SUBTITLE STRIP (Calm, Informative Narrative Caption)  */}
-        {/* =================================================================== */}
-        <div className="w-full max-w-[1400px] mx-auto px-4 sm:px-6 pt-3 sm:pt-4 pb-2 z-25 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
-          
-          {/* Current Act Badge & Story Text */}
-          <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 max-w-2xl">
-            <span className="text-[11px] font-mono font-bold text-[#0C59D4] uppercase tracking-wider bg-blue-100/80 px-2.5 py-0.5 rounded-md self-center sm:self-auto shrink-0">
-              {SCENES[activeScene].actTitle}
-            </span>
-            <p className="text-xs sm:text-[13px] text-slate-700 font-medium leading-snug">
-              {SCENES[activeScene].storyLine}
-            </p>
-          </div>
-
-          {/* Quick Scroll Indicator Hint */}
-          <div className="hidden sm:flex items-center gap-2 text-[11px] font-mono text-slate-500 shrink-0">
-            <span>Scroll progress: {Math.round(progress * 100)}%</span>
-            <div className="w-16 h-1.5 bg-slate-200 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-[#0C59D4] transition-all duration-75"
-                style={{ width: `${progress * 100}%` }}
-              />
             </div>
           </div>
 
