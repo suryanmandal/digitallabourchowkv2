@@ -459,23 +459,24 @@ export default function AboutHeroFilmScroll() {
           )}
 
           {/* =============================================================== */}
-          {/* READY TO DEPLOY: Overlays over main section in the last act/scene */}
+          {/* READY TO DEPLOY: Overlays at bottom of main section in last scene */}
+          {/* Present in both phone and desktop previews                      */}
           {/* =============================================================== */}
           {progress >= 0.72 && (
             <div
-              className="absolute inset-x-2 sm:inset-x-0 top-2 sm:top-auto sm:bottom-20 z-35 flex items-center justify-center p-0.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
+              className="absolute inset-x-2 sm:inset-x-0 bottom-10 sm:bottom-20 z-35 flex items-center justify-center p-0.5 sm:p-3 pointer-events-auto transition-opacity duration-300"
               style={{
                 opacity: progress >= 0.75 ? Math.min(1, (progress - 0.75) / 0.1) : 0,
               }}
             >
-              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-2 sm:p-4 shadow-xl max-w-lg w-full flex items-center justify-between gap-2 sm:gap-4">
+              <div className="bg-white/95 backdrop-blur-xl border border-slate-200/90 rounded-xl sm:rounded-2xl p-1.5 sm:p-4 shadow-xl max-w-lg w-full flex items-center justify-between gap-2 sm:gap-4">
                 <div className="min-w-0">
                   <h4 className="text-[10px] sm:text-sm font-black text-slate-900 tracking-tight flex items-center gap-1 sm:gap-1.5 truncate">
-                    <span>Ready to Deploy or Work?</span>
+                    <span>Ready to Deploy?</span>
                     <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-emerald-600 shrink-0" />
                   </h4>
                   <p className="text-[8px] sm:text-[11px] text-slate-500 font-medium truncate">
-                    Join 350,000+ verified workers and 20,000+ contractors on DLC.
+                    Join 350,000+ workers
                   </p>
                 </div>
 
