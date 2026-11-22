@@ -40,7 +40,7 @@ export default function ContactPage() {
     message: "",
   });
 
-  const [activeLocation, setActiveLocation] = useState<"patna" | "noida">("patna");
+  const [activeLocation, setActiveLocation] = useState<"patna" | "noida">("noida");
 
   const locations = {
     patna: {
@@ -531,6 +531,17 @@ export default function ContactPage() {
             <div className="flex items-center p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold">
               <button
                 type="button"
+                onClick={() => setActiveLocation("noida")}
+                className={`px-4 py-2 rounded-lg transition-all cursor-pointer ${
+                  activeLocation === "noida"
+                    ? "bg-[#0C59D4] text-white shadow-xs font-bold"
+                    : "text-slate-600 hover:text-slate-950"
+                }`}
+              >
+                Noida STPI Hub (NCR HQ)
+              </button>
+              <button
+                type="button"
                 onClick={() => setActiveLocation("patna")}
                 className={`px-4 py-2 rounded-lg transition-all cursor-pointer ${
                   activeLocation === "patna"
@@ -539,17 +550,6 @@ export default function ContactPage() {
                 }`}
               >
                 Patna STPI Hub
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveLocation("noida")}
-                className={`px-4 py-2 rounded-lg transition-all cursor-pointer ${
-                  activeLocation === "noida"
-                    ? "bg-[#0C59D4] text-white shadow-xs font-bold"
-                    : "text-slate-600 hover:text-slate-950"
-                }`}
-              >
-                Noida STPI Hub
               </button>
             </div>
 
