@@ -126,17 +126,32 @@ export default function ContactPage() {
 
   return (
     <div className="w-full bg-slate-50 min-h-screen">
-      {/* Hero Header */}
-      <section className="bg-gradient-to-br from-[#071329] via-[#0C59D4] to-[#0A47AD] text-white py-14 sm:py-20 px-4 sm:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-blue-200 text-xs sm:text-sm font-semibold mb-4 border border-white/10">
+      {/* Hero Header with Seamless Fluid Blue Video Background */}
+      <section className="relative overflow-hidden bg-[#071329] text-white py-16 sm:py-24 px-4 sm:px-8 border-b border-blue-900/30">
+        {/* Luminous Seamless Blue Fluid Loop Video (Zero Black Spots) */}
+        <video
+          src="/videos/contact-blue-fluid.mp4"
+          poster="/images/contact-blue-poster.jpg"
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none opacity-90"
+        />
+
+        {/* Ambient Dark Gradient Overlays for High-Contrast Text Legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071329]/60 via-[#071329]/20 to-[#071329]/80 pointer-events-none" />
+
+        {/* Hero Content */}
+        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-3">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-xl text-blue-100 text-xs sm:text-sm font-bold border border-white/20 shadow-lg">
             <HelpCircle className="w-4 h-4 text-amber-300" />
             <span>24/7 Dedicated Support</span>
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight mb-3">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-3 drop-shadow-md">
             Contact Digital Labour Chowk
           </h1>
-          <p className="text-blue-100 text-sm sm:text-base max-w-xl mx-auto">
+          <p className="text-blue-100 text-sm sm:text-base max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-sm">
             Have a project manpower requirement, need worker verification, or want to explore an institutional partnership? Reach out to our team directly.
           </p>
         </div>
