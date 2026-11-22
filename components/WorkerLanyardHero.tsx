@@ -59,11 +59,9 @@ export default function WorkerLanyardHero() {
   };
 
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#051124] via-[#071938] to-[#0a234f] text-white pt-8 pb-20 sm:pt-14 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      {/* Background Subtle Geometric Grid & Radial Glow */}
-      <div className="absolute inset-0 bg-[radial-gradient(#1e3a8a_1px,transparent_1px)] [background-size:24px_24px] opacity-25 pointer-events-none" />
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-1/4 w-[450px] h-[450px] bg-sky-500/10 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative w-full bg-black text-white pt-8 pb-20 sm:pt-14 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Pure Black Depth Accents */}
+      <div className="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
 
       <div className="relative max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-8">
         
