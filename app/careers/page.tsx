@@ -45,32 +45,20 @@ export default function CareersPage() {
         />
 
         {/* Ambient Dark Gradient Overlays for High-Contrast Text Legibility */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#071329]/65 via-[#071329]/20 to-[#071329]/80 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#071329]/60 via-[#071329]/20 to-[#071329]/80 pointer-events-none" />
 
         {/* Hero Content */}
-        <div className="relative z-10 max-w-4xl mx-auto text-center space-y-3">
+        <div className="relative z-10 max-w-5xl mx-auto text-center space-y-3">
           <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/15 backdrop-blur-xl text-blue-100 text-xs sm:text-sm font-bold border border-white/20 shadow-lg">
             <Briefcase className="w-4 h-4 text-amber-300" />
             <span>Careers at Digital Labour Chowk</span>
           </span>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight mb-3 drop-shadow-md">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-tight mb-3 drop-shadow-md">
             Build the Future of Indian Construction
           </h1>
           <p className="text-blue-100 text-sm sm:text-base max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-sm">
             Join a mission-driven team bringing dignity, transparency, and technology to over 50 million informal construction workers across India.
           </p>
-
-          <div className="pt-3 flex flex-wrap items-center justify-center gap-3 text-xs font-semibold text-blue-200">
-            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
-              🚀 Rapidly Scaling
-            </span>
-            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
-              🏛️ STPI &amp; CIMPS Incubated
-            </span>
-            <span className="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
-              📍 NCR HQ &amp; Patna Operations Hub
-            </span>
-          </div>
         </div>
       </section>
 
