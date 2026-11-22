@@ -81,15 +81,7 @@ export default function AboutUsPage() {
         ease: "power2.out",
       });
 
-      // Bento cards staggered entrance
-      gsap.from(".bento-card", {
-        opacity: 0,
-        y: 35,
-        stagger: 0.1,
-        duration: 0.8,
-        ease: "power3.out",
-        delay: 0.2,
-      });
+
     }, containerRef);
 
     return () => ctx.revert();
@@ -218,114 +210,225 @@ export default function AboutUsPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
           
           {/* Bento Card 1 (Span 2 Cols): The Core Struggle & Origin */}
-          <div className="bento-card md:col-span-2 bg-gradient-to-br from-[#0C59D4] to-[#0947AD] text-white rounded-2xl p-7 sm:p-9 flex flex-col justify-between shadow-xl relative overflow-hidden group">
-            <div className="absolute right-0 bottom-0 translate-x-8 translate-y-8 opacity-10 pointer-events-none">
-              <HardHat className="w-72 h-72 text-white" />
-            </div>
-            
-            <div className="relative z-10">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-[11px] font-bold tracking-wider uppercase mb-5 backdrop-blur-xs">
+          <div className="bento-card md:col-span-2 relative min-h-[380px] sm:min-h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/80 shadow-md group cursor-pointer transition-all duration-500 hover:shadow-2xl">
+            {/* Background Image with Zoom on Hover */}
+            <img
+              src="/images/about-us/bento-origin-story.jpg"
+              alt="The Origin Story - Daily Labour Chowk Struggle"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            />
+
+            {/* Resting Ambient Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-black/30 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+
+            {/* Resting State Preview Badge (Fades out on hover) */}
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex items-center justify-between z-10 transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 shadow-lg">
+                <HardHat className="w-3.5 h-3.5 text-amber-300" />
                 <span>The Origin Story</span>
-              </div>
-              <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-snug mb-4">
-                &ldquo;A day without work means a day without food—this struggle is real for millions.&rdquo;
-              </h3>
-              <p className="text-blue-100 text-sm sm:text-base leading-relaxed font-normal max-w-xl">
-                In India, over 5 Crore construction workers stand on physical labor chowks every morning, 
-                often returning empty-handed. Digital Labour Chowk was incubated at CIMPS to eliminate 
-                this indignity, replacing roadside waiting with guaranteed smartphone work alerts and transparent wage benchmarks.
-              </p>
+              </span>
+              <span className="text-xs text-white/90 font-medium flex items-center gap-1 drop-shadow">
+                Hover to explore <ArrowRight className="w-3.5 h-3.5" />
+              </span>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-white/20 flex items-center justify-between relative z-10">
-              <span className="text-xs font-semibold text-blue-200">Chandrashekhar Mandal, Founder & CEO</span>
-              <Link href="/about-us/history" className="inline-flex items-center gap-1 text-xs font-bold text-white hover:underline">
-                <span>Read Full History</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+            {/* Hover Glassmorphism Scrim & Rich Text Content */}
+            <div className="absolute inset-0 z-20 bg-[#071329]/92 backdrop-blur-md p-7 sm:p-9 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out text-white">
+              <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-[11px] font-bold tracking-wider uppercase mb-4 backdrop-blur-xs border border-white/15">
+                  <HardHat className="w-3.5 h-3.5 text-amber-300" />
+                  <span>The Origin Story</span>
+                </div>
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight leading-snug mb-3">
+                  &ldquo;A day without work means a day without food—this struggle is real for millions.&rdquo;
+                </h3>
+                <p className="text-blue-100 text-xs sm:text-sm lg:text-base leading-relaxed font-normal max-w-xl">
+                  In India, over 5 Crore construction workers stand on physical labor chowks every morning, 
+                  often returning empty-handed. Digital Labour Chowk was incubated at CIMPS to eliminate 
+                  this indignity, replacing roadside waiting with guaranteed smartphone work alerts and transparent wage benchmarks.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-5 border-t border-white/20 flex items-center justify-between transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <span className="text-xs font-semibold text-blue-200">Chandrashekhar Mandal, Founder &amp; CEO</span>
+                <Link href="/about-us/history" className="inline-flex items-center gap-1.5 text-xs font-bold text-white hover:text-amber-300 transition-colors">
+                  <span>Read Full History</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* Bento Card 2: 0% Commission Guarantee */}
-          <div className="bento-card bg-white rounded-2xl p-7 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-4">
-                <ShieldCheck className="w-5 h-5" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">0% Commission Promise</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Unlike Jamadars and informal brokers who pocket 20-30% of worker earnings, DLC workers retain 100% of their daily wage payouts.
-              </p>
+          <div className="bento-card col-span-1 relative min-h-[380px] sm:min-h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/80 shadow-md group cursor-pointer transition-all duration-500 hover:shadow-2xl">
+            {/* Background Image with Zoom on Hover */}
+            <img
+              src="/images/about-us/bento-zero-commission.jpg"
+              alt="0% Commission Promise - Digital Labour Chowk"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            />
+
+            {/* Resting Ambient Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-black/30 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+
+            {/* Resting State Preview Badge */}
+            <div className="absolute inset-x-0 bottom-0 p-6 flex items-center justify-between z-10 transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 shadow-lg">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <span>0% Commission</span>
+              </span>
             </div>
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-emerald-600 gap-1.5">
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Full DBT Payouts</span>
+
+            {/* Hover Glassmorphism Scrim & Rich Text Content */}
+            <div className="absolute inset-0 z-20 bg-[#071329]/92 backdrop-blur-md p-6 sm:p-7 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out text-white">
+              <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center mb-4">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <h4 className="text-lg font-bold text-white mb-2">0% Commission Promise</h4>
+                <p className="text-xs text-blue-100 leading-relaxed font-normal">
+                  Unlike Jamadars and informal brokers who pocket 20-30% of worker earnings, DLC workers retain 100% of their daily wage payouts.
+                </p>
+              </div>
+              <div className="mt-6 pt-4 border-t border-white/15 flex items-center text-xs font-bold text-emerald-400 gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <CheckCircle2 className="w-4 h-4" />
+                <span>Full DBT Payouts</span>
+              </div>
             </div>
           </div>
 
           {/* Bento Card 3: 2-Hour Manpower Dispatch */}
-          <div className="bento-card bg-white rounded-2xl p-7 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-            <div>
-              <div className="w-10 h-10 rounded-xl bg-blue-50 text-[#0C59D4] flex items-center justify-center mb-4">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <h4 className="text-lg font-bold text-slate-900 mb-2">2-Hour Rapid SLA</h4>
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Contractors mobilize 5 to 500+ verified workers within 2 hours. Our geo-fenced system tracks attendance with biometric precision.
-              </p>
+          <div className="bento-card col-span-1 relative min-h-[380px] sm:min-h-[420px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/80 shadow-md group cursor-pointer transition-all duration-500 hover:shadow-2xl">
+            {/* Background Image with Zoom on Hover */}
+            <img
+              src="/images/about-us/bento-rapid-sla.jpg"
+              alt="2-Hour Rapid SLA - Contractor Mobilization"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            />
+
+            {/* Resting Ambient Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-black/30 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+
+            {/* Resting State Preview Badge */}
+            <div className="absolute inset-x-0 bottom-0 p-6 flex items-center justify-between z-10 transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 shadow-lg">
+                <Building2 className="w-3.5 h-3.5 text-blue-400" />
+                <span>2-Hour Rapid SLA</span>
+              </span>
             </div>
-            <Link href="/about-us/values" className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-[#0C59D4] hover:underline">
-              <span>View Core Values</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+
+            {/* Hover Glassmorphism Scrim & Rich Text Content */}
+            <div className="absolute inset-0 z-20 bg-[#071329]/92 backdrop-blur-md p-6 sm:p-7 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out text-white">
+              <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="w-10 h-10 rounded-xl bg-blue-500/20 text-blue-400 border border-blue-500/30 flex items-center justify-center mb-4">
+                  <Building2 className="w-5 h-5" />
+                </div>
+                <h4 className="text-lg font-bold text-white mb-2">2-Hour Rapid SLA</h4>
+                <p className="text-xs text-blue-100 leading-relaxed font-normal">
+                  Contractors mobilize 5 to 500+ verified workers within 2 hours. Our geo-fenced system tracks attendance with biometric precision.
+                </p>
+              </div>
+              <Link href="/about-us/values" className="mt-6 pt-4 border-t border-white/15 flex items-center justify-between text-xs font-bold text-blue-300 hover:text-white transition-colors transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <span>View Core Values</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </div>
 
           {/* Bento Card 4: National Media & Super Founders */}
-          <div className="bento-card md:col-span-2 lg:col-span-2 bg-slate-900 text-white rounded-2xl p-7 sm:p-8 flex flex-col justify-between relative overflow-hidden group">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-4">
-                <Tv className="w-3.5 h-3.5" />
-                <span>Bharat Ke Super Founders Feature</span>
-              </div>
-              <h4 className="text-xl sm:text-2xl font-black mb-3">
-                Nationally Celebrated on Amazon MX Player
-              </h4>
-              <p className="text-slate-300 text-xs sm:text-sm leading-relaxed font-normal max-w-lg">
-                The story of Digital Labour Chowk has been chronicled as a national social innovation documentary, 
-                showcasing our journey from CIMPS incubation to solving blue-collar worker migration challenges.
-              </p>
+          <div className="bento-card md:col-span-2 lg:col-span-2 relative min-h-[340px] sm:min-h-[360px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/80 shadow-md group cursor-pointer transition-all duration-500 hover:shadow-2xl">
+            {/* Background Image with Zoom on Hover */}
+            <img
+              src="/images/about-us/bento-super-founders.jpg"
+              alt="Amazon MX Player Bharat Ke Super Founders"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            />
+
+            {/* Resting Ambient Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-black/30 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+
+            {/* Resting State Preview Badge */}
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex items-center justify-between z-10 transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 shadow-lg">
+                <Tv className="w-3.5 h-3.5 text-amber-400" />
+                <span>Amazon MX Player Feature</span>
+              </span>
+              <span className="text-xs text-white/90 font-medium flex items-center gap-1 drop-shadow">
+                Hover to read <ArrowRight className="w-3.5 h-3.5" />
+              </span>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-800 flex items-center justify-between">
-              <span className="text-xs text-slate-400">Featured across CNBC-TV18, Bloomberg, Republic TV</span>
-              <Link href="/media-coverage" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0C59D4] hover:text-blue-400">
-                <span>Watch Media Coverage</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+            {/* Hover Glassmorphism Scrim & Rich Text Content */}
+            <div className="absolute inset-0 z-20 bg-[#071329]/92 backdrop-blur-md p-7 sm:p-8 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out text-white">
+              <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-amber-400 text-[11px] font-bold uppercase tracking-wider mb-3 border border-white/15">
+                  <Tv className="w-3.5 h-3.5" />
+                  <span>Bharat Ke Super Founders Feature</span>
+                </div>
+                <h4 className="text-xl sm:text-2xl font-black mb-2 text-white">
+                  Nationally Celebrated on Amazon MX Player
+                </h4>
+                <p className="text-blue-100 text-xs sm:text-sm leading-relaxed font-normal max-w-lg">
+                  The story of Digital Labour Chowk has been chronicled as a national social innovation documentary, 
+                  showcasing our journey from CIMPS incubation to solving blue-collar worker migration challenges.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-white/15 flex items-center justify-between transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <span className="text-xs text-blue-200/80">Featured across CNBC-TV18, Bloomberg, Republic TV</span>
+                <Link href="/media-coverage" className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-300 hover:text-white transition-colors">
+                  <span>Watch Media Coverage</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
 
           {/* Bento Card 5 (Span 2 Cols): Institutional Accreditations */}
-          <div className="bento-card md:col-span-2 lg:col-span-2 bg-white rounded-2xl p-7 sm:p-8 border border-slate-200/90 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
-            <div>
-              <span className="text-[11px] font-black tracking-widest text-[#0C59D4] uppercase">
-                Government & Innovation Backing
+          <div className="bento-card md:col-span-2 lg:col-span-2 relative min-h-[340px] sm:min-h-[360px] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-200/80 shadow-md group cursor-pointer transition-all duration-500 hover:shadow-2xl">
+            {/* Background Image with Zoom on Hover */}
+            <img
+              src="/images/about-us/bento-innovation-awards.jpg"
+              alt="Hitachi Innovation Award & Startup India Recognized"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-108"
+            />
+
+            {/* Resting Ambient Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-black/30 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none" />
+
+            {/* Resting State Preview Badge */}
+            <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 flex items-center justify-between z-10 transition-all duration-300 group-hover:opacity-0 group-hover:translate-y-2 pointer-events-none">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/20 backdrop-blur-md text-white text-xs font-bold border border-white/30 shadow-lg">
+                <Award className="w-3.5 h-3.5 text-amber-300" />
+                <span>Innovation &amp; Awards</span>
               </span>
-              <h4 className="text-xl font-bold text-slate-900 mt-1 mb-3">
-                Hitachi Innovation Award & Startup India Recognized
-              </h4>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                Supported by Software Technology Parks of India (STPI), Bihar Industrial Association (BIA), 
-                and winner of the Hitachi National Innovation Challenge in partnership with Kerala Startup Mission.
-              </p>
+              <span className="text-xs text-white/90 font-medium flex items-center gap-1 drop-shadow">
+                Hover to read <ArrowRight className="w-3.5 h-3.5" />
+              </span>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-              <span className="text-xs font-semibold text-slate-500">TiE Global Summit & NAREDCO Best Startup</span>
-              <Link href="/awards-recognition" className="inline-flex items-center gap-1 text-xs font-bold text-[#0C59D4] hover:underline">
-                <span>View All Awards</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
+            {/* Hover Glassmorphism Scrim & Rich Text Content */}
+            <div className="absolute inset-0 z-20 bg-[#071329]/92 backdrop-blur-md p-7 sm:p-8 flex flex-col justify-between opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out text-white">
+              <div className="transform translate-y-3 group-hover:translate-y-0 transition-transform duration-300">
+                <span className="text-[11px] font-black tracking-widest text-blue-300 uppercase">
+                  Government &amp; Innovation Backing
+                </span>
+                <h4 className="text-xl font-bold text-white mt-1 mb-2">
+                  Hitachi Innovation Award &amp; Startup India Recognized
+                </h4>
+                <p className="text-xs sm:text-sm text-blue-100 leading-relaxed font-normal">
+                  Supported by Software Technology Parks of India (STPI), Bihar Industrial Association (BIA), 
+                  and winner of the Hitachi National Innovation Challenge in partnership with Kerala Startup Mission.
+                </p>
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-white/15 flex items-center justify-between transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <span className="text-xs font-semibold text-blue-200/80">TiE Global Summit &amp; NAREDCO Best Startup</span>
+                <Link href="/awards-recognition" className="inline-flex items-center gap-1 text-xs font-bold text-blue-300 hover:text-white transition-colors">
+                  <span>View All Awards</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
             </div>
           </div>
 
