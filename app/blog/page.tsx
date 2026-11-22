@@ -31,6 +31,22 @@ export default function BlogListingPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
+  // Upcoming Event Banner State
+  const [eventBanner, setEventBanner] = useState({
+    badgeText: "Upcoming Event",
+    titlePrefix: "National Construction",
+    titleMain: "Summit #2026 at Pragati Maidan",
+    category: "Summit & Expo",
+    imageUrl: "/images/blogs/event-summit-2026.jpg",
+    countdownTarget: "2026-12-15T09:30:00.000Z",
+    location: "Bharat Mandapam & Pragati Maidan, New Delhi",
+    buttonText: "Reminder Me",
+    buttonLink: "/contact",
+    isActive: true,
+  });
+  const [countdown, setCountdown] = useState("09:14:23:01");
+  const [reminderSaved, setReminderSaved] = useState(false);
+
   const storiesScrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,7 +57,39 @@ export default function BlogListingPage() {
       })
       .catch((err) => console.error("Error fetching blogs:", err))
       .finally(() => setLoading(false));
+
+    fetch("/api/event-banner")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.banner) setEventBanner(data.banner);
+      })
+      .catch((err) => console.error("Error fetching event banner:", err));
   }, []);
+
+  useEffect(() => {
+    const updateCountdown = () => {
+      const target = new Date(eventBanner.countdownTarget).getTime();
+      const now = new Date().getTime();
+      const diff = target - now;
+
+      if (diff <= 0) {
+        setCountdown("00:00:00:00");
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / 1000 / 60) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      const pad = (n: number) => String(n).padStart(2, "0");
+      setCountdown(`${pad(days)}:${pad(hours)}:${pad(minutes)}:${pad(seconds)}`);
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [eventBanner.countdownTarget]);
 
   // Filtered stories & posts
   const featuredStories = blogs.filter((b) => b.postType === "story" && b.status === "published");
@@ -494,46 +542,110 @@ export default function BlogListingPage() {
         </div>
 
         {/* ===================================================================== */}
-        {/* 4. UPCOMING EVENT BANNER (Reference UI Lower Banner with Countdown)   */}
+        {/* 4. UPCOMING EVENT BANNER (Reference UI Card with Topographic Lines)   */}
         {/* ===================================================================== */}
-        <div className="relative rounded-3xl bg-gradient-to-br from-[#0C59D4] via-[#094BB5] to-[#072F75] text-white p-8 sm:p-10 lg:p-12 overflow-hidden shadow-xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
-          <div className="space-y-2 max-w-xl relative z-10">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white text-[11px] font-bold uppercase tracking-wider backdrop-blur-md">
-              <Bell className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
-              National Construction Summit 2026
-            </span>
-            <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight leading-tight">
-              India&apos;s Blue-Collar Workforce Formalization Summit
-            </h3>
-            <p className="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-normal">
-              Join leading EPC infrastructure contractors, NAREDCO real estate developers, and labor ministry officials in New Delhi.
-            </p>
-          </div>
-
-          <div className="relative z-10 space-y-4 shrink-0">
-            <div className="flex items-center gap-3">
-              {[
-                { label: "DAYS", val: "09" },
-                { label: "HOURS", val: "14" },
-                { label: "MINS", val: "23" },
-                { label: "SECS", val: "48" },
-              ].map((c) => (
-                <div key={c.label} className="p-3 sm:p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center min-w-[60px]">
-                  <div className="text-xl sm:text-2xl font-mono font-black text-white">{c.val}</div>
-                  <div className="text-[9px] font-bold text-amber-300">{c.label}</div>
-                </div>
-              ))}
+        {eventBanner.isActive && (
+          <div
+            id="upcoming-event"
+            className="relative rounded-3xl bg-white border border-slate-200/90 shadow-md hover:shadow-lg transition-all p-5 sm:p-7 md:p-8 lg:p-10 overflow-hidden"
+          >
+            {/* Subtle Topographic / Contour Lines Vector (Exact match to reference) */}
+            <div className="absolute inset-0 pointer-events-none opacity-40 overflow-hidden">
+              <svg
+                className="w-full h-full text-slate-200 stroke-current"
+                fill="none"
+                viewBox="0 0 1000 500"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M400,-50 C550,80 650,40 750,160 C850,280 950,220 1050,340"
+                  strokeWidth="1.5"
+                  strokeDasharray="4 6"
+                />
+                <path
+                  d="M320,50 C480,180 600,120 720,240 C840,360 920,320 1020,440"
+                  strokeWidth="1.2"
+                />
+                <path
+                  d="M260,150 C420,270 540,220 660,330 C780,440 880,400 980,520"
+                  strokeWidth="1.5"
+                  strokeDasharray="3 3"
+                />
+                <path
+                  d="M500,20 C650,140 780,100 880,210 C980,320 1060,280 1140,400"
+                  strokeWidth="0.8"
+                />
+              </svg>
             </div>
 
-            <Link
-              href="/contact"
-              className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs shadow-lg transition active:scale-95"
-            >
-              <span>Reserve Contractor Pass</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="relative z-10 flex flex-col md:flex-row items-center gap-6 sm:gap-8 lg:gap-12">
+              {/* Left Column: Event Photo */}
+              <div className="w-full md:w-[45%] lg:w-[42%] shrink-0">
+                <div className="relative w-full h-64 sm:h-72 md:h-80 rounded-2xl overflow-hidden shadow-sm bg-slate-100 group">
+                  <Image
+                    src={eventBanner.imageUrl || "/images/blogs/event-summit-2026.jpg"}
+                    alt={eventBanner.titleMain}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+
+              {/* Right Column: Event Editorial & Countdown */}
+              <div className="w-full md:w-[55%] lg:w-[58%] space-y-4 sm:space-y-5">
+                {/* Accent line + Badge */}
+                <div className="flex items-center gap-2.5">
+                  <span className="w-1.5 h-5 bg-[#0F766E] rounded-full inline-block" />
+                  <span className="text-sm sm:text-base font-bold text-slate-800 tracking-tight">
+                    {eventBanner.badgeText || "Upcoming Event"}
+                  </span>
+                </div>
+
+                {/* Two-tone Title */}
+                <div className="space-y-0.5">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#0F766E] tracking-tight leading-tight">
+                    {eventBanner.titlePrefix}
+                  </h3>
+                  <h4 className="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+                    {eventBanner.titleMain}
+                  </h4>
+                </div>
+
+                {/* Start In + Live Digits */}
+                <div className="pt-2">
+                  <div className="text-xs sm:text-sm font-semibold text-slate-400 mb-1 tracking-wide">
+                    Start in
+                  </div>
+                  <div className="text-2xl sm:text-3xl lg:text-4xl font-mono font-black text-slate-900 tracking-wider tabular-nums">
+                    {countdown}
+                  </div>
+                </div>
+
+                {/* Reminder Me CTA */}
+                <div className="pt-2 flex flex-wrap items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => setReminderSaved(!reminderSaved)}
+                    className={`px-8 py-3 rounded-full text-white font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer inline-flex items-center gap-2 ${
+                      reminderSaved
+                        ? "bg-emerald-600 hover:bg-emerald-700"
+                        : "bg-[#0F766E] hover:bg-[#115E59]"
+                    }`}
+                  >
+                    {reminderSaved && <CheckCircle2 className="w-4 h-4 text-white" />}
+                    <span>{reminderSaved ? "Reminder Set ✓" : eventBanner.buttonText || "Reminder Me"}</span>
+                  </button>
+
+                  {eventBanner.location && (
+                    <span className="text-xs text-slate-500 font-medium">
+                      📍 {eventBanner.location}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
 
       </div>
 

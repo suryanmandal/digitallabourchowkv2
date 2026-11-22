@@ -1,0 +1,14 @@
+{
+  "badgeText": "Upcoming Event",
+  "titlePrefix": "National Construction",
+  "titleMain": "Summit #2026 at Pragati Maidan",
+  "category": "Summit & Expo",
+  "imageUrl": "/images/blogs/chenab-bridge.jpg",
+  "fallbackImageUrl": "/images/blogs/chenab-bridge.jpg",
+  "countdownTarget": "2026-12-15T09:30:00.000Z",
+  "location": "Bharat Mandapam & Pragati Maidan, New Delhi",
+  "buttonText": "Reminder Me",
+  "buttonLink": "/contact",
+  "isActive": true,
+  "updatedAt": "2026-11-22T00:01:53.709Z"
+}

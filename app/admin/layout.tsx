@@ -13,6 +13,7 @@ import {
   BookOpen,
   ArrowLeft,
   Flame,
+  Calendar,
 } from "lucide-react";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -31,6 +32,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       href: "/admin/blogs",
       icon: FileText,
       active: pathname.startsWith("/admin/blogs"),
+    },
+    {
+      name: "Upcoming Event Banner",
+      href: "/admin/event-banner",
+      icon: Calendar,
+      active: pathname.startsWith("/admin/event-banner"),
     },
   ];
 

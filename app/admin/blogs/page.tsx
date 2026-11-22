@@ -21,6 +21,7 @@ import {
   Layers,
   ArrowRight,
   SlidersHorizontal,
+  Calendar,
 } from "lucide-react";
 import { BlogPost } from "@/app/api/blogs/route";
 
@@ -289,6 +290,14 @@ function AdminBlogsContent() {
             <span>+ New Post (Latest)</span>
           </button>
 
+          <Link
+            href="/admin/event-banner"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-bold text-xs shadow-lg shadow-teal-600/20 transition-all active:scale-95 cursor-pointer"
+          >
+            <Calendar className="w-4 h-4 text-white" />
+            <span>Edit Event Banner</span>
+          </Link>
+
           <button
             onClick={fetchBlogs}
             className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition cursor-pointer"
@@ -349,6 +358,14 @@ function AdminBlogsContent() {
           >
             Drafts ({draftCount})
           </button>
+
+          <Link
+            href="/admin/event-banner"
+            className="px-3.5 py-1.5 rounded-lg text-slate-400 hover:text-teal-400 transition-all flex items-center gap-1.5 whitespace-nowrap"
+          >
+            <Calendar className="w-3.5 h-3.5 text-teal-400" />
+            <span>Event Banner</span>
+          </Link>
         </div>
 
         {/* Search & Category Filter */}
