@@ -3,11 +3,11 @@ import React from "react";
 export default function TestingPage() {
   return (
     <main className="w-full min-h-screen bg-white flex items-center justify-center p-4 sm:p-10 select-none">
-      {/* Orange Frame matching user design */}
-      <div className="relative w-full max-w-[890px] bg-[#F15A24] pt-14 sm:pt-20 overflow-hidden shadow-md">
+      {/* Container with transparent background (previously orange) */}
+      <div className="relative w-full max-w-[890px] bg-transparent pt-14 sm:pt-20 overflow-hidden">
         
         {/* Frame 8 Label */}
-        <div className="w-[65.2%] ml-auto pl-1 pb-2 text-xs sm:text-sm font-medium text-white/50">
+        <div className="w-[65.2%] ml-auto pl-1 pb-2 text-xs sm:text-sm font-medium text-slate-400">
           Frame 8
         </div>
 
@@ -25,14 +25,14 @@ export default function TestingPage() {
             </h2>
           </div>
 
-          {/* Right Column (65.2%): Frame 8 Green Frame containing mason.webm video */}
+          {/* Right Column (65.2%): Frame 8 changed from green to offwhite containing mason.webm video */}
           <div className="w-[65.2%] relative">
             <div
               style={{
                 top: "calc(-46.25%)",
                 bottom: "0px",
               }}
-              className="absolute inset-x-0 overflow-hidden flex items-end justify-center"
+              className="absolute inset-x-0 overflow-hidden flex items-end justify-center bg-[#F8F8F6]"
             >
               <video
                 autoPlay
