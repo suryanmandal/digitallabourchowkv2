@@ -25,15 +25,26 @@ export default function TestingPage() {
             </h2>
           </div>
 
-          {/* Right Column (65.2%): Frame 8 Green Box */}
+          {/* Right Column (65.2%): Frame 8 Green Frame containing mason.webm video */}
           <div className="w-[65.2%] relative">
             <div
               style={{
                 top: "calc(-46.25%)",
                 bottom: "0px",
               }}
-              className="absolute inset-x-0 bg-[#087A60]"
-            />
+              className="absolute inset-x-0 overflow-hidden flex items-end justify-center"
+            >
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover object-bottom"
+              >
+                <source src="/videos/mason.webm" type="video/webm" />
+                <source src="/mason.webm" type="video/webm" />
+              </video>
+            </div>
           </div>
 
         </div>
