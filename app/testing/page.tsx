@@ -3,19 +3,14 @@ import React from "react";
 export default function TestingPage() {
   return (
     <main className="w-full min-h-screen bg-white flex items-center justify-center p-4 sm:p-10 select-none">
-      {/* Container with transparent background (previously orange) */}
-      <div className="relative w-full max-w-[890px] bg-transparent pt-14 sm:pt-20 overflow-hidden">
+      {/* Outer Card Wrapper with top padding for character protrusion */}
+      <div className="relative w-full max-w-[890px] pt-24 sm:pt-32">
         
-        {/* Frame 8 Label */}
-        <div className="w-[65.2%] ml-auto pl-1 pb-2 text-xs sm:text-sm font-medium text-slate-400">
-          Frame 8
-        </div>
-
-        {/* Card Body */}
-        <div className="w-full flex items-stretch">
+        {/* Unified Off-White Card Container */}
+        <div className="relative w-full bg-[#F8F8F6] rounded-t-[36px] sm:rounded-t-[48px] flex items-stretch">
           
           {/* Left Column (34.8%): White Card Area */}
-          <div className="w-[34.8%] bg-[#F8F8F6] rounded-tl-[36px] sm:rounded-tl-[48px] pt-14 pb-12 sm:pt-20 sm:pb-16 pl-6 sm:pl-10 lg:pl-12 pr-4 flex flex-col justify-center min-h-[260px] sm:min-h-[320px]">
+          <div className="w-[34.8%] pt-14 pb-12 sm:pt-20 sm:pb-16 pl-6 sm:pl-10 lg:pl-12 pr-4 flex flex-col justify-center min-h-[260px] sm:min-h-[320px] relative z-10">
             <span className="block text-xs sm:text-sm font-medium text-slate-400 tracking-wide mb-3 sm:mb-4">
               Category name
             </span>
@@ -25,14 +20,15 @@ export default function TestingPage() {
             </h2>
           </div>
 
-          {/* Right Column (65.2%): Frame 8 changed from green to offwhite containing mason.webm video */}
+          {/* Right Column (65.2%): Frame 8 Video Container */}
           <div className="w-[65.2%] relative">
+            {/* The video container extends above the off-white card with transparent background */}
             <div
               style={{
                 top: "calc(-46.25%)",
                 bottom: "0px",
               }}
-              className="absolute inset-x-0 overflow-hidden flex items-end justify-center bg-[#F8F8F6]"
+              className="absolute inset-x-0 bg-transparent flex items-end justify-center pointer-events-none"
             >
               <video
                 autoPlay
