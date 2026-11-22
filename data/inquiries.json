@@ -1,0 +1,26 @@
+[
+  {
+    "id": "inq-1795308346074-akm54",
+    "name": "Ramesh Kumar",
+    "phone": "9876543210",
+    "formattedPhone": "+91 98765 43210",
+    "email": "ramesh@construction.in",
+    "type": "Contractor",
+    "message": "Inquiry for commercial site manpower in Delhi NCR.",
+    "createdAt": "2026-11-22T00:45:46.074Z",
+    "ipAddress": "::1",
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/152.0.7977.167 Safari/537.36 Antigravity/2.34.0"
+  },
+  {
+    "id": "inq-1795308205771-qlozc",
+    "name": "Ramesh Kumar",
+    "phone": "9876543210",
+    "formattedPhone": "+91 98765 43210",
+    "email": "ramesh@construction.in",
+    "type": "Contractor",
+    "message": "Manpower requirement for bridge project in NCR.",
+    "createdAt": "2026-11-22T00:43:25.771Z",
+    "ipAddress": "::1",
+    "userAgent": "curl/8.7.1"
+  }
+]

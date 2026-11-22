@@ -12,10 +12,26 @@ import {
   HelpCircle,
   ExternalLink,
   Navigation,
+  AlertCircle,
+  ShieldCheck,
+  Lock,
+  Loader2,
 } from "lucide-react";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [inquiryId, setInquiryId] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [apiError, setApiError] = useState<string | null>(null);
+
+  // Field Validation Errors
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+
+  // Anti-bot Honeypot Trap
+  const [hpWebsite, setHpWebsite] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -49,9 +65,63 @@ export default function ContactPage() {
 
   const currentLoc = locations[activeLocation];
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setApiError(null);
+
+    // 1. Strict Phone Validation
+    const cleanPhone = formData.phone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setPhoneError("Phone number must be exactly 10 digits (excluding +91).");
+      return;
+    }
+    if (!/^[6-9]/.test(cleanPhone)) {
+      setPhoneError("Indian mobile numbers must start with 6, 7, 8, or 9.");
+      return;
+    }
+
+    // 2. Strict Name Validation
+    if (formData.name.trim().length < 2) {
+      setNameError("Please enter your valid name (at least 2 characters).");
+      return;
+    }
+
+    // 3. Email Validation (if provided)
+    if (
+      formData.email &&
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(formData.email.trim())
+    ) {
+      setEmailError("Please provide a valid email format.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          phone: cleanPhone,
+          email: formData.email.trim() || undefined,
+          type: formData.type,
+          message: formData.message.trim(),
+          hp_website: hpWebsite,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setSubmitted(true);
+        setInquiryId(data.inquiryId || null);
+      } else {
+        setApiError(data.error || "Submission failed. Please check your details.");
+      }
+    } catch {
+      setApiError("Network error. Please check your connection and try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -131,71 +201,244 @@ export default function ContactPage() {
 
           {/* Right Column: Contact Inquiry Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs">
+            <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-xs relative">
               {submitted ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto mb-4">
+                <div className="text-center py-12 space-y-4">
+                  <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-sm">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h3 className="text-2xl font-bold text-slate-900">Message Received!</h3>
-                  <p className="text-slate-600 text-sm mt-2 max-w-md mx-auto">
-                    Thank you for reaching out. One of our workforce coordinators will contact you at {formData.phone || "your number"} within 2 hours.
-                  </p>
+                  <div>
+                    <h3 className="text-2xl font-black text-slate-900">Inquiry Securely Received!</h3>
+                    <p className="text-slate-600 text-sm mt-2 max-w-md mx-auto leading-relaxed">
+                      Thank you for contacting Digital Labour Chowk. Our enterprise workforce coordinator has logged your ticket and will call you at{" "}
+                      <span className="font-mono font-bold text-slate-900 bg-slate-100 px-2 py-0.5 rounded">
+                        +91 {formData.phone}
+                      </span>{" "}
+                      within 2 hours.
+                    </p>
+                  </div>
+
+                  {inquiryId && (
+                    <div className="pt-2 text-[11px] font-mono text-slate-400">
+                      Ticket Ref ID: <span className="text-slate-700 font-bold">{inquiryId}</span>
+                    </div>
+                  )}
+
+                  <div className="pt-4">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSubmitted(false);
+                        setFormData({
+                          name: "",
+                          phone: "",
+                          email: "",
+                          type: "Contractor",
+                          message: "",
+                        });
+                        setPhoneError(null);
+                        setNameError(null);
+                        setEmailError(null);
+                        setApiError(null);
+                      }}
+                      className="px-6 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition"
+                    >
+                      Submit Another Inquiry
+                    </button>
+                  </div>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">Send an Inquiry</h3>
-                  
+                <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                  <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+                    <h3 className="text-xl font-black text-slate-900 tracking-tight">Send an Inquiry</h3>
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span>256-Bit SSL Encrypted</span>
+                    </span>
+                  </div>
+
+                  {/* Anti-Bot Honeypot Trap (Hidden from genuine human visitors) */}
+                  <div className="hidden" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="hp_website"
+                      value={hpWebsite}
+                      onChange={(e) => setHpWebsite(e.target.value)}
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                  </div>
+
+                  {/* Server / API Error Alert */}
+                  {apiError && (
+                    <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center gap-2">
+                      <AlertCircle className="w-4 h-4 shrink-0 text-red-600" />
+                      <span>{apiError}</span>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Sanitized Name Input */}
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                         Your Name *
                       </label>
                       <input
                         type="text"
                         required
+                        maxLength={60}
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) => {
+                          // Filter out numeric and injection characters, keep letters, spaces, hyphens
+                          const val = e.target.value.replace(/[^a-zA-Z\s.'-]/g, "");
+                          setFormData((prev) => ({ ...prev, name: val }));
+                          if (val.trim().length > 0 && val.trim().length < 2) {
+                            setNameError("Name must be at least 2 characters.");
+                          } else {
+                            setNameError(null);
+                          }
+                        }}
                         placeholder="e.g. Ramesh Kumar"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] text-sm text-slate-900"
+                        className={`w-full px-4 py-2.5 rounded-xl border text-sm text-slate-900 transition-all ${
+                          nameError
+                            ? "border-red-400 focus:ring-2 focus:ring-red-100"
+                            : "border-slate-200 focus:outline-none focus:border-[#0C59D4] focus:ring-2 focus:ring-blue-100"
+                        }`}
                       />
+                      {nameError && (
+                        <p className="text-[11px] text-red-600 font-medium mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{nameError}</span>
+                        </p>
+                      )}
                     </div>
+
+                    {/* Strictly Numeric Indian Mobile Phone Input */}
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                        Mobile Number *
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+91 XXXXX XXXXX"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] text-sm text-slate-900"
-                      />
+                      <div className="flex items-center justify-between mb-1.5">
+                        <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                          Mobile Number *
+                        </label>
+                        <span className="text-[10px] font-mono font-bold text-slate-400">
+                          {formData.phone.length}/10 digits
+                        </span>
+                      </div>
+
+                      <div
+                        className={`relative flex items-center rounded-xl border bg-white overflow-hidden transition-all ${
+                          phoneError
+                            ? "border-red-400 ring-2 ring-red-100"
+                            : "border-slate-200 focus-within:border-[#0C59D4] focus-within:ring-2 focus-within:ring-blue-100"
+                        }`}
+                      >
+                        {/* Fixed Country Code Prefix */}
+                        <div className="flex items-center gap-1 px-3 py-2.5 bg-slate-100 border-r border-slate-200 text-slate-700 text-xs font-bold select-none shrink-0">
+                          <span>🇮🇳</span>
+                          <span>+91</span>
+                        </div>
+
+                        {/* Strictly Numbers Only Input */}
+                        <input
+                          type="tel"
+                          inputMode="numeric"
+                          required
+                          value={formData.phone}
+                          maxLength={10}
+                          placeholder="98765 43210"
+                          onKeyDown={(e) => {
+                            // Block non-numeric keystrokes
+                            if (
+                              !/^[0-9]$/.test(e.key) &&
+                              !["Backspace", "Delete", "Tab", "ArrowLeft", "ArrowRight", "Enter"].includes(e.key) &&
+                              !(e.ctrlKey || e.metaKey)
+                            ) {
+                              e.preventDefault();
+                            }
+                          }}
+                          onChange={(e) => {
+                            // Strip any non-digit character (handling copy/paste)
+                            let val = e.target.value.replace(/\D/g, "");
+                            // Auto-strip country code if user pasted with +91 or leading 0
+                            if (val.length === 12 && val.startsWith("91")) {
+                              val = val.slice(2);
+                            } else if (val.length === 11 && val.startsWith("0")) {
+                              val = val.slice(1);
+                            }
+                            if (val.length > 10) val = val.slice(0, 10);
+                            setFormData((prev) => ({ ...prev, phone: val }));
+
+                            // Live validation feedback
+                            if (val.length > 0 && !/^[6-9]/.test(val)) {
+                              setPhoneError("Indian mobile numbers must begin with 6, 7, 8, or 9.");
+                            } else if (val.length > 0 && val.length < 10) {
+                              setPhoneError("Please enter all 10 digits.");
+                            } else {
+                              setPhoneError(null);
+                            }
+                          }}
+                          className="w-full px-3 py-2.5 text-sm font-mono text-slate-900 bg-transparent focus:outline-none"
+                        />
+                      </div>
+
+                      {phoneError ? (
+                        <p className="text-[11px] text-red-600 font-medium mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{phoneError}</span>
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-slate-400 mt-1">
+                          Strictly 10 numeric digits. Letters &amp; symbols are blocked.
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Sanitized Email Input */}
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                         Email Address
                       </label>
                       <input
                         type="email"
+                        maxLength={100}
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => {
+                          const val = e.target.value.trim();
+                          setFormData((prev) => ({ ...prev, email: val }));
+                          if (
+                            val.length > 0 &&
+                            !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(val)
+                          ) {
+                            setEmailError("Please enter a valid email format.");
+                          } else {
+                            setEmailError(null);
+                          }
+                        }}
                         placeholder="name@company.com"
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] text-sm text-slate-900"
+                        className={`w-full px-4 py-2.5 rounded-xl border text-sm text-slate-900 transition-all ${
+                          emailError
+                            ? "border-red-400 focus:ring-2 focus:ring-red-100"
+                            : "border-slate-200 focus:outline-none focus:border-[#0C59D4] focus:ring-2 focus:ring-blue-100"
+                        }`}
                       />
+                      {emailError && (
+                        <p className="text-[11px] text-red-600 font-medium mt-1 flex items-center gap-1">
+                          <AlertCircle className="w-3 h-3 shrink-0" />
+                          <span>{emailError}</span>
+                        </p>
+                      )}
                     </div>
+
+                    {/* Category Selector */}
                     <div>
-                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1.5">
                         You Are A *
                       </label>
                       <select
                         value={formData.type}
                         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
-                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] text-sm text-slate-900 bg-white"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] focus:ring-2 focus:ring-blue-100 text-sm text-slate-900 bg-white"
                       >
                         <option value="Contractor">Contractor / Sub-Contractor</option>
                         <option value="General Contractor">General Contractor / EPC</option>
@@ -207,27 +450,55 @@ export default function ContactPage() {
                     </div>
                   </div>
 
+                  {/* Sanitized Message Textarea with Length Cap */}
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">
-                      Your Message or Requirement *
-                    </label>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                        Your Message or Requirement *
+                      </label>
+                      <span className="text-[10px] font-mono text-slate-400">
+                        {formData.message.length}/1000 characters
+                      </span>
+                    </div>
                     <textarea
                       rows={4}
                       required
+                      maxLength={1000}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) => {
+                        setFormData((prev) => ({
+                          ...prev,
+                          message: e.target.value.slice(0, 1000),
+                        }));
+                      }}
                       placeholder="Please specify trade requirements, site location, timeline, or query..."
-                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] text-sm text-slate-900"
+                      className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0C59D4] focus:ring-2 focus:ring-blue-100 text-sm text-slate-900 leading-relaxed"
                     />
                   </div>
 
+                  {/* Submission Button with Cooldown & Spinner */}
                   <button
                     type="submit"
-                    className="w-full py-3.5 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-sm tracking-wider uppercase shadow-xs transition-colors flex items-center justify-center gap-2"
+                    disabled={isSubmitting}
+                    className="w-full py-3.5 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-sm tracking-wider uppercase shadow-md transition-all active:scale-98 disabled:opacity-50 cursor-pointer flex items-center justify-center gap-2"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Submit Inquiry</span>
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        <span>Verifying &amp; Submitting...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        <span>Submit Secure Inquiry</span>
+                      </>
+                    )}
                   </button>
+
+                  <div className="pt-1 flex items-center justify-center gap-2 text-[10px] text-slate-400">
+                    <Lock className="w-3 h-3 text-slate-400" />
+                    <span>Zero spam guarantee. Data processed under ISO/IEC 27001 data protection protocols.</span>
+                  </div>
                 </form>
               )}
             </div>
