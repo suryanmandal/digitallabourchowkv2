@@ -1,192 +1,163 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import {
   Download,
+  ChevronRight,
+  Sparkles,
+  QrCode,
   Star,
   CheckCircle2,
-  Sparkles,
-  ArrowUpRight,
-  TrendingUp,
-  MapPin,
-  ShieldCheck,
-  Zap,
   HardHat,
-  Smartphone,
-  QrCode,
-  Flame,
+  ArrowUpRight,
 } from "lucide-react";
 
-interface TradeItem {
+interface TradeCard {
   id: string;
-  nameEn: string;
-  nameHi: string;
+  rank: number;
+  title: string;
+  subtitle: string;
+  hindi: string;
+  watermark: string;
+  gif: string;
   category: string;
   dailyWage: string;
   openJobs: string;
-  image: string;
-  accentColor: string;
-  badgeText: string;
-  badgeIcon: string;
-  skills: string[];
-  equipment: string;
 }
 
-const TRADES_DATA: TradeItem[] = [
-  {
-    id: "labour",
-    nameEn: "General Labour & Beldaar",
-    nameHi: "सामान्य लेबर / बेलदार",
-    category: "General Civil",
-    dailyWage: "₹550 - ₹750 / day",
-    openJobs: "4,820+ Active Jobs",
-    image: "/images/workers/labour.jpg",
-    accentColor: "from-amber-500/20 to-orange-500/10",
-    badgeText: "High Demand",
-    badgeIcon: "🔥",
-    skills: ["Material Handling", "Excavation", "Site Cleanup", "Concrete Mixing"],
-    equipment: "Steel Shovel & Safety Gear",
-  },
+const TRADES_DATA: TradeCard[] = [
   {
     id: "mason",
-    nameEn: "Master Mason (Rajmistri)",
-    nameHi: "राजमिस्त्री (चिनाई व प्लास्टर)",
+    rank: 1,
+    title: "Masons /",
+    subtitle: "Rajmistri",
+    hindi: "(राजमिस्त्री)",
+    watermark: "Masons",
+    gif: "/workers-gif/mason.gif",
     category: "Civil Crafts",
     dailyWage: "₹850 - ₹1,200 / day",
-    openJobs: "2,940+ Active Jobs",
-    image: "/images/workers/mason.jpg",
-    accentColor: "from-red-500/20 to-amber-500/10",
-    badgeText: "Top Rated",
-    badgeIcon: "🧱",
-    skills: ["Brick Laying", "Plastering", "Tile Fixing", "Waterproof Mortar"],
-    equipment: "Triangular Trowel & Spirit Level",
+    openJobs: "2,940+ Jobs",
+  },
+  {
+    id: "labour",
+    rank: 2,
+    title: "General Labour /",
+    subtitle: "Helpers",
+    hindi: "(हेल्पर / बेलदार)",
+    watermark: "Labour",
+    gif: "/workers-gif/labour.gif",
+    category: "General Civil",
+    dailyWage: "₹550 - ₹750 / day",
+    openJobs: "4,820+ Jobs",
   },
   {
     id: "painter",
-    nameEn: "Professional Painter",
-    nameHi: "रंगसाज़ / पेंटर",
+    rank: 3,
+    title: "Painters /",
+    subtitle: "Rangsaaz",
+    hindi: "(रंगसाज़ / पेंटर)",
+    watermark: "Painters",
+    gif: "/workers-gif/painter.gif",
     category: "Finishing & Coating",
     dailyWage: "₹750 - ₹1,100 / day",
-    openJobs: "1,680+ Active Jobs",
-    image: "/images/workers/painter.jpg",
-    accentColor: "from-blue-500/20 to-cyan-500/10",
-    badgeText: "Wet Paint Action",
-    badgeIcon: "🎨",
-    skills: ["Wall Putty", "Emulsion Coating", "Texture Finish", "Airless Spray"],
-    equipment: "Roller, Metal Bucket & Mask",
+    openJobs: "1,680+ Jobs",
   },
   {
     id: "plumber",
-    nameEn: "Certified Plumber",
-    nameHi: "नलसाज़ / प्लंबर",
+    rank: 4,
+    title: "Plumbers /",
+    subtitle: "Nalsaaz",
+    hindi: "(नलसाज़ / प्लंबर)",
+    watermark: "Plumbers",
+    gif: "/workers-gif/plumber.gif",
     category: "MEP Services",
     dailyWage: "₹800 - ₹1,250 / day",
-    openJobs: "1,450+ Active Jobs",
-    image: "/images/workers/plumber.jpg",
-    accentColor: "from-sky-500/20 to-blue-500/10",
-    badgeText: "Leak-Proof QA",
-    badgeIcon: "🚰",
-    skills: ["CPVC / PPR Piping", "Sanitary Fitment", "Water Pressure Test", "Drainage"],
-    equipment: "Heavy Pipe Wrench & Manifold",
+    openJobs: "1,450+ Jobs",
   },
   {
     id: "carpenter",
-    nameEn: "Shuttering & Wood Carpenter",
-    nameHi: "बढ़ई / शटरिंग कारपेंटर",
+    rank: 5,
+    title: "Carpenters /",
+    subtitle: "Badhai",
+    hindi: "(शटरिंग / बढ़ई)",
+    watermark: "Carpenters",
+    gif: "/workers-gif/carpenter.gif",
     category: "Formwork & Joinery",
     dailyWage: "₹850 - ₹1,300 / day",
-    openJobs: "2,130+ Active Jobs",
-    image: "/images/workers/carpenter.jpg",
-    accentColor: "from-amber-600/20 to-yellow-600/10",
-    badgeText: "Precision Planing",
-    badgeIcon: "🪵",
-    skills: ["Formwork Shuttering", "Teak Polishing", "Door & Window Frames", "Scaffolding"],
-    equipment: "Teak Hand Plane & Wood Chisels",
+    openJobs: "2,130+ Jobs",
   },
   {
     id: "electrician",
-    nameEn: "Licensed Electrician",
-    nameHi: "बिजली मिस्त्री / इलेक्ट्रीशियन",
+    rank: 6,
+    title: "Electricians /",
+    subtitle: "Bijli Mistri",
+    hindi: "(बिजली मिस्त्री)",
+    watermark: "Electricians",
+    gif: "/workers-gif/electrician.gif",
     category: "MEP Services",
     dailyWage: "₹850 - ₹1,350 / day",
-    openJobs: "2,560+ Active Jobs",
-    image: "/images/workers/electrician.jpg",
-    accentColor: "from-yellow-500/20 to-amber-500/10",
-    badgeText: "High Voltage QA",
-    badgeIcon: "⚡",
-    skills: ["Conduit Wiring", "MCB Distribution Box", "Inverter & Lighting", "Phase Testing"],
-    equipment: "Digital Multimeter & Wire Stripper",
+    openJobs: "2,560+ Jobs",
   },
   {
     id: "foreman",
-    nameEn: "Site Foreman (In-Charge)",
-    nameHi: "साइट फोरमैन (कार्यप्रभारी)",
+    rank: 7,
+    title: "Site Foreman /",
+    subtitle: "In-Charge",
+    hindi: "(साइट फोरमैन)",
+    watermark: "Foreman",
+    gif: "/workers-gif/foreman.gif",
     category: "Site Leadership",
     dailyWage: "₹1,200 - ₹1,800 / day",
-    openJobs: "890+ Active Jobs",
-    image: "/images/workers/foreman.jpg",
-    accentColor: "from-orange-500/20 to-red-500/10",
-    badgeText: "Gang Leader",
-    badgeIcon: "📋",
-    skills: ["Worker Gang Allocation", "Daily Progress Report", "Safety Protocols", "Material Indent"],
-    equipment: "Industrial Walkie-Talkie & Clipboard",
+    openJobs: "890+ Jobs",
   },
   {
     id: "supervisor",
-    nameEn: "Construction Supervisor",
-    nameHi: "निर्माण सुपरवाइजर",
-    category: "Engineering Operations",
+    rank: 8,
+    title: "Site Supervisor /",
+    subtitle: "Nirman Ops",
+    hindi: "(निर्माण सुपरवाइजर)",
+    watermark: "Supervisor",
+    gif: "/workers-gif/supervisor.gif",
+    category: "Engineering Ops",
     dailyWage: "₹1,400 - ₹2,200 / day",
-    openJobs: "740+ Active Jobs",
-    image: "/images/workers/supervisor.jpg",
-    accentColor: "from-emerald-500/20 to-teal-500/10",
-    badgeText: "Digital BIM In-Hand",
-    badgeIcon: "📱",
-    skills: ["BIM 3D Model Review", "Quality Checklist (QA/QC)", "Subcontractor Coordination", "Site Measurement"],
-    equipment: "Field Tablet & White Helmet",
+    openJobs: "740+ Jobs",
   },
   {
     id: "engineer",
-    nameEn: "Civil Site Engineer",
-    nameHi: "सिविल इंजीनियर (बी.टेक / डिप्लोमा)",
-    category: "Engineering Operations",
+    rank: 9,
+    title: "Civil Engineers /",
+    subtitle: "Site Planners",
+    hindi: "(सिविल इंजीनियर)",
+    watermark: "Engineer",
+    gif: "/workers-gif/engineer.gif",
+    category: "Engineering Ops",
     dailyWage: "₹1,800 - ₹3,000 / day",
-    openJobs: "620+ Active Jobs",
-    image: "/images/workers/engineer.jpg",
-    accentColor: "from-indigo-500/20 to-blue-500/10",
-    badgeText: "Structural Aligned",
-    badgeIcon: "📐",
-    skills: ["Structural Plan Reading", "Total Station Alignment", "Bar Bending Schedule (BBS)", "Billing Verification"],
-    equipment: "Blueprint Roll & Laser Meter",
+    openJobs: "620+ Jobs",
   },
   {
     id: "welder",
-    nameEn: "Certified Arc & Gas Welder",
-    nameHi: "वेल्डर (आर्क व गैस वेल्डिंग)",
-    category: "Heavy Fabrication",
+    rank: 10,
+    title: "Arc & Gas /",
+    subtitle: "Welders",
+    hindi: "(वेल्डर / फैब्रिकेटर)",
+    watermark: "Welders",
+    gif: "/workers-gif/welder.gif",
+    category: "Fabrication",
     dailyWage: "₹900 - ₹1,500 / day",
-    openJobs: "1,120+ Active Jobs",
-    image: "/images/workers/welder.jpg",
-    accentColor: "from-blue-600/20 to-amber-500/10",
-    badgeText: "Live Arc Sparks",
-    badgeIcon: "✨",
-    skills: ["Structural Steel Beam Welding", "MIG / TIG / Arc", "Pipe Joints", "Cutting Torch Operation"],
-    equipment: "Arc Torch, Heavy Gloves & Goggles",
+    openJobs: "1,120+ Jobs",
   },
   {
-    id: "iti-technician",
-    nameEn: "ITI Technician / Machinist",
-    nameHi: "आईटीआई तकनीशियन / मैकेनिक",
-    category: "Industrial Technical",
+    id: "iti",
+    rank: 11,
+    title: "ITI Technicians /",
+    subtitle: "Machinists",
+    hindi: "(आईटीआई तकनीशियन)",
+    watermark: "Tech",
+    gif: "/workers-gif/iti.gif",
+    category: "Industrial Tech",
     dailyWage: "₹950 - ₹1,600 / day",
-    openJobs: "980+ Active Jobs",
-    image: "/images/workers/iti-technician.jpg",
-    accentColor: "from-cyan-500/20 to-blue-500/10",
-    badgeText: "ITI Certified",
-    badgeIcon: "🔧",
-    skills: ["Motor Diagnostics", "Hydraulic Pumps", "Generator Maintenance", "Preventive Servicing"],
-    equipment: "Digital Diagnostic Meter & Sockets",
+    openJobs: "980+ Jobs",
   },
 ];
 
@@ -195,21 +166,21 @@ export default function WorkerTradesGrid() {
     "https://play.google.com/store/apps/details?id=com.digitallabourchowk.dlc";
 
   return (
-    <section className="w-full bg-[#F8FAFC] py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
+    <section className="w-full bg-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
       <div className="max-w-7xl mx-auto">
         
         {/* =========================================================================
-            SECTION HEADER: 3x4 UNIFIED GRID BLUEPRINT
+            SECTION HEADER
            ========================================================================= */}
         <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-bold mb-4 shadow-sm">
             <Sparkles className="w-4 h-4 text-amber-500" />
-            <span>11 Core Crafts & Leadership Roles • Direct App Hiring</span>
+            <span>11 Core Crafts & Leadership Roles • Direct Play Store Hiring</span>
           </div>
 
           <h2 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight leading-tight">
             Sabhi Shramik Shreniyan, <br />
-            <span className="text-[#0C59D4]">Ek Hi Plateform Par Uplabdh</span>
+            <span className="text-[#0C59D4]">Ek Hi Platform Par Uplabdh</span>
           </h2>
 
           <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
@@ -219,208 +190,153 @@ export default function WorkerTradesGrid() {
         </div>
 
         {/* =========================================================================
-            3x4 UNIFIED GRID: 11 TRADES + 1 DOWNLOAD CTA CARD (EXACT SAME DIMENSIONS)
+            3x4 UNIFIED GRID: 11 TRADES WITH PROTRUDING ANIMATED GIFS + 1 DOWNLOAD CTA
            ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16 sm:gap-y-20 items-stretch pt-6 sm:pt-10">
           
-          {/* RENDER THE 11 TRADE CARDS */}
-          {TRADES_DATA.map((trade, idx) => (
+          {/* RENDER 11 WORKER TRADE CARDS */}
+          {TRADES_DATA.map((trade) => (
             <a
               key={trade.id}
               href={PLAY_STORE_URL}
               target="_blank"
               rel="noreferrer"
-              className="group relative bg-white rounded-3xl border border-slate-200/90 shadow-[0_4px_20px_rgba(0,0,0,0.03)] hover:shadow-2xl hover:border-blue-400 transition-all duration-300 flex flex-col justify-between pt-6 pb-6 px-6 sm:px-7 cursor-pointer overflow-visible"
+              className="group relative flex flex-col justify-end pt-14 sm:pt-16 cursor-pointer"
             >
-              {/* TOP ACCENT BADGES */}
-              <div className="flex items-center justify-between mb-2 z-20">
-                <span className="text-[11px] font-bold text-slate-400 tracking-wider uppercase">
-                  #{idx + 1} • {trade.category}
-                </span>
-                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 text-[11px] font-black">
-                  <span>{trade.badgeIcon}</span>
-                  <span>{trade.badgeText}</span>
-                </span>
-              </div>
-
-              {/* 3D POP-OUT FRONT-FACING INDIAN CHARACTER RENDER */}
-              <div className="relative w-full h-64 sm:h-72 my-2 flex items-center justify-center overflow-visible">
-                {/* Ambient Radial Spotlight Behind Character */}
+              {/* OFF-WHITE CARD BOX CONTAINER */}
+              <div className="relative w-full bg-[#FBFBFB] hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-slate-200 transition-all duration-300 min-h-[250px] sm:min-h-[270px] flex flex-col justify-between overflow-visible">
+                
+                {/* WATERMARK BACKGROUND OUTLINE TEXT */}
                 <div
-                  className={`absolute inset-0 rounded-2xl bg-gradient-to-t ${trade.accentColor} blur-xl opacity-60 transition-opacity group-hover:opacity-100`}
-                />
-
-                {/* Character Image with Upward Float Micro-Interaction */}
-                <div className="relative w-full h-full rounded-2xl overflow-hidden border border-slate-800/10 shadow-lg group-hover:-translate-y-2.5 group-hover:scale-[1.03] transition-all duration-300 ease-out">
-                  <Image
-                    src={trade.image}
-                    alt={`${trade.nameEn} - Front View`}
-                    fill
-                    className="object-cover object-top"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                    priority={idx < 3}
-                  />
-
-                  {/* Micro-sparkle overlay for Welder */}
-                  {trade.id === "welder" && (
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-amber-400/90 text-slate-950 font-black text-[9px] flex items-center gap-1 shadow-md animate-pulse">
-                      <Sparkles className="w-2.5 h-2.5" />
-                      <span>SPARKS LIVE</span>
-                    </div>
-                  )}
-
-                  {/* Micro-wet paint overlay for Painter */}
-                  {trade.id === "painter" && (
-                    <div className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-sky-400/90 text-slate-950 font-black text-[9px] flex items-center gap-1 shadow-md">
-                      <span>🎨 100% SMOOTH</span>
-                    </div>
-                  )}
-
-                  {/* Equipment Overlay Tag */}
-                  <div className="absolute bottom-2 left-2 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md text-white text-[10px] font-medium border border-white/10 flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
-                    <span className="truncate max-w-[170px]">{trade.equipment}</span>
-                  </div>
+                  aria-hidden="true"
+                  className="absolute right-4 bottom-6 text-4xl sm:text-5xl font-black stroke-watermark pointer-events-none select-none z-0"
+                >
+                  {trade.watermark}
                 </div>
-              </div>
 
-              {/* CARD DETAILS: TITLE, HINDI NAME, DAILY RATE & PILLS */}
-              <div className="mt-3 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-xl sm:text-[22px] font-black text-slate-950 group-hover:text-[#0C59D4] transition-colors leading-tight">
-                    {trade.nameEn}
+                {/* LEFT TEXT COLUMN: RANK, TITLE & SUBTITLE */}
+                <div className="relative z-20 max-w-[46%] sm:max-w-[48%] flex flex-col justify-start">
+                  <span className="block text-[10px] sm:text-[11px] font-bold text-slate-400 tracking-wider uppercase mb-1.5">
+                    TRENDING AT #{trade.rank}
+                  </span>
+
+                  <h3 className="text-xl sm:text-[26px] font-black text-slate-950 leading-[1.1] group-hover:text-[#0C59D4] transition-colors tracking-tight">
+                    {trade.title} <br />
+                    <span>{trade.subtitle}</span>
                   </h3>
-                  <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-0.5">
-                    {trade.nameHi}
+
+                  <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
+                    {trade.hindi}
                   </p>
 
-                  {/* Daily Rate Benchmark & Jobs Count */}
-                  <div className="mt-3.5 flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100">
-                    <div>
-                      <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">
-                        Rozana Majdoori
-                      </span>
-                      <span className="text-sm sm:text-base font-black text-emerald-700">
-                        {trade.dailyWage}
-                      </span>
-                    </div>
-
-                    <div className="text-right">
-                      <span className="text-[10px] text-slate-500 font-bold uppercase tracking-wider block">
-                        Open Jobs
-                      </span>
-                      <span className="text-xs sm:text-sm font-bold text-blue-700 flex items-center gap-1 justify-end">
-                        <TrendingUp className="w-3.5 h-3.5" />
-                        {trade.openJobs}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Skill Chips */}
-                  <div className="mt-3 flex flex-wrap gap-1.5">
-                    {trade.skills.slice(0, 3).map((skill, sIdx) => (
-                      <span
-                        key={sIdx}
-                        className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-[10px] font-medium"
-                      >
-                        {skill}
-                      </span>
-                    ))}
+                  <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200/60 text-emerald-800 text-[11px] font-bold w-fit">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>{trade.dailyWage}</span>
                   </div>
                 </div>
 
-                {/* BOTTOM ACTION BUTTON: DIRECT GOOGLE PLAY REDIRECTION */}
-                <div className="mt-5 pt-3.5 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-700 group-hover:text-[#0C59D4] flex items-center gap-1 transition-colors">
-                    <span>Kaam Paayein (App Par)</span>
-                    <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                {/* PROTRUDING ANIMATED GIF (Breaks out of the top of the off-white card) */}
+                <div className="absolute -right-2 sm:right-0 bottom-2.5 sm:bottom-3 w-[260px] sm:w-[310px] h-[230px] sm:h-[270px] pointer-events-none overflow-visible z-10 flex items-end justify-end">
+                  <Image
+                    src={trade.gif}
+                    alt={`${trade.title} ${trade.subtitle}`}
+                    fill
+                    className="object-contain object-bottom mix-blend-multiply transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-2"
+                    unoptimized
+                    priority={trade.rank <= 3}
+                  />
+                </div>
+
+                {/* BOTTOM ACTION LINK */}
+                <div className="relative z-20 pt-4 flex items-center justify-between text-xs font-bold text-slate-900 group-hover:text-[#0C59D4] transition-colors border-t border-slate-100/80 mt-4">
+                  <span className="flex items-center gap-1">
+                    <span>View all</span>
+                    <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
                   </span>
 
-                  <span className="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-700 text-[11px] font-bold flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                    <span>0% Commission</span>
+                  <span className="text-[10px] font-semibold text-slate-400">
+                    {trade.openJobs}
                   </span>
                 </div>
+
+                {/* SOLID BLACK BOTTOM BAR (Matching reference image design) */}
+                <div className="absolute -bottom-3 inset-x-0 h-3.5 bg-black rounded-b-3xl" />
               </div>
             </a>
           ))}
 
           {/* =========================================================================
-              CARD 12: GOOGLE PLAY STORE DOWNLOAD CTA CARD (EXACT MATCHING DIMENSIONS)
+              CARD 12: DOWNLOAD DLC WORKER APP CTA (IDENTICAL PROPORTIONS & DESIGN)
              ========================================================================= */}
           <a
             href={PLAY_STORE_URL}
             target="_blank"
             rel="noreferrer"
-            className="group relative bg-gradient-to-br from-[#071938] via-[#0C59D4] to-[#0A47AD] text-white rounded-3xl border-2 border-amber-400/40 shadow-[0_15px_40px_rgba(12,89,212,0.35)] hover:shadow-[0_20px_50px_rgba(251,191,36,0.35)] hover:border-amber-400 transition-all duration-300 flex flex-col justify-between pt-6 pb-6 px-6 sm:px-7 cursor-pointer overflow-hidden"
+            className="group relative flex flex-col justify-end pt-14 sm:pt-16 cursor-pointer"
           >
-            {/* Ambient Background Glow & Circuit Lines */}
-            <div className="absolute top-0 right-0 w-44 h-44 bg-amber-400/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute bottom-0 left-0 w-44 h-44 bg-sky-400/15 rounded-full blur-2xl pointer-events-none" />
-
-            {/* TOP HEADER BADGE */}
-            <div className="flex items-center justify-between mb-2 z-10">
-              <span className="text-[11px] font-bold text-blue-200 tracking-wider uppercase">
-                #12 • DOWNLOAD APP
-              </span>
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-400 text-slate-950 text-[11px] font-black shadow-sm">
-                <Sparkles className="w-3 h-3" />
-                <span>INSTANT ACCESS</span>
-              </span>
-            </div>
-
-            {/* CENTER GRAPHIC: SMARTPHONE MOCKUP & QR CODE WITH GOLD HIGHLIGHT */}
-            <div className="relative w-full h-64 sm:h-72 my-2 flex flex-col items-center justify-center p-4 bg-white/10 rounded-2xl border border-white/20 backdrop-blur-md z-10 group-hover:-translate-y-2 group-hover:scale-[1.02] transition-all duration-300">
-              <div className="w-20 h-20 bg-white rounded-2xl p-2 shadow-2xl flex items-center justify-center mb-3">
-                <QrCode className="w-16 h-16 text-slate-950" />
-              </div>
-              <span className="text-xs font-black text-amber-300 tracking-wider uppercase">
-                Scan With Mobile Camera
-              </span>
-              <p className="text-[11px] text-blue-100 text-center mt-1">
-                Download DLC Worker App directly from Google Play Store
-              </p>
+            {/* OFF-WHITE CARD BOX CONTAINER */}
+            <div className="relative w-full bg-[#FBFBFB] hover:bg-white rounded-3xl p-6 sm:p-7 border border-slate-100 shadow-[0_2px_14px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-slate-200 transition-all duration-300 min-h-[250px] sm:min-h-[270px] flex flex-col justify-between overflow-visible">
               
-              <div className="mt-3 flex items-center gap-1 text-amber-300">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                ))}
-                <span className="text-xs font-bold text-white ml-1">4.8 (35K+ Reviews)</span>
+              {/* WATERMARK BACKGROUND OUTLINE TEXT */}
+              <div
+                aria-hidden="true"
+                className="absolute right-4 bottom-6 text-4xl sm:text-5xl font-black stroke-watermark pointer-events-none select-none z-0"
+              >
+                DLC App
               </div>
-            </div>
 
-            {/* DETAILS & ACTION CTA */}
-            <div className="mt-3 z-10 flex-1 flex flex-col justify-between">
-              <div>
-                <h3 className="text-xl sm:text-[22px] font-black text-white group-hover:text-amber-300 transition-colors leading-tight">
-                  Apna Kaam Shuru Karein
+              {/* LEFT TEXT COLUMN */}
+              <div className="relative z-20 max-w-[55%] flex flex-col justify-start">
+                <span className="block text-[10px] sm:text-[11px] font-bold text-blue-600 tracking-wider uppercase mb-1.5">
+                  #12 • DOWNLOAD APP
+                </span>
+
+                <h3 className="text-xl sm:text-2xl font-black text-slate-950 leading-[1.15] group-hover:text-[#0C59D4] transition-colors">
+                  Download / <br />
+                  <span>DLC App</span>
                 </h3>
-                <p className="text-xs sm:text-sm text-blue-100 mt-0.5">
-                  1 Minute me Registration • Har Roz Kaam • Seedha Bank Transfer
+
+                <p className="text-xs sm:text-sm font-semibold text-slate-500 mt-1">
+                  (गूगल प्ले स्टोर)
                 </p>
 
-                <div className="mt-3.5 p-2.5 rounded-xl bg-white/10 border border-white/15 flex items-center justify-between text-xs">
-                  <span className="text-blue-200">Registration Fee:</span>
-                  <span className="font-black text-amber-300">₹0 (100% Free)</span>
+                <div className="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200/60 text-amber-900 text-[11px] font-bold w-fit">
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  <span>4.8 (35K+ Reviews)</span>
                 </div>
               </div>
 
-              {/* BOTTOM ACTION BUTTON */}
-              <div className="mt-5 pt-3.5 border-t border-white/20 flex items-center justify-between">
-                <div className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-md group-hover:bg-amber-300 transition-colors">
-                  <Download className="w-4 h-4" />
-                  <span>Download on Play Store</span>
+              {/* RIGHT GRAPHIC: PROTRUDING SMARTPHONE MOCKUP & QR CODE */}
+              <div className="absolute right-3 sm:right-6 bottom-5 w-40 sm:w-44 h-48 sm:h-56 pointer-events-none overflow-visible z-10 flex flex-col items-center justify-end pb-2">
+                <div className="w-28 sm:w-32 p-3 rounded-2xl bg-white border border-slate-200 shadow-xl flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-2">
+                  <QrCode className="w-16 h-16 sm:w-20 sm:h-20 text-slate-950 mb-1" />
+                  <span className="text-[9px] font-black tracking-widest text-[#0C59D4] uppercase text-center block">
+                    SCAN TO INSTALL
+                  </span>
                 </div>
-
-                <ArrowUpRight className="w-5 h-5 text-amber-300 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
               </div>
+
+              {/* BOTTOM ACTION LINK */}
+              <div className="relative z-20 pt-4 flex items-center justify-between text-xs font-bold text-slate-900 group-hover:text-[#0C59D4] transition-colors border-t border-slate-100/80 mt-4">
+                <span className="flex items-center gap-1">
+                  <span>Open in Play Store</span>
+                  <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+
+                <span className="text-[10px] font-bold text-emerald-600">
+                  100% Free
+                </span>
+              </div>
+
+              {/* SOLID BLACK BOTTOM BAR */}
+              <div className="absolute -bottom-3 inset-x-0 h-3.5 bg-black rounded-b-3xl" />
             </div>
           </a>
 
         </div>
 
         {/* BOTTOM HELPLINE STRIP */}
-        <div className="mt-12 p-4 sm:p-5 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+        <div className="mt-14 p-4 sm:p-5 rounded-2xl bg-[#FBFBFB] border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
               <HardHat className="w-5 h-5" />
