@@ -1,16 +1,17 @@
 import React from "react";
+import Image from "next/image";
 
 export default function TestingPage() {
   return (
     <main className="w-full min-h-screen bg-white flex flex-col items-center justify-center p-6 sm:p-12 lg:p-16 select-none space-y-28 sm:space-y-36">
       
       {/* =====================================================================
-          CARD 1: ORIGINAL (MASONS / RAJMISTRI)
+          CARD 1: ORIGINAL (WITH mason.webm VIDEO)
          ===================================================================== */}
       <div className="relative w-full max-w-[890px] pt-24 sm:pt-32">
         {/* Identifier Label */}
         <div className="text-xs sm:text-sm font-bold text-slate-400 mb-2 pl-1 tracking-wider uppercase">
-          Card 1
+          Card 1 (Video: mason.webm)
         </div>
 
         {/* Unified Off-White Card Container */}
@@ -56,12 +57,12 @@ export default function TestingPage() {
       </div>
 
       {/* =====================================================================
-          CARD 2: DUPLICATE (NAMED CARD 2)
+          CARD 2: DUPLICATE (WITH mason.gif ANIMATION)
          ===================================================================== */}
       <div className="relative w-full max-w-[890px] pt-24 sm:pt-32">
         {/* Identifier Label */}
         <div className="text-xs sm:text-sm font-bold text-slate-400 mb-2 pl-1 tracking-wider uppercase">
-          Card 2
+          Card 2 (GIF: mason.gif)
         </div>
 
         {/* Unified Off-White Card Container */}
@@ -77,7 +78,7 @@ export default function TestingPage() {
             </h2>
           </div>
 
-          {/* Right Column (65.2%): Frame 8 Video Container */}
+          {/* Right Column (65.2%): Frame 8 GIF Container */}
           <div className="w-[65.2%] relative">
             <div
               style={{
@@ -86,16 +87,15 @@ export default function TestingPage() {
               }}
               className="absolute inset-x-0 bg-transparent flex items-end justify-center pointer-events-none"
             >
-              <video
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="w-full h-full object-cover object-bottom"
-              >
-                <source src="/videos/mason.webm" type="video/webm" />
-                <source src="/mason.webm" type="video/webm" />
-              </video>
+              <div className="relative w-full h-full">
+                <Image
+                  src="/workers-gif/mason.gif"
+                  alt="Mason Card 2 GIF"
+                  fill
+                  className="object-cover object-bottom"
+                  unoptimized
+                />
+              </div>
             </div>
           </div>
 
