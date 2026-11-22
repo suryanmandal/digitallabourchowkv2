@@ -48,6 +48,9 @@ export default function Header() {
   const [mobileExpandedSection, setMobileExpandedSection] = useState<string | null>(null);
 
   const pathname = usePathname();
+
+  // Hide global header on isolated testing sandbox route
+  if (pathname === "/testing") return null;
   const navContainerRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 

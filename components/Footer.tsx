@@ -3,9 +3,13 @@
 import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowUp, CheckCircle2 } from "lucide-react";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/testing") return null;
+
   const [email, setEmail] = useState("");
   const [isSubscribed, setIsSubscribed] = useState(false);
 
