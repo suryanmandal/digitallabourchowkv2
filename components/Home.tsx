@@ -528,7 +528,7 @@ export function CurtainRevealSection() {
   return (
     <section className="w-full bg-white pt-16 sm:pt-20 pb-6 relative">
       {/* SECTION HEADER */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 sm:mb-10">
         {/* Top Unified Platform Pill Badge */}
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FFF5EE] border border-[#FFD8BE] text-[#E65100] text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3">
           <Sparkles className="w-3.5 h-3.5 text-[#E65100] fill-[#E65100]" />
@@ -554,7 +554,7 @@ export function CurtainRevealSection() {
             <div
               key={card.id}
               className={`sticky top-24 sm:top-28 md:top-32 ${
-                isLast ? "mb-0" : "mb-16 sm:mb-24"
+                isLast ? "mb-0" : "mb-4 sm:mb-6"
               }`}
               style={{ zIndex: card.zIndex }}
             >
