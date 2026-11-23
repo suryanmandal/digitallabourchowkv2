@@ -15,13 +15,14 @@ export default function NotFound() {
     <main className="min-h-[75vh] flex flex-col items-center justify-center py-12 sm:py-20 px-4 sm:px-6 lg:px-8 bg-white select-none">
       <div className="max-w-2xl w-full mx-auto text-center flex flex-col items-center">
         
-        {/* 3D CONSTRUCTION 404 ILLUSTRATION */}
+        {/* 3D CONSTRUCTION 404 ANIMATION */}
         <div className="relative w-full max-w-[540px] sm:max-w-[620px] aspect-[16/9] mb-6 sm:mb-8 transition-transform duration-300 hover:scale-[1.02]">
           <Image
-            src="/images/404-construction.jpg"
+            src="/general/404.gif"
             alt="404 - Site Under Construction - Digital Labour Chowk"
             fill
             priority
+            unoptimized
             className="object-contain"
             sizes="(max-width: 640px) 100vw, 620px"
           />
