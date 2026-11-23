@@ -3684,10 +3684,10 @@ const NEWS_MEDIA_ITEMS: NewsMediaItem[] = [
 
 export function NewsAndMediaSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
   const [cardStep, setCardStep] = useState(313);
 
   // Dynamic step sizing based on responsive breakpoints (zoomed-out proportions)
@@ -3709,21 +3709,51 @@ export function NewsAndMediaSection() {
   const total = NEWS_MEDIA_ITEMS.length;
 
   const nextSlide = () => {
-    setCurrentIndex((prev) => (prev + 1) % total);
+    setIsTransitioning(true);
+    setCurrentIndex((prev) => prev + 1);
   };
 
   const prevSlide = () => {
-    setCurrentIndex((prev) => (prev - 1 + total) % total);
+    setIsTransitioning(true);
+    if (currentIndex <= 0) {
+      setIsTransitioning(false);
+      setCurrentIndex(total);
+      setTimeout(() => {
+        setIsTransitioning(true);
+        setCurrentIndex(total - 1);
+      }, 50);
+    } else {
+      setCurrentIndex((prev) => prev - 1);
+    }
   };
 
-  // Autoplay with pause on hover/drag
+  // Seamless infinite loop handler on transition finish
+  const handleTransitionEnd = () => {
+    if (currentIndex >= total) {
+      setIsTransitioning(false);
+      setCurrentIndex(currentIndex % total);
+    }
+  };
+
+  // Re-enable smooth transitions after silent index reset
   useEffect(() => {
-    if (isPaused || isDragging) return;
-    const timer = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % total);
-    }, 4500);
-    return () => clearInterval(timer);
-  }, [isPaused, isDragging, total]);
+    if (!isTransitioning) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isTransitioning]);
+
+  // Continuous automated move (slides automatically every 3 seconds)
+  useEffect(() => {
+    if (isDragging) return;
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => prev + 1);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [isDragging]);
 
   // Mouse & Touch Drag Event Handlers
   const handleDragStart = (clientX: number) => {
@@ -3741,9 +3771,9 @@ export function NewsAndMediaSection() {
   const handleDragEnd = () => {
     if (!isDragging) return;
     setIsDragging(false);
-    if (dragOffset < -50) {
+    if (dragOffset < -40) {
       nextSlide();
-    } else if (dragOffset > 50) {
+    } else if (dragOffset > 40) {
       prevSlide();
     }
     setDragOffset(0);
@@ -3759,11 +3789,6 @@ export function NewsAndMediaSection() {
   return (
     <section
       className="w-full bg-white text-slate-900 py-16 sm:py-20 lg:py-24 border-t border-slate-200/90 relative overflow-hidden select-none"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => {
-        setIsPaused(false);
-        handleDragEnd();
-      }}
     >
       {/* Subtle radial ambient background glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(147,51,234,0.06),transparent_70%)] pointer-events-none" />
@@ -3797,14 +3822,17 @@ export function NewsAndMediaSection() {
         <div className="transform -rotate-[7deg] sm:-rotate-[9deg] md:-rotate-[10deg] -mx-16 sm:-mx-28 md:-mx-36 origin-center transition-transform duration-300">
           <div
             className={`flex items-start gap-5 sm:gap-6 lg:gap-7 px-8 sm:px-16 ${
-              isDragging ? "transition-none" : "transition-transform duration-700 ease-out"
+              isDragging || !isTransitioning
+                ? "transition-none"
+                : "transition-transform duration-700 ease-out"
             }`}
             style={{
               transform: `translateX(calc(-${currentIndex * cardStep}px + ${dragOffset}px))`,
             }}
+            onTransitionEnd={handleTransitionEnd}
           >
-            {/* Render items duplicated for smooth continuous horizon */}
-            {[...NEWS_MEDIA_ITEMS, ...NEWS_MEDIA_ITEMS].map((card, idx) => (
+            {/* Render 3 duplicate sets of items for seamless infinite forward looping */}
+            {[...NEWS_MEDIA_ITEMS, ...NEWS_MEDIA_ITEMS, ...NEWS_MEDIA_ITEMS].map((card, idx) => (
               <div
                 key={`${card.id}-${idx}`}
                 className="w-[210px] sm:w-[250px] lg:w-[285px] shrink-0 group/card cursor-pointer"
