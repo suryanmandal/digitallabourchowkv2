@@ -116,11 +116,13 @@ export function Hero() {
   return (
     <section className="relative w-full m-0 p-0 overflow-hidden bg-black">
       {/* ========================================================================= */}
-      {/* 🛠️ CAROUSEL CONTAINER SIZE: ADJUST DIV HEIGHT HERE                       */}
-      {/* Current values: min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[500px] */}
+      {/* 🛠️ CAROUSEL CONTAINER SIZE: ADAPTIVE ASPECT RATIO (Fiona Diamonds UX)     */}
+      {/* Mobile: Tall portrait hero (h-[76vh] min-h-[520px])                       */}
+      {/* Tablet: sm:h-[480px] md:h-[540px]                                         */}
+      {/* Desktop: Cinematic widescreen (lg:h-[580px] xl:h-[640px])                 */}
       {/* ========================================================================= */}
       <div
-        className="relative w-full min-h-[360px] aspect-video sm:aspect-auto sm:h-[420px] lg:h-[750px] overflow-hidden bg-slate-950 flex items-center justify-center m-0 p-0 select-none"
+        className="relative w-full h-[76vh] min-h-[520px] max-h-[660px] sm:h-[480px] sm:min-h-0 sm:max-h-none md:h-[540px] lg:h-[580px] xl:h-[640px] overflow-hidden bg-slate-950 flex items-center justify-center m-0 p-0 select-none"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
@@ -144,12 +146,17 @@ export function Hero() {
                 className="object-cover object-center"
               />
 
-              {/* Dark Gradient Overlay for optimal text legibility */}
-              <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-black/90 via-black/60 to-black/30 z-10" />
+              {/* Mobile Dual Gradient Vignette (Leaves center image subject clear like Fiona Diamonds) */}
+              <div className="sm:hidden absolute inset-0 bg-gradient-to-b from-black/85 via-black/20 to-black/90 z-10 pointer-events-none" />
 
-              {/* Slide Content */}
-              <div className="relative z-20 h-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col justify-center">
-                <div className="max-w-2xl sm:max-w-3xl">
+              {/* Desktop Left-to-Right Cinematic Gradient */}
+              <div className="hidden sm:block absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/15 z-10 pointer-events-none" />
+
+              {/* Slide Content: Shuffled layout (Top title, middle image focus, bottom CTAs on mobile) */}
+              <div className="relative z-20 h-full max-w-7xl mx-auto px-4 sm:px-8 lg:px-12 flex flex-col justify-between sm:justify-center py-6 sm:py-0">
+                
+                {/* TOP BLOCK: Eyebrow Badge & Main Headline */}
+                <div className="max-w-2xl sm:max-w-3xl pt-2 sm:pt-0">
                   {/* Badge */}
                   <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600/30 border border-blue-400/30 text-blue-300 text-[11px] sm:text-xs font-semibold backdrop-blur-md mb-2 sm:mb-3">
                     <Sparkles className="w-3.5 h-3.5 text-amber-300 flex-shrink-0" />
@@ -157,33 +164,56 @@ export function Hero() {
                   </span>
 
                   {/* Headline */}
-                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight sm:leading-[1.15] mb-2 sm:mb-3">
+                  <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight sm:leading-[1.15] drop-shadow-md sm:drop-shadow-none">
                     {slide.title} <br className="hidden sm:inline" />
                     <span className="text-[#3b82f6]">{slide.highlight}</span>
                   </h1>
 
-                  {/* Subtitle / Description */}
-                  <p className="text-xs sm:text-base text-slate-200 line-clamp-2 sm:line-clamp-none max-w-xl mb-4 sm:mb-6 leading-relaxed">
+                  {/* Desktop Description & Action Buttons (Grouped in left column on desktop) */}
+                  <p className="hidden sm:block text-sm sm:text-base text-slate-200 line-clamp-2 sm:line-clamp-none max-w-xl mt-3 mb-6 leading-relaxed">
                     {slide.description}
                   </p>
 
-                  {/* Action CTAs */}
-                  <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5">
+                  <div className="hidden sm:flex flex-wrap items-center gap-2.5 sm:gap-3.5">
                     <a
                       href={slide.primaryCtaHref}
-                      className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-lg shadow-blue-900/40 transition-all duration-200 active:scale-95 flex items-center gap-2"
+                      className="px-6 py-3 rounded-xl bg-[#0C59D4] hover:bg-[#0947AD] text-white font-bold text-xs sm:text-sm tracking-wider uppercase shadow-lg shadow-blue-900/40 transition-all duration-200 active:scale-95 flex items-center gap-2"
                     >
                       <span>{slide.primaryCtaText}</span>
                       <ArrowRight className="w-4 h-4" />
                     </a>
                     <Link
                       href={slide.secondaryCtaHref}
-                      className="px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 backdrop-blur-md transition-all duration-200"
+                      className="px-5 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-sm border border-white/20 backdrop-blur-md transition-all duration-200"
                     >
                       {slide.secondaryCtaText}
                     </Link>
                   </div>
                 </div>
+
+                {/* MOBILE BOTTOM BLOCK: Anchored above pagination dots (Fiona Diamonds UX) */}
+                <div className="sm:hidden flex flex-col pb-8">
+                  <p className="text-xs text-slate-200 line-clamp-2 mb-3.5 leading-relaxed drop-shadow-sm">
+                    {slide.description}
+                  </p>
+
+                  <div className="flex items-center gap-2.5">
+                    <a
+                      href={slide.primaryCtaHref}
+                      className="flex-1 py-3 px-4 rounded-xl bg-[#0C59D4] active:bg-[#0947AD] text-white font-bold text-xs tracking-wider uppercase shadow-lg shadow-blue-900/50 flex items-center justify-center gap-1.5"
+                    >
+                      <span>{slide.primaryCtaText}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                    <Link
+                      href={slide.secondaryCtaHref}
+                      className="py-3 px-3.5 rounded-xl bg-white/15 active:bg-white/25 text-white font-semibold text-xs border border-white/25 backdrop-blur-md text-center"
+                    >
+                      {slide.secondaryCtaText}
+                    </Link>
+                  </div>
+                </div>
+
               </div>
             </div>
           );
@@ -194,7 +224,7 @@ export function Hero() {
           type="button"
           onClick={prevSlide}
           aria-label="Previous slide"
-          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md transition-all active:scale-95"
+          className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-full bg-black/30 hover:bg-black/60 text-white border border-white/20 backdrop-blur-md transition-all active:scale-90"
         >
           <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
@@ -204,13 +234,13 @@ export function Hero() {
           type="button"
           onClick={nextSlide}
           aria-label="Next slide"
-          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/40 hover:bg-black/70 text-white border border-white/20 backdrop-blur-md transition-all active:scale-95"
+          className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-2.5 rounded-full bg-black/30 hover:bg-black/60 text-white border border-white/20 backdrop-blur-md transition-all active:scale-90"
         >
           <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
-        {/* Pagination Dots (Bottom Center) */}
-        <div className="absolute bottom-3 sm:bottom-5 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
+        {/* Pagination Dots (Bottom Center - Fiona Diamonds style) */}
+        <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2">
           {HERO_SLIDES.map((_, idx) => (
             <button
               key={idx}
@@ -219,8 +249,8 @@ export function Hero() {
               aria-label={`Go to slide ${idx + 1}`}
               className={`transition-all duration-300 rounded-full ${
                 idx === activeSlide
-                  ? "w-7 sm:w-8 h-2 sm:h-2.5 bg-[#0C59D4]"
-                  : "w-2 sm:w-2.5 h-2 sm:h-2.5 bg-white/50 hover:bg-white/80"
+                  ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#0C59D4] shadow-xs"
+                  : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/60 hover:bg-white/90"
               }`}
             />
           ))}
