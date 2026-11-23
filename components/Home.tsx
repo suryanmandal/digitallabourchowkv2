@@ -987,6 +987,14 @@ export function StatsAndTestimonials() {
   const statsRef = useRef<HTMLDivElement>(null);
   const [hasAnimated, setHasAnimated] = useState(false);
 
+  // Interactive Horizontal Drag / Touch Swipe State
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef<number | null>(null);
+  const dragStartY = useRef<number | null>(null);
+  const isHorizontalSwipe = useRef<boolean | null>(null);
+  const wheelLock = useRef<boolean>(false);
+
   useEffect(() => {
     const el = statsRef.current;
     if (!el) return;
@@ -1031,13 +1039,74 @@ export function StatsAndTestimonials() {
     setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
   };
 
+  // Drag / Touch gesture handlers for horizontal swiping
+  const handleDragStart = (clientX: number, clientY: number) => {
+    setIsDragging(true);
+    dragStartX.current = clientX;
+    dragStartY.current = clientY;
+    isHorizontalSwipe.current = null;
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (clientX: number, clientY: number) => {
+    if (!isDragging || dragStartX.current === null || dragStartY.current === null) return;
+    const deltaX = clientX - dragStartX.current;
+    const deltaY = clientY - dragStartY.current;
+
+    if (isHorizontalSwipe.current === null) {
+      if (Math.abs(deltaX) > 6 || Math.abs(deltaY) > 6) {
+        isHorizontalSwipe.current = Math.abs(deltaX) > Math.abs(deltaY);
+      }
+    }
+
+    if (isHorizontalSwipe.current) {
+      setDragOffset(deltaX);
+    }
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    const threshold = 40;
+    if (dragOffset < -threshold) {
+      nextSlide();
+    } else if (dragOffset > threshold) {
+      prevSlide();
+    }
+
+    setDragOffset(0);
+    dragStartX.current = null;
+    dragStartY.current = null;
+    isHorizontalSwipe.current = null;
+  };
+
+  // Two-finger trackpad horizontal wheel listener
+  const handleWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 20) {
+      if (!wheelLock.current) {
+        wheelLock.current = true;
+        if (e.deltaX > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+        setTimeout(() => {
+          wheelLock.current = false;
+        }, 500);
+      }
+    }
+  };
+
+  // Auto-slide every 5.5s (pauses while actively swiping/dragging)
   useEffect(() => {
+    if (isDragging) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev >= maxIndex ? 0 : prev + 1));
     }, 5500);
 
     return () => clearInterval(interval);
-  }, [maxIndex]);
+  }, [maxIndex, isDragging]);
 
   return (
     <section className="w-full bg-[#FAFAFC] pt-0 pb-16 sm:pb-24 border-t-0 overflow-hidden">
@@ -1137,13 +1206,23 @@ export function StatsAndTestimonials() {
             </div>
           </div>
 
-          {/* RIGHT CAROUSEL (Review Cards Container) */}
-          <div className="lg:col-span-8 flex flex-col justify-center overflow-hidden">
+          {/* RIGHT CAROUSEL (Review Cards Container with Touch Swipe, Mouse Drag, & Horizontal Wheel) */}
+          <div
+            className="lg:col-span-8 flex flex-col justify-center overflow-hidden cursor-grab active:cursor-grabbing select-none"
+            onWheel={handleWheel}
+            onMouseDown={(e) => handleDragStart(e.clientX, e.clientY)}
+            onMouseMove={(e) => handleDragMove(e.clientX, e.clientY)}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onTouchStart={(e) => handleDragStart(e.touches[0].clientX, e.touches[0].clientY)}
+            onTouchMove={(e) => handleDragMove(e.touches[0].clientX, e.touches[0].clientY)}
+            onTouchEnd={handleDragEnd}
+          >
             <div className="relative w-full overflow-hidden">
               <div
-                className="flex transition-transform duration-500 ease-out"
+                className={`flex ${isDragging ? "transition-none" : "transition-transform duration-500 ease-out"}`}
                 style={{
-                  transform: `translateX(-${currentIndex * (100 / visibleCount)}%)`,
+                  transform: `translateX(calc(-${currentIndex * (100 / visibleCount)}% + ${dragOffset}px))`,
                 }}
               >
                 {TESTIMONIALS_DATA.map((card) => (
@@ -1212,6 +1291,41 @@ export function StatsAndTestimonials() {
                   </div>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile / Tablet Horizontal Navigation Controls (Directly below cards on mobile) */}
+            <div className="lg:hidden flex items-center justify-between mt-6 pt-4 border-t border-slate-200/80 px-2">
+              <button
+                type="button"
+                onClick={prevSlide}
+                className="w-10 h-10 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200/90 shadow-xs flex items-center justify-center transition-all active:scale-95"
+                aria-label="Previous Testimonial"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+
+              <div className="flex gap-1.5 items-center px-3 py-1.5 rounded-full bg-slate-100/90 border border-slate-200/80">
+                {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setCurrentIndex(idx)}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      currentIndex === idx ? "w-6 bg-[#0C59D4]" : "w-2 bg-slate-300 hover:bg-slate-400"
+                    }`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+
+              <button
+                type="button"
+                onClick={nextSlide}
+                className="w-10 h-10 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200/90 shadow-xs flex items-center justify-center transition-all active:scale-95"
+                aria-label="Next Testimonial"
+              >
+                <ChevronRight className="w-5 h-5" />
+              </button>
             </div>
           </div>
 
