@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -25,6 +25,8 @@ import {
   Check,
   FileSpreadsheet,
   Award,
+  Plus,
+  Minus,
 } from "lucide-react";
 
 // =============================================================================
@@ -352,12 +354,20 @@ const ESTIMATOR_FAQS = [
     a: "Traditional turnkey aggregators markup construction by 20% to 30% for contractor margins and middlemen. Through Digital Labour Chowk, contractors and home builders directly mobilize KYC-verified tradesmen at fair market wages with 0% middleman commission, reducing labor overhead by 15-22%.",
   },
   {
+    q: "Why does construction cost vary significantly across Indian cities?",
+    a: "Labour daily wages, river sand availability, crushed stone aggregate transportation, and municipal building codes differ by state. Tier-1 metros like Bengaluru, Mumbai, and Delhi have higher baseline artisan wages and transit tariffs compared to cities like Patna or Kolkata.",
+  },
+  {
     q: "Does this estimate include architectural design and municipal approvals?",
-    a: "This calculator covers the structural build (civil, brickwork, plastering, waterproofing), electrical, plumbing, doors, windows, and finishes. Municipal map sanctions, architect fees, and interior woodwork/modular furniture are typically budgeted separately.",
+    a: "This calculator covers the complete turnkey structural build (civil, brickwork, plastering, waterproofing), electrical conduits & wiring, plumbing pipelines, sanitary fittings, floor tiling, internal/external painting, and doors/windows. Municipal map sanctions, architect fees, and interior modular woodwork are typically budgeted separately.",
   },
   {
     q: "Can I calculate the cost for G+1, G+2, or multi-storey structures?",
     a: "Yes! Our calculator supports Ground Only (G), G+1, G+2, G+3, and G+4. Selecting additional floors automatically scales civil foundation strength, structural column reinforcements, and floor-level built-up calculations.",
+  },
+  {
+    q: "What brands of cement, steel, and electrical fittings are used in each package?",
+    a: "Standard uses Kamadhenu/Rathi steel and Shree/Birla cement. Classic upgrades to JSW Neosteel and ACC/UltraTech. Premium uses TATA Tiscon, Jaquar sanitaryware, and Havells/Polycab wiring. Royale features Italian marble, Futura sinks, Kohler fixtures, and smart home provisions.",
   },
 ];
 
@@ -382,6 +392,48 @@ export default function CostEstimatorPage() {
   const [leadPhone, setLeadPhone] = useState("");
   const [leadName, setLeadName] = useState("");
   const [leadSubmitted, setLeadSubmitted] = useState(false);
+
+  // Designer FAQ state
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+  const [faqAskQuery, setFaqAskQuery] = useState("");
+  const [faqAiResponse, setFaqAiResponse] = useState<string | null>(null);
+  const [promptIdx, setPromptIdx] = useState(0);
+
+  const FAQ_PROMPTS = [
+    "What is included in the turnkey package?",
+    "How is Super Built-up Area calculated?",
+    "Can I customize cement & steel brands?",
+    "How do city construction rates differ?",
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setPromptIdx((prev) => (prev + 1) % FAQ_PROMPTS.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, [FAQ_PROMPTS.length]);
+
+  const toggleFaq = (idx: number) => {
+    setOpenFaqIndex((prev) => (prev === idx ? null : idx));
+  };
+
+  const handleFaqAskSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!faqAskQuery.trim()) return;
+
+    const qLower = faqAskQuery.toLowerCase();
+    if (qLower.includes("turnkey") || qLower.includes("include") || qLower.includes("scope") || qLower.includes("package")) {
+      setFaqAiResponse("DLC turnkey packages include full civil structure (RCC, brickwork, plaster), electrical wiring, plumbing pipelines, sanitary fixtures, floor tiles, internal/external paints, and doors/windows.");
+    } else if (qLower.includes("carpet") || qLower.includes("built") || qLower.includes("sbua") || qLower.includes("area")) {
+      setFaqAiResponse("Super Built-up Area (SBUA) is calculated using standard 75% ground coverage multiplied by floor count, plus 130 sq.ft per covered car park and 40 sq.ft per balcony.");
+    } else if (qLower.includes("brand") || qLower.includes("steel") || qLower.includes("cement") || qLower.includes("material")) {
+      setFaqAiResponse("We use top-tier certified materials: TATA Tiscon / JSW Neosteel for reinforcement, UltraTech / ACC for structural concrete, and Jaquar / Parryware for sanitaryware.");
+    } else if (qLower.includes("city") || qLower.includes("rate") || qLower.includes("cost") || qLower.includes("price")) {
+      setFaqAiResponse("Construction rates vary by city due to local sand/aggregate transport logistics, municipal bylaws, and regional daily artisan labor rates (Tier 1 vs Tier 2).");
+    } else {
+      setFaqAiResponse("We received your question! Our chief structural advisor is available right now on +91 7070999175 to review your site requirements.");
+    }
+  };
 
   // Active City Rate Object
   const currentCity = useMemo(() => {
@@ -1132,35 +1184,183 @@ export default function CostEstimatorPage() {
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. FREQUENTLY ASKED QUESTIONS (FAQ Accordion)                             */}
+      {/* 4. FREQUENTLY ASKED QUESTIONS (Designer 2-Column FAQ Layout)              */}
       {/* ========================================================================= */}
-      <section className="w-full py-16 sm:py-20 bg-[#FAFAFC]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <span className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-blue-50 border border-blue-200 text-[#0C59D4] text-xs font-bold uppercase tracking-wider mb-3">
-              <HelpCircle className="w-3.5 h-3.5" />
-              <span>Clear Answers</span>
-            </span>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight">
-              Construction Cost Calculator FAQs
-            </h2>
+      <section className="w-full bg-[#08090C] py-20 sm:py-28 border-t border-white/[0.08] relative overflow-hidden font-sans">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          {/* Top Header: Badge + Split Title & Subtitle */}
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12 sm:mb-16">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/10 text-white/80 text-xs font-semibold uppercase tracking-wider mb-4">
+                <span className="text-blue-400">✦</span>
+                <span>FAQ</span>
+              </div>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.05]">
+                Questions,<br />
+                <span className="text-white/40">answered.</span>
+              </h2>
+            </div>
+
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-md lg:pb-1 font-normal">
+              Everything you need to know about house construction costs, turnkey material packages, super built-up area calculations, and site execution. Can&apos;t find an answer? Ask our estimator assistant directly.
+            </p>
           </div>
 
-          <div className="space-y-4">
-            {ESTIMATOR_FAQS.map((faq, idx) => (
-              <details
-                key={idx}
-                className="group bg-white rounded-2xl border border-slate-200/90 shadow-xs p-6 open:shadow-md transition-all cursor-pointer"
-              >
-                <summary className="font-extrabold text-sm sm:text-base text-slate-900 flex items-center justify-between list-none">
-                  <span>{faq.q}</span>
-                  <ChevronDown className="w-4 h-4 text-slate-500 group-open:rotate-180 transition-transform shrink-0 ml-2" />
-                </summary>
-                <p className="mt-3.5 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal pt-3 border-t border-slate-100">
-                  {faq.a}
-                </p>
-              </details>
-            ))}
+          {/* 2-Column Main Layout: Accordion (Left) + Blue Video Card (Right) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            
+            {/* Left Column: Numbered Minimalist Accordion List */}
+            <div className="lg:col-span-7 space-y-3">
+              {ESTIMATOR_FAQS.map((item, idx) => {
+                const isOpen = openFaqIndex === idx;
+                const num = String(idx + 1).padStart(2, "0");
+                return (
+                  <div
+                    key={idx}
+                    className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
+                      isOpen
+                        ? "bg-[#14151B] border-white/15 shadow-xl"
+                        : "bg-[#0F1015]/80 border-white/5 hover:border-white/10 hover:bg-[#121319]"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleFaq(idx)}
+                      className="w-full py-4.5 sm:py-5 px-5 sm:px-6 text-left flex items-center justify-between gap-4 focus:outline-none cursor-pointer"
+                    >
+                      <div className="flex items-center gap-3.5 sm:gap-4 flex-1">
+                        <span className="text-xs font-mono font-medium text-slate-500 shrink-0">
+                          {num}
+                        </span>
+                        <span
+                          style={{ color: isOpen ? "#ffffff" : "#cbd5e1" }}
+                          className="text-sm sm:text-base font-bold transition-colors"
+                        >
+                          {item.q}
+                        </span>
+                      </div>
+
+                      <div className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 border transition-all ${
+                        isOpen
+                          ? "bg-white/10 border-white/20 text-white"
+                          : "bg-white/5 border-white/5 text-slate-400"
+                      }`}>
+                        {isOpen ? <Minus className="w-3.5 h-3.5" /> : <Plus className="w-3.5 h-3.5" />}
+                      </div>
+                    </button>
+
+                    {isOpen && (
+                      <div
+                        style={{ color: "#94a3b8" }}
+                        className="px-5 sm:px-6 pb-5 pt-1 pl-12 sm:pl-14 text-xs sm:text-sm leading-relaxed border-t border-white/5 animate-in fade-in duration-200"
+                      >
+                        {item.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Right Column: Blue Fluid Video Card with Frosted Glass Search Assistant */}
+            <div className="lg:col-span-5 lg:sticky lg:top-28">
+              <div className="relative rounded-3xl sm:rounded-[2rem] overflow-hidden border border-white/10 shadow-2xl min-h-[460px] sm:min-h-[500px] flex items-center justify-center p-5 sm:p-7 bg-[#05060A]">
+                
+                {/* Blue Pattern Fluid Loop Video */}
+                <video
+                  src="/videos/faq-blue-pattern.mp4"
+                  poster="/images/faq-blue-poster.jpg"
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+                />
+
+                {/* Ambient Glow */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20 pointer-events-none" />
+
+                {/* Interactive Frosted Glass Assistant Box */}
+                <div className="relative z-10 w-full rounded-2xl bg-[#080A12]/92 backdrop-blur-2xl border border-white/15 p-5 sm:p-6 shadow-2xl">
+                  <div className="flex items-center gap-2.5 mb-2.5">
+                    <div className="w-8 h-8 rounded-xl bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0">
+                      <Sparkles className="w-4 h-4 text-blue-400" />
+                    </div>
+                    <h4 className="text-base sm:text-lg font-bold text-white tracking-tight">
+                      Still have questions?
+                    </h4>
+                  </div>
+
+                  <p className="text-xs sm:text-[13px] text-slate-300 leading-relaxed mb-4">
+                    Ask DLC anything about house construction costs, material specifications, turnkey BOQ, or contractor labor mobilization — or reach our team directly.
+                  </p>
+
+                  {/* Interactive Search / Ask Form */}
+                  <form onSubmit={handleFaqAskSubmit} className="relative mb-3.5">
+                    <input
+                      type="text"
+                      value={faqAskQuery}
+                      onChange={(e) => setFaqAskQuery(e.target.value)}
+                      placeholder={FAQ_PROMPTS[promptIdx]}
+                      className="w-full pl-3.5 pr-11 py-2.5 sm:py-3 rounded-xl bg-white/10 border border-white/15 text-xs sm:text-sm text-white placeholder-slate-400 focus:outline-none focus:border-[#0C59D4] focus:bg-white/15 transition-all"
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-1.5 top-1.5 bottom-1.5 w-8 rounded-lg bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                      aria-label="Submit question"
+                    >
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </form>
+
+                  {/* Quick Prompt Pill Chips */}
+                  <div className="flex flex-wrap gap-1.5 mb-4">
+                    {[
+                      "Turnkey scope?",
+                      "Carpet vs SBUA?",
+                      "Brand specs?",
+                      "City rate diffs?",
+                    ].map((chip) => (
+                      <button
+                        type="button"
+                        key={chip}
+                        onClick={() => setFaqAskQuery(chip)}
+                        className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer"
+                      >
+                        {chip}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* AI / Instant Response Box */}
+                  {faqAiResponse && (
+                    <div className="mb-4 p-3.5 rounded-xl bg-blue-950/60 border border-blue-500/30 text-xs text-blue-200 leading-relaxed animate-in fade-in duration-200 flex items-start gap-2.5">
+                      <div className="w-2 h-2 rounded-full bg-blue-400 shrink-0 mt-1.5 animate-pulse" />
+                      <div className="flex-1">
+                        <span className="font-bold text-white block mb-0.5">DLC Cost Advisor:</span>
+                        {faqAiResponse}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Toll Free Direct Contact Box */}
+                  <div className="pt-3.5 border-t border-white/10 flex items-center justify-between text-xs">
+                    <span className="text-slate-400 flex items-center gap-1.5">
+                      <PhoneCall className="w-3.5 h-3.5 text-emerald-400" />
+                      Talk to our engineer:
+                    </span>
+                    <a
+                      href="tel:+917070999175"
+                      className="font-bold text-white hover:text-blue-400 transition-colors"
+                    >
+                      +91-7070999175
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
