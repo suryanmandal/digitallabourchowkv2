@@ -14,13 +14,6 @@ interface TradeCard {
 
 const TRADES_DATA: TradeCard[] = [
   {
-    id: "mason",
-    title: "Masons /",
-    subtitle: "Rajmistri",
-    category: "Category Name",
-    gif: "/workers-gif/mason.gif",
-  },
-  {
     id: "labour",
     title: "General Labour /",
     subtitle: "Helpers",
@@ -28,18 +21,11 @@ const TRADES_DATA: TradeCard[] = [
     gif: "/workers-gif/labour.gif",
   },
   {
-    id: "painter",
-    title: "Painters /",
-    subtitle: "Rangsaaz",
+    id: "mason",
+    title: "Masons /",
+    subtitle: "Rajmistri",
     category: "Category Name",
-    gif: "/workers-gif/painter.gif",
-  },
-  {
-    id: "plumber",
-    title: "Plumbers /",
-    subtitle: "Nalsaaz",
-    category: "Category Name",
-    gif: "/workers-gif/plumber.gif",
+    gif: "/workers-gif/mason.gif",
   },
   {
     id: "carpenter",
@@ -49,11 +35,39 @@ const TRADES_DATA: TradeCard[] = [
     gif: "/workers-gif/carpenter.gif",
   },
   {
+    id: "painter",
+    title: "Painters /",
+    subtitle: "Rangsaaz",
+    category: "Category Name",
+    gif: "/workers-gif/painter.gif",
+  },
+  {
     id: "electrician",
     title: "Electricians /",
     subtitle: "Bijli Mistri",
     category: "Category Name",
     gif: "/workers-gif/electrician.gif",
+  },
+  {
+    id: "plumber",
+    title: "Plumbers /",
+    subtitle: "Nalsaaz",
+    category: "Category Name",
+    gif: "/workers-gif/plumber.gif",
+  },
+  {
+    id: "welder",
+    title: "Welders /",
+    subtitle: "Fabrication",
+    category: "Category Name",
+    gif: "/workers-gif/welder.gif",
+  },
+  {
+    id: "iti",
+    title: "ITI Tech /",
+    subtitle: "Machinists",
+    category: "Category Name",
+    gif: "/workers-gif/iti.gif",
   },
   {
     id: "foreman",
@@ -76,20 +90,6 @@ const TRADES_DATA: TradeCard[] = [
     category: "Category Name",
     gif: "/workers-gif/engineer.gif",
   },
-  {
-    id: "welder",
-    title: "Welders /",
-    subtitle: "Fabrication",
-    category: "Category Name",
-    gif: "/workers-gif/welder.gif",
-  },
-  {
-    id: "iti",
-    title: "ITI Tech /",
-    subtitle: "Machinists",
-    category: "Category Name",
-    gif: "/workers-gif/iti.gif",
-  },
 ];
 
 export default function WorkerTradesGrid() {
@@ -97,39 +97,34 @@ export default function WorkerTradesGrid() {
     "https://play.google.com/store/apps/details?id=com.digitallabourchowk.dlc";
 
   return (
-    <section className="w-full bg-white py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
-      <div className="max-w-7xl mx-auto">
+    <section className="w-full bg-white py-14 sm:py-20 px-4 sm:px-6 lg:px-8 border-b border-slate-200">
+      <div className="max-w-6xl mx-auto">
         
         {/* =========================================================================
             SECTION HEADER
            ========================================================================= */}
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-24">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-bold mb-4 shadow-sm">
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs sm:text-sm font-bold mb-3 shadow-sm">
             <Sparkles className="w-4 h-4 text-amber-500" />
             <span>11 Core Crafts & Leadership Roles • Direct App Hiring</span>
           </div>
 
-          <h2 className="text-3xl sm:text-5xl font-black text-slate-950 tracking-tight leading-tight">
+          <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-950 tracking-tight leading-tight">
             Sabhi Shramik Shreniyan, <br />
             <span className="text-[#0C59D4]">Ek Hi Platform Par Uplabdh</span>
           </h2>
-
-          <p className="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
-            Kisi alag page par bhatakne ki zaroorat nahi. Apne hunar ke anusaar card chuniye
-            aur Google Play Store se DLC Worker App download karke turant kaam paayein.
-          </p>
         </div>
 
         {/* =========================================================================
-            3x4 UNIFIED GRID: EXACT "CARD 2" SPECIFICATION
+            3-COLUMN CALIBRATED GRID (DESKTOP & MOBILE BALANCED)
             - Section background: pure white
-            - Card container: off-white #F8F8F6 rounded-t-[36px] sm:rounded-t-[48px]
-            - Left Column (35%): Faint category tag + 2-line bold black title
-            - Right Column (65%): Transparent Frame 8 container with negative Y-protrusion
-            - Protrusion: top: calc(-46.25%), background: transparent
-            - Bottom black bar: h-5 sm:h-6 bg-black rounded-b-[20px] sm:rounded-b-[24px]
+            - Card container: off-white #F8F8F6 rounded-t-[28px] sm:rounded-t-[32px]
+            - Left Column (44%): Faint category tag + 2-line bold black title (no awkward line wraps)
+            - Right Column (56%): Transparent container with negative Y-protrusion
+            - Protrusion: top: calc(-36%), background: transparent
+            - Bottom black bar: h-4 sm:h-5 bg-black rounded-b-[16px] sm:rounded-b-[20px]
            ========================================================================= */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-20 sm:gap-y-28 items-stretch pt-12 sm:pt-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 lg:gap-x-7 gap-y-12 sm:gap-y-14 items-stretch pt-6 sm:pt-8">
           
           {/* RENDER 11 WORKER TRADE CARDS */}
           {TRADES_DATA.map((trade, idx) => (
@@ -138,38 +133,52 @@ export default function WorkerTradesGrid() {
               href={PLAY_STORE_URL}
               target="_blank"
               rel="noreferrer"
-              className="group relative flex flex-col justify-end pt-16 sm:pt-24 cursor-pointer"
+              className="group relative flex flex-col justify-end pt-12 sm:pt-14 cursor-pointer"
             >
               {/* UNIFIED OFF-WHITE CARD CONTAINER */}
-              <div className="relative w-full bg-[#F8F8F6] rounded-t-[32px] sm:rounded-t-[40px] flex items-stretch shadow-[0_2px_14px_rgba(0,0,0,0.03)] group-hover:shadow-xl transition-all duration-300">
+              <div className="relative w-full bg-[#F8F8F6] rounded-t-[28px] sm:rounded-t-[32px] flex items-stretch shadow-[0_2px_12px_rgba(0,0,0,0.03)] group-hover:shadow-lg transition-all duration-300">
                 
-                {/* LEFT COLUMN (35%): CLEAN TITLE & FAINT CATEGORY TAG */}
-                <div className="w-[38%] sm:w-[35%] pt-10 pb-8 sm:pt-14 sm:pb-12 pl-5 sm:pl-7 lg:pl-8 pr-2 flex flex-col justify-center min-h-[190px] sm:min-h-[220px] relative z-10">
-                  <span className="block text-[10px] sm:text-[11px] font-medium text-slate-400 tracking-wide mb-2 sm:mb-3 select-none">
+                {/* LEFT COLUMN (46%): CLEAN TITLE & FAINT CATEGORY TAG */}
+                <div className="w-[46%] pt-7 pb-6 sm:pt-8 sm:pb-7 pl-5 sm:pl-6 pr-1 flex flex-col justify-center min-h-[160px] sm:min-h-[170px] relative z-10">
+                  <span className="block text-[10px] sm:text-[11px] font-medium text-slate-400 tracking-wide mb-1.5 sm:mb-2 select-none">
                     {trade.category}
                   </span>
 
-                  <h3 className="text-xl sm:text-2xl lg:text-[27px] font-black text-black leading-[1.08] tracking-tight group-hover:text-[#0C59D4] transition-colors">
-                    {trade.title} <br />
-                    <span>{trade.subtitle}</span>
+                  <h3 className="text-[16px] sm:text-[17px] lg:text-[18.5px] xl:text-[19.5px] font-black text-black leading-[1.12] tracking-tight group-hover:text-[#0C59D4] transition-colors">
+                    <span className="block whitespace-nowrap">{trade.title}</span>
+                    <span className="block whitespace-nowrap">{trade.subtitle}</span>
                   </h3>
                 </div>
 
-                {/* RIGHT COLUMN (65%): EXACT CARD 2 FRAME 8 CONTAINER WITH PROTRUSION */}
-                <div className="w-[62%] sm:w-[65%] relative">
+                {/* RIGHT COLUMN (54%): EXACT FRAME CONTAINER WITH BALANCED PROTRUSION */}
+                <div className="w-[54%] relative">
                   <div
                     style={{
-                      top: "calc(-46.25%)",
+                      top: "calc(-36%)",
                       bottom: "0px",
                     }}
                     className="absolute inset-x-0 bg-transparent flex items-end justify-center pointer-events-none"
                   >
-                    <div className="relative w-full h-full">
+                    <div
+                      className={`relative w-full h-full ${
+                        trade.id === "iti"
+                          ? "-translate-x-3 sm:-translate-x-2"
+                          : trade.id === "foreman"
+                          ? "-translate-x-2 sm:-translate-x-2.5"
+                          : ""
+                      }`}
+                    >
                       <Image
                         src={trade.gif}
                         alt={`${trade.title} ${trade.subtitle}`}
                         fill
-                        className="object-cover object-bottom transition-transform duration-300 group-hover:scale-105"
+                        className={`object-cover transition-transform duration-300 group-hover:scale-105 ${
+                          trade.id === "iti"
+                            ? "object-[68%_bottom]"
+                            : trade.id === "foreman"
+                            ? "object-[65%_bottom]"
+                            : "object-bottom"
+                        }`}
                         unoptimized
                         priority={idx < 3}
                       />
@@ -180,51 +189,51 @@ export default function WorkerTradesGrid() {
               </div>
 
               {/* SOLID BLACK BOTTOM BAR (Grounded at the bottom of the card) */}
-              <div className="w-full h-5 sm:h-6 bg-black rounded-b-[20px] sm:rounded-b-[24px]" />
+              <div className="w-full h-4 sm:h-5 bg-black rounded-b-[16px] sm:rounded-b-[20px]" />
             </a>
           ))}
 
           {/* =========================================================================
-              CARD 12: DOWNLOAD DLC WORKER APP CTA (MATCHING CARD 2 SPECIFICATIONS)
+              CARD 12: DOWNLOAD DLC WORKER APP CTA (MATCHING CALIBRATED SPECIFICATIONS)
              ========================================================================= */}
           <a
             href={PLAY_STORE_URL}
             target="_blank"
             rel="noreferrer"
-            className="group relative flex flex-col justify-end pt-16 sm:pt-24 cursor-pointer"
+            className="group relative flex flex-col justify-end pt-12 sm:pt-14 cursor-pointer"
           >
             {/* UNIFIED OFF-WHITE CARD CONTAINER */}
-            <div className="relative w-full bg-[#F8F8F6] rounded-t-[32px] sm:rounded-t-[40px] flex items-stretch shadow-[0_2px_14px_rgba(0,0,0,0.03)] group-hover:shadow-xl transition-all duration-300">
+            <div className="relative w-full bg-[#F8F8F6] rounded-t-[28px] sm:rounded-t-[32px] flex items-stretch shadow-[0_2px_12px_rgba(0,0,0,0.03)] group-hover:shadow-lg transition-all duration-300">
               
               {/* LEFT COLUMN */}
-              <div className="w-[42%] sm:w-[40%] pt-10 pb-8 sm:pt-14 sm:pb-12 pl-5 sm:pl-7 lg:pl-8 pr-2 flex flex-col justify-center min-h-[190px] sm:min-h-[220px] relative z-10">
-                <span className="block text-[10px] sm:text-[11px] font-medium text-slate-400 tracking-wide mb-2 sm:mb-3 select-none">
+              <div className="w-[46%] pt-7 pb-6 sm:pt-8 sm:pb-7 pl-5 sm:pl-6 pr-1 flex flex-col justify-center min-h-[160px] sm:min-h-[170px] relative z-10">
+                <span className="block text-[10px] sm:text-[11px] font-medium text-slate-400 tracking-wide mb-1.5 sm:mb-2 select-none">
                   Google Play Store
                 </span>
 
-                <h3 className="text-xl sm:text-2xl lg:text-[27px] font-black text-black leading-[1.08] tracking-tight group-hover:text-[#0C59D4] transition-colors">
-                  Download / <br />
-                  <span>DLC App</span>
+                <h3 className="text-[17px] sm:text-[18px] lg:text-[19px] xl:text-[20px] font-black text-black leading-[1.12] tracking-tight group-hover:text-[#0C59D4] transition-colors">
+                  <span className="block">Download /</span>
+                  <span className="block">DLC App</span>
                 </h3>
               </div>
 
               {/* RIGHT COLUMN: PROTRUDING QR CODE BADGE */}
-              <div className="w-[58%] sm:w-[60%] relative">
+              <div className="w-[54%] relative">
                 <div
                   style={{
-                    top: "calc(-46.25%)",
+                    top: "calc(-36%)",
                     bottom: "0px",
                   }}
                   className="absolute inset-x-0 bg-transparent flex items-end justify-center pb-2 pointer-events-none"
                 >
-                  <div className="w-28 sm:w-36 p-3 sm:p-4 rounded-2xl bg-white border border-slate-200/80 shadow-2xl flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-2">
-                    <QrCode className="w-16 h-16 sm:w-20 sm:h-20 text-slate-950 mb-1" />
-                    <span className="text-[8px] sm:text-[9px] font-black tracking-widest text-[#0C59D4] uppercase text-center block">
+                  <div className="w-24 sm:w-28 p-2.5 sm:p-3 rounded-2xl bg-white border border-slate-200/80 shadow-xl flex flex-col items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:-translate-y-1">
+                    <QrCode className="w-12 h-12 sm:w-14 sm:h-14 text-slate-950 mb-1" />
+                    <span className="text-[7px] sm:text-[8px] font-black tracking-widest text-[#0C59D4] uppercase text-center block">
                       SCAN TO INSTALL
                     </span>
                     <div className="flex items-center gap-1 text-amber-500 mt-1">
                       {[...Array(5)].map((_, i) => (
-                        <Star key={i} className="w-2.5 h-2.5 fill-current" />
+                        <Star key={i} className="w-2 h-2 fill-current" />
                       ))}
                     </div>
                   </div>
@@ -234,7 +243,7 @@ export default function WorkerTradesGrid() {
             </div>
 
             {/* SOLID BLACK BOTTOM BAR */}
-            <div className="w-full h-5 sm:h-6 bg-black rounded-b-[20px] sm:rounded-b-[24px]" />
+            <div className="w-full h-4 sm:h-5 bg-black rounded-b-[16px] sm:rounded-b-[20px]" />
           </a>
 
         </div>

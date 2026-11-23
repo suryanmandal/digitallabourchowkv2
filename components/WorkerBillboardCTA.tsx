@@ -38,16 +38,7 @@ export default function WorkerBillboardCTA() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,#ffffff15,transparent_70%)] pointer-events-none" />
       </div>
 
-      {/* Horizontal conduit pipe near bottom (from reference image) */}
-      <div className="absolute bottom-6 left-0 right-1/4 h-2.5 bg-slate-500 border-t border-slate-300 shadow-md z-10 flex items-center">
-        <div className="w-4 h-4 bg-slate-700 rounded-sm -ml-1 border border-slate-400" />
-        <div className="w-3 h-5 bg-slate-600 rounded-sm ml-48 border border-slate-400" />
-      </div>
 
-      {/* Small Yellow Safety Bollard on bottom right (from reference image) */}
-      <div className="hidden sm:block absolute bottom-0 right-12 w-6 h-28 rounded-t-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 border border-amber-600 shadow-2xl z-10">
-        <div className="w-full h-1 bg-black/40 mt-3" />
-      </div>
 
       {/* =========================================================================
           MAIN OUTDOOR HOARDING BILLBOARD (ROYAL BLUE WITH REALISTIC SUNLIGHT CASTING)

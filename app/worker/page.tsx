@@ -27,6 +27,9 @@ export default function WorkerPage() {
 
       {/* SECTION 5: OUTDOOR BILLBOARD HOARDING CTA (BROWN CORRUGATED WALL + ROYAL BLUE BOARD) */}
       <WorkerBillboardCTA />
+
+      {/* MARGIN SPACING BETWEEN SECTION 5 AND FOOTER */}
+      <div className="w-full h-16 sm:h-24 lg:h-28 bg-white" />
     </main>
   );
 }
