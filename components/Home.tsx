@@ -1292,41 +1292,6 @@ export function StatsAndTestimonials() {
                 ))}
               </div>
             </div>
-
-            {/* Mobile / Tablet Horizontal Navigation Controls (Directly below cards on mobile) */}
-            <div className="lg:hidden flex items-center justify-between mt-6 pt-4 border-t border-slate-200/80 px-2">
-              <button
-                type="button"
-                onClick={prevSlide}
-                className="w-10 h-10 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200/90 shadow-xs flex items-center justify-center transition-all active:scale-95"
-                aria-label="Previous Testimonial"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-
-              <div className="flex gap-1.5 items-center px-3 py-1.5 rounded-full bg-slate-100/90 border border-slate-200/80">
-                {Array.from({ length: maxIndex + 1 }).map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    onClick={() => setCurrentIndex(idx)}
-                    className={`h-2 rounded-full transition-all duration-300 ${
-                      currentIndex === idx ? "w-6 bg-[#0C59D4]" : "w-2 bg-slate-300 hover:bg-slate-400"
-                    }`}
-                    aria-label={`Go to slide ${idx + 1}`}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={nextSlide}
-                className="w-10 h-10 rounded-full bg-white hover:bg-slate-100 text-slate-800 border border-slate-200/90 shadow-xs flex items-center justify-center transition-all active:scale-95"
-                aria-label="Next Testimonial"
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
           </div>
 
         </div>
