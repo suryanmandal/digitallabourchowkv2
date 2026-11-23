@@ -333,10 +333,146 @@ const POPULAR_SEARCH_CARDS: SearchCardProps[] = [
 ];
 
 export function PopularSearches() {
+  const [mobileIndex, setMobileIndex] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  const scrollToIndex = (idx: number) => {
+    const nextIdx = Math.max(0, Math.min(idx, POPULAR_SEARCH_CARDS.length - 1));
+    setMobileIndex(nextIdx);
+    if (scrollRef.current) {
+      const child = scrollRef.current.children[nextIdx] as HTMLElement;
+      if (child) {
+        child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    }
+  };
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const scrollLeft = container.scrollLeft;
+    const itemWidth = container.children[0]?.clientWidth || 300;
+    const newIndex = Math.round(scrollLeft / (itemWidth + 16));
+    if (newIndex >= 0 && newIndex < POPULAR_SEARCH_CARDS.length && newIndex !== mobileIndex) {
+      setMobileIndex(newIndex);
+    }
+  };
+
   return (
-    <section className="w-full bg-white py-16 sm:py-24">
+    <section className="w-full bg-white py-14 sm:py-20 lg:py-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
+        
+        {/* MOBILE VIEW: Interactive Swipeable Card Carousel (md:hidden) */}
+        <div className="md:hidden">
+          {/* Mobile Header with Title and Left/Right Nav Controls */}
+          <div className="flex items-end justify-between mb-6">
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-950 tracking-tight leading-[1.08]">
+              Popular Searches <br />
+              <span className="text-slate-950 font-black">on Digital</span> <br />
+              <span className="text-slate-950 font-black">Labour Chowk</span>
+            </h2>
+
+            {/* Mobile Carousel Navigation Arrows */}
+            <div className="flex items-center gap-2 mb-1 flex-shrink-0">
+              <button
+                type="button"
+                onClick={() => scrollToIndex(mobileIndex - 1)}
+                disabled={mobileIndex === 0}
+                aria-label="Previous category"
+                className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center text-slate-800 transition-all active:scale-95 border border-slate-200"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => scrollToIndex(mobileIndex + 1)}
+                disabled={mobileIndex === POPULAR_SEARCH_CARDS.length - 1}
+                aria-label="Next category"
+                className="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 disabled:opacity-30 disabled:pointer-events-none flex items-center justify-center text-slate-800 transition-all active:scale-95 border border-slate-200"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Carousel Snap Track */}
+          <div
+            ref={scrollRef}
+            onScroll={handleScroll}
+            className="flex overflow-x-auto snap-x snap-mandatory scrollbar-none gap-4 pb-2 -mx-4 px-4 scroll-smooth"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+          >
+            {POPULAR_SEARCH_CARDS.map((card, idx) => (
+              <div key={card.rank} className="w-[85vw] max-w-[340px] flex-shrink-0 snap-center">
+                <Link
+                  href={card.href}
+                  className="group relative bg-[#FBFBFB] hover:bg-white rounded-3xl p-7 border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] hover:shadow-xl hover:border-slate-200 transition-all duration-300 h-[280px] flex flex-col justify-between overflow-hidden block"
+                >
+                  {/* Top Text: Rank & Category Name */}
+                  <div className="relative z-10 max-w-[62%] h-[115px] flex flex-col justify-start">
+                    <span className="block text-[11px] font-bold text-slate-400 tracking-wider uppercase mb-2">
+                      TRENDING AT #{card.rank}
+                    </span>
+
+                    <h3 className="text-xl font-bold text-slate-950 leading-tight group-hover:text-[#0C59D4] transition-colors">
+                      {card.title} {card.subtitle && <span className="block">{card.subtitle}</span>}
+                    </h3>
+
+                    <p className="text-xs font-medium text-slate-500 mt-1">
+                      {card.hindi}
+                    </p>
+                  </div>
+
+                  {/* Watermark Background Outline Text */}
+                  <div
+                    aria-hidden="true"
+                    className="absolute right-4 bottom-2 text-5xl font-black stroke-watermark pointer-events-none select-none z-0"
+                  >
+                    {card.watermark}
+                  </div>
+
+                  {/* Cutout Worker Photo (Anchored Bottom-Right) */}
+                  <div className="absolute right-0 bottom-0 w-40 h-52 z-10 pointer-events-none">
+                    <Image
+                      src={card.imageSrc}
+                      alt={card.altText}
+                      fill
+                      sizes="160px"
+                      className="object-contain object-bottom transition-transform duration-300 group-hover:scale-105"
+                      priority={idx <= 1}
+                    />
+                  </div>
+
+                  {/* Bottom-Left Action Link */}
+                  <div className="relative z-10 pt-4 flex items-center gap-1 text-xs font-semibold text-slate-900 group-hover:text-[#0C59D4] transition-colors">
+                    <span>View all</span>
+                    <ChevronRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          {/* Mobile Pagination Dots */}
+          <div className="flex items-center justify-center gap-1.5 mt-4">
+            {POPULAR_SEARCH_CARDS.map((_, idx) => (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => scrollToIndex(idx)}
+                aria-label={`Go to card ${idx + 1}`}
+                className={`transition-all duration-300 rounded-full ${
+                  idx === mobileIndex
+                    ? "w-6 h-1.5 bg-[#0C59D4]"
+                    : "w-1.5 h-1.5 bg-slate-200 hover:bg-slate-300"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* DESKTOP VIEW: Preserved 100% Exactly (hidden md:grid) */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch">
           {/* Row 1, Column 1: Main Section Title */}
           <div className="flex flex-col justify-center pr-4 py-6 lg:py-0">
             <h2 className="text-4xl sm:text-5xl lg:text-[54px] font-black text-slate-950 tracking-tight leading-[1.08]">
@@ -396,6 +532,7 @@ export function PopularSearches() {
             </Link>
           ))}
         </div>
+
       </div>
     </section>
   );
