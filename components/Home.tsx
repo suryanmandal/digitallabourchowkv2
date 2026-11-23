@@ -3688,17 +3688,17 @@ export function NewsAndMediaSection() {
   const [startX, setStartX] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [cardStep, setCardStep] = useState(380);
+  const [cardStep, setCardStep] = useState(313);
 
-  // Dynamic step sizing based on responsive breakpoints
+  // Dynamic step sizing based on responsive breakpoints (zoomed-out proportions)
   useEffect(() => {
     const updateStep = () => {
       if (window.innerWidth < 640) {
-        setCardStep(274); // 250px width + 24px gap
+        setCardStep(230); // 210px width + 20px gap
       } else if (window.innerWidth < 1024) {
-        setCardStep(336); // 300px width + 36px gap
+        setCardStep(274); // 250px width + 24px gap
       } else {
-        setCardStep(396); // 350px width + 46px gap
+        setCardStep(313); // 285px width + 28px gap
       }
     };
     updateStep();
@@ -3758,7 +3758,7 @@ export function NewsAndMediaSection() {
 
   return (
     <section
-      className="w-full bg-[#050507] text-white py-20 sm:py-28 lg:py-36 border-t border-neutral-900 relative overflow-hidden select-none"
+      className="w-full bg-white text-slate-900 py-16 sm:py-20 lg:py-24 border-t border-slate-200/90 relative overflow-hidden select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => {
         setIsPaused(false);
@@ -3766,25 +3766,25 @@ export function NewsAndMediaSection() {
       }}
     >
       {/* Subtle radial ambient background glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(147,51,234,0.12),transparent_70%)] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[450px] bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(147,51,234,0.06),transparent_70%)] pointer-events-none" />
 
       {/* Section Header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center mb-6 sm:mb-10">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-purple-500/30 text-purple-300 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5 backdrop-blur-md">
-          <Award className="w-3.5 h-3.5 text-purple-400" />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center mb-6 sm:mb-8">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
+          <Award className="w-3.5 h-3.5 text-purple-600" />
           <span>DLC IN THE NEWS</span>
         </div>
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
           Recognized Across National Media
         </h2>
-        <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
+        <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal max-w-2xl mx-auto">
           Covered by leading national broadcasts, newspapers, and streaming documentaries for modernizing India’s construction workforce.
         </p>
       </div>
 
-      {/* 3D Tilted Perspective Carousel Track Viewport */}
+      {/* 3D Tilted Perspective Carousel Track Viewport (Zoomed out panoramic perspective) */}
       <div
-        className="relative w-full overflow-hidden py-14 sm:py-20 md:py-24 cursor-grab active:cursor-grabbing"
+        className="relative w-full overflow-hidden py-10 sm:py-14 md:py-16 cursor-grab active:cursor-grabbing"
         onMouseDown={(e) => handleDragStart(e.clientX)}
         onMouseMove={(e) => handleDragMove(e.clientX)}
         onMouseUp={handleDragEnd}
@@ -3793,10 +3793,10 @@ export function NewsAndMediaSection() {
         onTouchEnd={handleDragEnd}
         onWheel={handleWheel}
       >
-        {/* Tilted Angled Track Wrapper (-12deg Angle Matching Reference Video) */}
-        <div className="transform -rotate-[9deg] sm:-rotate-[12deg] -mx-24 sm:-mx-36 md:-mx-48 origin-center transition-transform duration-300">
+        {/* Tilted Angled Track Wrapper (Zoomed-out -9deg/-10deg Angle) */}
+        <div className="transform -rotate-[7deg] sm:-rotate-[9deg] md:-rotate-[10deg] -mx-16 sm:-mx-28 md:-mx-36 origin-center transition-transform duration-300">
           <div
-            className={`flex items-start gap-6 sm:gap-9 lg:gap-11 px-8 sm:px-16 ${
+            className={`flex items-start gap-5 sm:gap-6 lg:gap-7 px-8 sm:px-16 ${
               isDragging ? "transition-none" : "transition-transform duration-700 ease-out"
             }`}
             style={{
@@ -3807,22 +3807,22 @@ export function NewsAndMediaSection() {
             {[...NEWS_MEDIA_ITEMS, ...NEWS_MEDIA_ITEMS].map((card, idx) => (
               <div
                 key={`${card.id}-${idx}`}
-                className="w-[250px] sm:w-[300px] lg:w-[350px] shrink-0 group/card cursor-pointer"
+                className="w-[210px] sm:w-[250px] lg:w-[285px] shrink-0 group/card cursor-pointer"
                 onClick={() => {
                   if (card.link.startsWith("http")) {
                     window.open(card.link, "_blank", "noopener,noreferrer");
                   }
                 }}
               >
-                {/* Image Container with Rounded Corners & Deep Drop Shadow */}
-                <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 group-hover/card:border-purple-400/60 shadow-[0_20px_50px_rgba(0,0,0,0.85)] transition-all duration-500">
+                {/* Image Container with Rounded Corners & Elegant Elevated Shadow */}
+                <div className="relative w-full aspect-[4/5] rounded-2xl sm:rounded-3xl overflow-hidden bg-slate-900 border border-slate-200/90 group-hover/card:border-purple-400 group-hover/card:ring-2 group-hover/card:ring-purple-400/20 shadow-[0_10px_25px_rgba(0,0,0,0.1)] group-hover/card:shadow-[0_18px_35px_rgba(147,51,234,0.18)] transition-all duration-500">
                   <Image
                     src={card.image}
                     alt={card.displayTitle}
                     fill
                     unoptimized
                     priority
-                    sizes="(max-width: 640px) 250px, (max-width: 1024px) 300px, 350px"
+                    sizes="(max-width: 640px) 210px, (max-width: 1024px) 250px, 285px"
                     className="object-cover group-hover/card:scale-105 transition-transform duration-700 select-none pointer-events-none"
                   />
 
@@ -3830,29 +3830,29 @@ export function NewsAndMediaSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
 
                   {/* Top Floating Outlet Badge */}
-                  <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-white shadow-md">
+                  <div className="absolute top-3.5 left-3.5 z-10 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-white shadow-md">
                     <span>{card.outlet}</span>
                   </div>
 
                   {/* Play Indicator for Video Stories */}
                   {card.isVideo && (
-                    <div className="absolute bottom-4 right-4 z-10 w-9 h-9 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg group-hover/card:scale-110 transition-transform">
+                    <div className="absolute bottom-3.5 right-3.5 z-10 w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-red-600/95 text-white flex items-center justify-center shadow-lg group-hover/card:scale-110 transition-transform">
                       <Play className="w-4 h-4 fill-white translate-x-0.5" />
                     </div>
                   )}
 
                   {/* External Link Icon on Hover */}
-                  <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity">
-                    <ArrowUpRight className="w-4 h-4" />
+                  <div className="absolute top-3.5 right-3.5 z-10 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity">
+                    <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                 </div>
 
-                {/* Typography Below Card (Tilted Parallel to Cards, Monospace/Sans Wide Tracking) */}
-                <div className="mt-4 px-1">
-                  <div className="text-sm sm:text-base lg:text-lg font-black tracking-[0.22em] text-white uppercase truncate group-hover/card:text-purple-300 transition-colors">
+                {/* Typography Below Card */}
+                <div className="mt-3.5 px-1">
+                  <div className="text-xs sm:text-sm lg:text-[15px] font-black tracking-[0.2em] text-slate-900 uppercase truncate group-hover/card:text-purple-600 transition-colors">
                     {card.displayTitle}
                   </div>
-                  <div className="text-[11px] sm:text-xs font-semibold tracking-wider text-neutral-400 uppercase mt-0.5 truncate">
+                  <div className="text-[10px] sm:text-[11px] font-bold tracking-wider text-slate-500 uppercase mt-0.5 truncate">
                     {card.subtitle}
                   </div>
                 </div>
@@ -3861,38 +3861,38 @@ export function NewsAndMediaSection() {
           </div>
         </div>
 
-        {/* Level Floating Circular Navigation Buttons (Positioned Horizontally Outside Rotation) */}
-        <div className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-8 z-30 pointer-events-auto">
+        {/* Level Floating Circular Navigation Buttons */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-3 sm:left-6 z-30 pointer-events-auto">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               prevSlide();
             }}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md flex items-center justify-center transition-all shadow-2xl active:scale-95 group/btn focus:outline-none"
+            className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-purple-600 border border-slate-200/90 shadow-[0_8px_25px_rgba(0,0,0,0.12)] backdrop-blur-md flex items-center justify-center transition-all active:scale-95 group/btn focus:outline-none"
             aria-label="Previous Media Story"
           >
-            <ChevronLeft className="w-6 h-6 group-hover/btn:-translate-x-0.5 transition-transform" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 group-hover/btn:-translate-x-0.5 transition-transform" />
           </button>
         </div>
 
-        <div className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-8 z-30 pointer-events-auto">
+        <div className="absolute top-1/2 -translate-y-1/2 right-3 sm:right-6 z-30 pointer-events-auto">
           <button
             type="button"
             onClick={(e) => {
               e.stopPropagation();
               nextSlide();
             }}
-            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md flex items-center justify-center transition-all shadow-2xl active:scale-95 group/btn focus:outline-none"
+            className="w-11 h-11 sm:w-13 sm:h-13 rounded-full bg-white/95 hover:bg-white text-slate-800 hover:text-purple-600 border border-slate-200/90 shadow-[0_8px_25px_rgba(0,0,0,0.12)] backdrop-blur-md flex items-center justify-center transition-all active:scale-95 group/btn focus:outline-none"
             aria-label="Next Media Story"
           >
-            <ChevronRight className="w-6 h-6 group-hover/btn:translate-x-0.5 transition-transform" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 group-hover/btn:translate-x-0.5 transition-transform" />
           </button>
         </div>
       </div>
 
       {/* Slide Pagination Pill & Explore CTA */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 sm:pt-10 border-t border-neutral-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 sm:pt-8 border-t border-slate-200">
         {/* Pagination Dots */}
         <div className="flex items-center gap-2">
           {NEWS_MEDIA_ITEMS.map((_, idx) => (
@@ -3902,8 +3902,8 @@ export function NewsAndMediaSection() {
               onClick={() => setCurrentIndex(idx)}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 currentIndex % total === idx
-                  ? "w-8 bg-purple-500"
-                  : "w-2 bg-neutral-700 hover:bg-neutral-500"
+                  ? "w-8 bg-purple-600"
+                  : "w-2 bg-slate-200 hover:bg-slate-300"
               }`}
               aria-label={`Go to slide ${idx + 1}`}
             />
@@ -3913,7 +3913,7 @@ export function NewsAndMediaSection() {
         {/* Explore All Media CTA */}
         <Link
           href="/media-coverage"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white text-white hover:text-slate-900 border border-white/20 font-extrabold text-xs uppercase tracking-wider transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-slate-900 hover:bg-purple-700 text-white font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-md shadow-slate-900/10 active:scale-95"
         >
           <span>Explore All 25+ Media Features</span>
           <ArrowRight className="w-3.5 h-3.5" />
