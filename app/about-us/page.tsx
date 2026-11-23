@@ -527,7 +527,7 @@ export default function AboutUsPage() {
 
             {/* Right Column: Blue Fluid Video Card with Frosted Glass Search Assistant */}
             <div className="lg:col-span-5 flex">
-              <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-xl flex items-center justify-center p-4 sm:p-5 bg-[#05060A]">
+              <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-xl flex flex-col justify-between p-6 sm:p-8 bg-[#05060A]">
                 
                 {/* Blue Pattern Fluid Loop Video */}
                 <video
@@ -543,67 +543,69 @@ export default function AboutUsPage() {
                 {/* Ambient Glow */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/30 pointer-events-none" />
 
-                {/* Interactive Frosted Glass Assistant Box */}
-                <div className="relative z-10 w-full rounded-xl sm:rounded-2xl bg-[#080A12]/92 backdrop-blur-2xl border border-white/15 p-4 sm:p-5 shadow-2xl">
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0">
-                      <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                {/* Direct Assistant Content (Single Unified Card) */}
+                <div className="relative z-10 w-full flex flex-col justify-between h-full">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <div className="w-7 h-7 rounded-lg bg-blue-500/20 border border-blue-400/30 flex items-center justify-center shrink-0">
+                        <Sparkles className="w-3.5 h-3.5 text-blue-400" />
+                      </div>
+                      <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
+                        Still have questions?
+                      </h4>
                     </div>
-                    <h4 className="text-sm sm:text-base font-bold text-white tracking-tight">
-                      Still have questions?
-                    </h4>
-                  </div>
 
-                  <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mb-3">
-                    Ask DLC anything about workforce mobilization, worker KYC, attendance, or billing — or reach our desk.
-                  </p>
+                    <p className="text-[11px] sm:text-xs text-slate-300 leading-relaxed mb-3">
+                      Ask DLC anything about workforce mobilization, worker KYC, attendance, or billing — or reach our desk.
+                    </p>
 
-                  {/* Interactive Search / Ask Form */}
-                  <form onSubmit={handleAskSubmit} className="relative mb-2.5">
-                    <input
-                      type="text"
-                      value={askQuery}
-                      onChange={(e) => setAskQuery(e.target.value)}
-                      placeholder={PROMPTS[promptIdx]}
-                      className="w-full pl-3 pr-10 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#0C59D4] focus:bg-white/15 transition-all"
-                    />
-                    <button
-                      type="submit"
-                      className="absolute right-1 top-1 bottom-1 w-7 rounded-md bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
-                      aria-label="Submit question"
-                    >
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </button>
-                  </form>
-
-                  {/* Quick Prompt Pill Chips */}
-                  <div className="flex flex-wrap gap-1.5 mb-3">
-                    {[
-                      "Deployment SLA?",
-                      "Aadhaar KYC?",
-                      "Biometric muster?",
-                      "PF & ESIC?",
-                    ].map((chip) => (
+                    {/* Interactive Search / Ask Form */}
+                    <form onSubmit={handleAskSubmit} className="relative mb-2.5">
+                      <input
+                        type="text"
+                        value={askQuery}
+                        onChange={(e) => setAskQuery(e.target.value)}
+                        placeholder={PROMPTS[promptIdx]}
+                        className="w-full pl-3 pr-10 py-2 sm:py-2.5 rounded-lg sm:rounded-xl bg-white/10 border border-white/15 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-[#0C59D4] focus:bg-white/15 transition-all"
+                      />
                       <button
-                        type="button"
-                        key={chip}
-                        onClick={() => setAskQuery(chip)}
-                        className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer"
+                        type="submit"
+                        className="absolute right-1 top-1 bottom-1 w-7 rounded-md bg-white hover:bg-slate-200 text-slate-950 flex items-center justify-center transition-colors cursor-pointer"
+                        aria-label="Submit question"
                       >
-                        {chip}
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </button>
-                    ))}
-                  </div>
+                    </form>
 
-                  {/* AI / Instant Response Box */}
-                  {aiResponse && (
-                    <div className="mb-3 p-2.5 rounded-lg bg-blue-950/70 border border-blue-500/30 text-[11px] text-blue-200 animate-in fade-in duration-200 leading-relaxed">
-                      {aiResponse}
+                    {/* Quick Prompt Pill Chips */}
+                    <div className="flex flex-wrap gap-1.5 mb-3">
+                      {[
+                        "Deployment SLA?",
+                        "Aadhaar KYC?",
+                        "Biometric muster?",
+                        "PF & ESIC?",
+                      ].map((chip) => (
+                        <button
+                          type="button"
+                          key={chip}
+                          onClick={() => setAskQuery(chip)}
+                          className="text-[10px] font-medium px-2 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white border border-white/10 transition-colors cursor-pointer"
+                        >
+                          {chip}
+                        </button>
+                      ))}
                     </div>
-                  )}
+
+                    {/* AI / Instant Response Box */}
+                    {aiResponse && (
+                      <div className="mb-3 p-2.5 rounded-lg bg-blue-950/70 border border-blue-500/30 text-[11px] text-blue-200 animate-in fade-in duration-200 leading-relaxed">
+                        {aiResponse}
+                      </div>
+                    )}
+                  </div>
 
                   {/* Support Contact Footer */}
-                  <div className="flex items-center justify-between pt-2.5 border-t border-white/10 text-[11px] sm:text-xs">
+                  <div className="flex items-center justify-between pt-3 border-t border-white/10 text-[11px] sm:text-xs">
                     <Link
                       href="/contact"
                       className="inline-flex items-center gap-1 text-white hover:text-blue-300 font-semibold transition-colors group"
