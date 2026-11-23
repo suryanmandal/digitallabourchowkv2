@@ -1983,8 +1983,50 @@ const CONTRACTOR_STEPS: StepItem[] = [
   },
 ];
 
+const ENTERPRISE_STEPS: StepItem[] = [
+  {
+    number: "01",
+    title: "Multi-Site Bulk Requisition",
+    subtitle: "Submit project workforce needs (50 to 500+ crews) across multiple sites, EPC packages, or commercial infra phases.",
+    points: [
+      "Custom trade matrices: bar benders, shuttering, scaffolding & ITI techs",
+      "PAN-India deployment across 6,000+ pin codes",
+      "Dedicated Enterprise Account Manager & custom SLA",
+    ],
+    mockupTitle: "Enterprise Bulk Requisition",
+    mockupSubtitle: "Multi-site package sourcing",
+    mockupBadge: "50-500+ Manpower SLA",
+  },
+  {
+    number: "02",
+    title: "Rigorous Screening & Deployment SLA",
+    subtitle: "AI matching deploys skill-graded, Aadhaar-verified workers with completed site safety and compliance checks.",
+    points: [
+      "24-48 hour rapid bulk site mobilization SLA",
+      "100% Aadhaar KYC, medical fitness & background verification",
+      "Skill-tested batches with past contractor ratings",
+    ],
+    mockupTitle: "Enterprise Mobilization",
+    mockupSubtitle: "Verified workforce on site",
+    mockupBadge: "24-48h Rapid Dispatch",
+  },
+  {
+    number: "03",
+    title: "Centralized ERP & 100% Statutory Compliance",
+    subtitle: "Monitor real-time site muster rolls, biometric check-ins, and receive unified GST, PF, ESIC & BOCW audits.",
+    points: [
+      "Real-time facial/biometric muster roll dashboard",
+      "Zero-liability compliance: PF, ESIC, BOCW & GST billing",
+      "ERP integration with SAP, Oracle, and site management software",
+    ],
+    mockupTitle: "ERP & Statutory Compliance",
+    mockupSubtitle: "Audit-ready muster roll & GST",
+    mockupBadge: "100% BOCW & Statutory Compliant",
+  },
+];
+
 export function HowItWorksSection() {
-  const [activeTab, setActiveTab] = useState<"worker" | "contractor">("worker");
+  const [activeTab, setActiveTab] = useState<"worker" | "contractor" | "enterprise">("worker");
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   // Close modal on Escape
@@ -2016,14 +2058,14 @@ export function HowItWorksSection() {
             How Digital Labour Chowk Works
           </h2>
           <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
-            Whether you are a skilled craftsman seeking daily direct wages or a site contractor mobilizing 50+ verified tradesmen — get started in 3 simple steps.
+            Whether you are a skilled craftsman seeking daily direct wages, a site contractor mobilizing 20+ verified tradesmen, or an enterprise executing national infrastructure packages — get started in 3 simple steps.
           </p>
 
-          {/* Persona Switcher Tabs - WORKER FIRST, CONTRACTOR SECOND */}
-          <div className="inline-flex items-center bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-sm mt-8">
+          {/* Persona Switcher Tabs - Tri-Persona: WORKER, CONTRACTOR, ENTERPRISE */}
+          <div className="inline-flex flex-wrap sm:flex-nowrap items-center justify-center bg-white p-1.5 rounded-2xl border border-slate-200/90 shadow-sm mt-8 gap-1 max-w-full">
             <button
               onClick={() => setActiveTab("worker")}
-              className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
+              className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
                 activeTab === "worker"
                   ? "bg-[#0C59D4] text-white shadow-md shadow-blue-600/25"
                   : "text-slate-600 hover:text-slate-900"
@@ -2035,7 +2077,7 @@ export function HowItWorksSection() {
 
             <button
               onClick={() => setActiveTab("contractor")}
-              className={`flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
+              className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
                 activeTab === "contractor"
                   ? "bg-[#D4A017] text-white shadow-md shadow-amber-600/25"
                   : "text-slate-600 hover:text-slate-900"
@@ -2043,6 +2085,18 @@ export function HowItWorksSection() {
             >
               <HardHat className="w-4 h-4" />
               <span>For Contractors & Builders</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("enterprise")}
+              className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl text-xs sm:text-sm font-extrabold tracking-wide transition-all ${
+                activeTab === "enterprise"
+                  ? "bg-[#0F172A] text-white shadow-md shadow-slate-900/25"
+                  : "text-slate-600 hover:text-slate-900"
+              }`}
+            >
+              <Building2 className="w-4 h-4" />
+              <span>For Enterprise & EPC</span>
             </button>
           </div>
         </div>
@@ -2055,7 +2109,9 @@ export function HowItWorksSection() {
             className={`lg:col-span-8 rounded-3xl p-5 sm:p-7 relative overflow-hidden shadow-2xl border transition-all duration-500 flex flex-col justify-between ${
               activeTab === "worker"
                 ? "bg-gradient-to-br from-[#0C59D4] via-[#0947A8] to-[#062F70] border-blue-400/30"
-                : "bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#080D1A] border-amber-500/30"
+                : activeTab === "contractor"
+                ? "bg-gradient-to-br from-[#1E293B] via-[#0F172A] to-[#080D1A] border-amber-500/30"
+                : "bg-gradient-to-br from-[#0B1528] via-[#0A2540] to-[#021024] border-cyan-500/30"
             }`}
           >
             {/* Blueprint Grid Texture Overlay */}
@@ -2076,7 +2132,11 @@ export function HowItWorksSection() {
                     STEP 01
                   </span>
                   <span className="text-xs sm:text-[13px] font-extrabold text-white mt-1">
-                    {activeTab === "worker" ? "1-Min Mobile Registration" : "Post Site Requirement"}
+                    {activeTab === "worker"
+                      ? "1-Min Mobile Registration"
+                      : activeTab === "contractor"
+                      ? "Post Site Requirement"
+                      : "Multi-Site Requisition"}
                   </span>
                 </div>
 
@@ -2088,7 +2148,11 @@ export function HowItWorksSection() {
                     STEP 02
                   </span>
                   <span className="text-xs sm:text-[13px] font-extrabold text-white mt-1">
-                    {activeTab === "worker" ? "Zero-Cost Aadhaar KYC" : "2-Hour Algorithmic Match"}
+                    {activeTab === "worker"
+                      ? "Zero-Cost Aadhaar KYC"
+                      : activeTab === "contractor"
+                      ? "2-Hour Algorithmic Match"
+                      : "24-48h Deployment SLA"}
                   </span>
                 </div>
 
@@ -2100,7 +2164,11 @@ export function HowItWorksSection() {
                     STEP 03
                   </span>
                   <span className="text-xs sm:text-[13px] font-extrabold text-white mt-1">
-                    {activeTab === "worker" ? "Work, Wages & Benefits" : "Site Attendance & GST"}
+                    {activeTab === "worker"
+                      ? "Work, Wages & Benefits"
+                      : activeTab === "contractor"
+                      ? "Site Attendance & GST"
+                      : "ERP Muster Roll & Compliance"}
                   </span>
                 </div>
               </div>
@@ -2108,7 +2176,13 @@ export function HowItWorksSection() {
               {/* Status Badge */}
               <div className="inline-flex items-center gap-1.5 text-[10.5px] font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-400/30 px-3 py-1 rounded-full shrink-0">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>{activeTab === "worker" ? "Instant Verification" : "2-Hour SLA Active"}</span>
+                <span>
+                  {activeTab === "worker"
+                    ? "Instant Verification"
+                    : activeTab === "contractor"
+                    ? "2-Hour SLA Active"
+                    : "PAN-India Bulk SLA"}
+                </span>
               </div>
             </div>
 
@@ -2179,7 +2253,7 @@ export function HowItWorksSection() {
                         </div>
                       </div>
                     </>
-                  ) : (
+                  ) : activeTab === "contractor" ? (
                     <>
                       {/* Contractor Phone 1: Post Requirement */}
                       <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
@@ -2224,6 +2298,54 @@ export function HowItWorksSection() {
                         </button>
                         <div className="text-[9.5px] font-bold text-slate-400 mt-2">
                           2-Hour Matching SLA Guaranteed
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Enterprise Phone 1: Multi-Site Bulk Requisition */}
+                      <div className="flex items-center gap-2 pb-2.5 border-b border-slate-100">
+                        <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center shrink-0 shadow-xs">
+                          <Building2 className="w-4 h-4 text-cyan-400" />
+                        </div>
+                        <div>
+                          <div className="text-[11px] font-black text-slate-900 leading-tight">DIGITAL LABOUR CHOWK</div>
+                          <span className="text-[9px] font-bold px-1.5 py-0.2 rounded bg-slate-100 text-slate-800">
+                            ENTERPRISE REQUISITION
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="my-auto space-y-2.5 py-2">
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-0.5">Project / Package</label>
+                          <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold text-slate-900 shadow-xs truncate">
+                            Delhi-Mumbai Expwy Pkg-4
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-0.5">Bulk Headcount Required</label>
+                          <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-bold text-[#0C59D4] shadow-xs">
+                            120 Verified Tradesmen
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="text-[10px] font-bold text-slate-600 block mb-0.5">Trade Matrix</label>
+                          <div className="px-2.5 py-1.5 rounded-lg bg-white border border-slate-300 text-[11px] font-bold text-slate-700 shadow-xs truncate">
+                            50 Bar Benders • 40 Shuttering • 30 Helpers
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 text-center">
+                        <button className="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-900 text-white font-extrabold text-[11px] uppercase tracking-wider shadow-md shadow-slate-900/25 flex items-center justify-center gap-1.5">
+                          <span>Submit Requisition</span>
+                          <ArrowRight className="w-3 h-3 text-cyan-400" />
+                        </button>
+                        <div className="text-[9.5px] font-bold text-slate-400 mt-2">
+                          Dedicated Key Account Manager
                         </div>
                       </div>
                     </>
@@ -2288,7 +2410,7 @@ export function HowItWorksSection() {
                         </div>
                       </div>
                     </>
-                  ) : (
+                  ) : activeTab === "contractor" ? (
                     <>
                       {/* Contractor Phone 2: 2-Hour Algorithmic Match */}
                       <div className="text-center pt-2">
@@ -2329,6 +2451,54 @@ export function HowItWorksSection() {
                       <div className="text-center pb-2">
                         <div className="text-[9.5px] font-semibold text-slate-500">
                           100% Pre-Screened Site Workforce
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {/* Enterprise Phone 2: 24-48h Rapid Bulk Dispatch SLA */}
+                      <div className="text-center pt-2">
+                        <div className="w-10 h-10 rounded-2xl bg-slate-900 text-cyan-400 mx-auto flex items-center justify-center mb-1.5 shadow-sm">
+                          <Users className="w-5 h-5" />
+                        </div>
+                        <h4 className="text-xs font-black text-slate-900">Rapid Bulk Deployment SLA</h4>
+                        <span className="inline-block text-[9.5px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full mt-1">
+                          ● 120 / 120 Mobilized
+                        </span>
+                      </div>
+
+                      {/* 3D Pop-Out Enterprise Dispatch Card */}
+                      <div className="relative my-auto w-full bg-white rounded-xl p-2.5 shadow-[0_16px_36px_rgba(0,0,0,0.22)] border border-slate-200 z-20">
+                        <div className="flex items-center justify-between pb-1.5 border-b border-slate-100">
+                          <span className="text-[9px] font-extrabold text-slate-900">EPC PACKAGE #992</span>
+                          <span className="text-[8.5px] font-bold text-emerald-600">24h SLA Met</span>
+                        </div>
+                        <div className="space-y-1.5 py-2">
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-slate-600 font-medium">50 Bar Benders (Aadhaar KYC)</span>
+                            <span className="font-bold text-emerald-600">Verified</span>
+                          </div>
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-slate-600 font-medium">40 Shuttering Carpenters</span>
+                            <span className="font-bold text-emerald-600">Verified</span>
+                          </div>
+                          <div className="flex items-center justify-between text-[10px]">
+                            <span className="text-slate-600 font-medium">30 General Helpers</span>
+                            <span className="font-bold text-emerald-600">Verified</span>
+                          </div>
+                        </div>
+                        <div className="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
+                          <span>Deployment: Multi-Site Gate</span>
+                          <span className="font-bold text-blue-600">Site Inducted</span>
+                        </div>
+                        <div className="absolute -top-2.5 -right-2 w-6 h-6 rounded-full bg-slate-900 text-cyan-400 flex items-center justify-center shadow-lg border-2 border-white font-bold text-xs">
+                          ✓
+                        </div>
+                      </div>
+
+                      <div className="text-center pb-2">
+                        <div className="text-[9.5px] font-semibold text-slate-500">
+                          100% Medical & Safety Induction Verified
                         </div>
                       </div>
                     </>
@@ -2397,7 +2567,7 @@ export function HowItWorksSection() {
                         </div>
                       </div>
                     </>
-                  ) : (
+                  ) : activeTab === "contractor" ? (
                     <>
                       {/* Contractor Phone 3: Attendance & GST */}
                       <div className="space-y-2 pt-1 relative z-10">
@@ -2449,6 +2619,58 @@ export function HowItWorksSection() {
                         </div>
                       </div>
                     </>
+                  ) : (
+                    <>
+                      {/* Enterprise Phone 3: ERP Muster Roll & 100% Statutory Compliance */}
+                      <div className="space-y-2 pt-1 relative z-10">
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">Biometric Muster Roll</div>
+                            <div className="text-[9px] text-slate-500">Facial AI Check-in</div>
+                          </div>
+                          <span className="text-[11px] font-black text-emerald-600">120/120 Present</span>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">ERP Data Sync</div>
+                            <div className="text-[9px] text-slate-500">SAP & Oracle Ready</div>
+                          </div>
+                          <span className="text-[10px] font-extrabold text-[#0C59D4]">Live Connected</span>
+                        </div>
+
+                        <div className="p-2 rounded-xl bg-white border border-slate-200 shadow-xs flex items-center justify-between">
+                          <div>
+                            <div className="text-[11px] font-bold text-slate-900">Statutory BOCW & PF/ESIC</div>
+                            <div className="text-[9px] text-slate-500">Zero-Liability GST Audit</div>
+                          </div>
+                          <span className="text-[10px] font-extrabold text-emerald-600">100% Compliant</span>
+                        </div>
+                      </div>
+
+                      {/* OVERLAPPING CUTOUT OF ENTERPRISE / EPC LEAD */}
+                      <div className="absolute -bottom-2 -right-4 w-44 h-56 z-20 pointer-events-none select-none">
+                        <img
+                          src="/images/ecosystem/enterprise-epc.webp"
+                          alt="Enterprise EPC project manager"
+                          className="w-full h-full object-contain object-bottom drop-shadow-xl"
+                        />
+                      </div>
+
+                      {/* Floating 3D Badges */}
+                      <div className="relative z-30 pt-1 space-y-1.5 mt-auto">
+                        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-900 text-white text-[10px] font-extrabold shadow-lg shadow-slate-900/30 border border-slate-700">
+                          <Shield className="w-3 h-3 text-cyan-400" />
+                          <span>100% BOCW, PF & ESIC</span>
+                        </div>
+
+                        <div>
+                          <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white text-slate-800 border border-slate-200 text-[10px] font-extrabold shadow-md">
+                            <span>⚡ 24-48h Bulk SLA</span>
+                          </div>
+                        </div>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
@@ -2475,11 +2697,17 @@ export function HowItWorksSection() {
             <div className="relative z-10 flex items-center justify-between">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/20 backdrop-blur-md border border-white/25 text-white text-[11px] font-extrabold uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-                <span>{activeTab === "worker" ? "VIDEO GUIDE" : "CONTRACTOR GUIDE"}</span>
+                <span>
+                  {activeTab === "worker"
+                    ? "VIDEO GUIDE"
+                    : activeTab === "contractor"
+                    ? "CONTRACTOR GUIDE"
+                    : "ENTERPRISE GUIDE"}
+                </span>
               </span>
 
               <span className="px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-white text-[11px] font-mono font-bold">
-                {activeTab === "worker" ? "1:02 MIN" : "1:15 MIN"}
+                {activeTab === "worker" ? "1:02 MIN" : activeTab === "contractor" ? "1:15 MIN" : "1:30 MIN"}
               </span>
             </div>
 
@@ -2494,12 +2722,18 @@ export function HowItWorksSection() {
               </button>
 
               <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight leading-tight">
-                {activeTab === "worker" ? "See How It Works on Site" : "See Site Mobilization in Action"}
+                {activeTab === "worker"
+                  ? "See How It Works on Site"
+                  : activeTab === "contractor"
+                  ? "See Site Mobilization in Action"
+                  : "See Enterprise Bulk Mobilization"}
               </h3>
               <p className="mt-2.5 text-xs sm:text-sm text-slate-300 max-w-xs mx-auto leading-relaxed">
                 {activeTab === "worker"
                   ? "Step-by-step dispatch walkthrough for workers and site supervisors."
-                  : "How site engineers deploy 50+ verified tradesmen with biometric attendance."}
+                  : activeTab === "contractor"
+                  ? "How site engineers deploy 50+ verified tradesmen with biometric attendance."
+                  : "How EPCs and developers mobilize 100+ compliant tradesmen with real-time ERP integration."}
               </p>
             </div>
 
