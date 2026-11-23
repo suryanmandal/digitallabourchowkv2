@@ -2700,6 +2700,110 @@ const LOWER_ROW_PARTNERS: EnterprisePartner[] = [
   },
 ];
 
+interface EnterpriseClientLogo {
+  id: string;
+  name: string;
+  subtext: string;
+  logo: string;
+}
+
+const ENTERPRISE_CLIENT_LOGOS: EnterpriseClientLogo[] = [
+  {
+    id: "godrej",
+    name: "Godrej Construction",
+    subtext: "Commercial & Residential",
+    logo: "/images/clients/logos/godrej.svg",
+  },
+  {
+    id: "lnt",
+    name: "Larsen & Toubro",
+    subtext: "Heavy Civil & Metro",
+    logo: "/images/clients/logos/lnt.svg",
+  },
+  {
+    id: "tata",
+    name: "Tata Projects",
+    subtext: "Industrial & Infra",
+    logo: "/images/clients/logos/tata.svg",
+  },
+  {
+    id: "phoenix",
+    name: "The Phoenix Mills",
+    subtext: "Retail & Mixed-Use",
+    logo: "/images/clients/logos/phoenix.svg",
+  },
+  {
+    id: "sobha",
+    name: "Sobha Developers",
+    subtext: "Premium Townships",
+    logo: "/images/clients/logos/sobha.jpg",
+  },
+  {
+    id: "dlf",
+    name: "DLF Building India",
+    subtext: "Cyber City & Commercial",
+    logo: "/images/clients/logos/dlf.svg",
+  },
+  {
+    id: "shapoorji",
+    name: "Shapoorji Pallonji",
+    subtext: "Engineering EPC",
+    logo: "/images/clients/logos/shapoorji.svg",
+  },
+  {
+    id: "adani",
+    name: "Adani Infrastructure",
+    subtext: "Ports, Energy & Roads",
+    logo: "/images/clients/logos/adani.svg",
+  },
+  {
+    id: "lodha",
+    name: "Lodha Group",
+    subtext: "Luxury Real Estate",
+    logo: "/images/clients/logos/lodha.png",
+  },
+  {
+    id: "kalpataru",
+    name: "Kalpataru Limited",
+    subtext: "Urban Infrastructure",
+    logo: "/images/clients/logos/kalpataru.svg",
+  },
+  {
+    id: "oberoi",
+    name: "Oberoi Realty",
+    subtext: "Premium Commercial",
+    logo: "/images/clients/logos/oberoi.svg",
+  },
+  {
+    id: "prestige",
+    name: "Prestige Group",
+    subtext: "Integrated Townships",
+    logo: "/images/clients/logos/prestige.svg",
+  },
+];
+
+function ClientLogoMarqueeCard({ client }: { client: EnterpriseClientLogo }) {
+  return (
+    <div className="h-16 sm:h-20 px-5 sm:px-7 bg-white rounded-2xl border border-slate-200/90 shadow-xs flex items-center gap-3.5 sm:gap-4 mx-3 sm:mx-4 shrink-0 hover:border-blue-400 hover:shadow-md transition-all group cursor-default">
+      <div className="w-12 sm:w-16 h-8 sm:h-10 flex items-center justify-center shrink-0 p-0.5">
+        <img
+          src={client.logo}
+          alt={`${client.name} logo`}
+          className="max-h-full max-w-full object-contain filter group-hover:scale-105 transition-transform"
+        />
+      </div>
+      <div className="flex flex-col text-left">
+        <span className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight group-hover:text-[#0C59D4] transition-colors whitespace-nowrap">
+          {client.name}
+        </span>
+        <span className="text-[10px] text-slate-400 font-semibold tracking-wider uppercase whitespace-nowrap">
+          {client.subtext}
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function EnterpriseMarqueeCard({ partner }: { partner: EnterprisePartner }) {
   return (
     <div className="w-[300px] sm:w-[340px] md:w-[360px] shrink-0 mx-3 sm:mx-4 group bg-white rounded-2xl overflow-hidden border border-slate-200/90 hover:border-blue-400 transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between">
@@ -2791,19 +2895,30 @@ export function EnterprisePartnerWall() {
         </p>
       </div>
 
-      {/* Dual Row Infinite Marquee Container (Upper: Right-to-Left | Lower: Left-to-Right) */}
+      {/* Triple Row Infinite Marquee Container (Row 1: RTL | Row 2: LTR | Row 3: RTL Logos) */}
       <div className="relative w-full space-y-6 sm:space-y-8">
-        {/* ROW 1: UPPER MARQUEE (Right to Left) */}
+        {/* Subtle Edge Gradient Masks */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-[#FAFAFC] via-[#FAFAFC]/80 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-[#FAFAFC] via-[#FAFAFC]/80 to-transparent z-10 pointer-events-none" />
+
+        {/* ROW 1: UPPER PROJECT CARDS (Right to Left) */}
         <div className="flex w-max animate-[marquee-rtl_35s_linear_infinite] hover:[animation-play-state:paused]">
           {[...UPPER_ROW_PARTNERS, ...UPPER_ROW_PARTNERS].map((partner, idx) => (
             <EnterpriseMarqueeCard key={`upper-${partner.id}-${idx}`} partner={partner} />
           ))}
         </div>
 
-        {/* ROW 2: LOWER MARQUEE (Left to Right) */}
+        {/* ROW 2: LOWER PROJECT CARDS (Left to Right) */}
         <div className="flex w-max animate-marquee-ltr hover:[animation-play-state:paused]">
           {[...LOWER_ROW_PARTNERS, ...LOWER_ROW_PARTNERS].map((partner, idx) => (
             <EnterpriseMarqueeCard key={`lower-${partner.id}-${idx}`} partner={partner} />
+          ))}
+        </div>
+
+        {/* ROW 3: ENTERPRISE LOGOS MARQUEE (Right to Left - Godrej, L&T, Tata, Phoenix, Sobha & More) */}
+        <div className="flex w-max animate-[marquee-rtl_32s_linear_infinite] hover:[animation-play-state:paused] pt-2">
+          {[...ENTERPRISE_CLIENT_LOGOS, ...ENTERPRISE_CLIENT_LOGOS].map((client, idx) => (
+            <ClientLogoMarqueeCard key={`logo-${client.id}-${idx}`} client={client} />
           ))}
         </div>
       </div>

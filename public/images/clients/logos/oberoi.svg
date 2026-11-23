@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80">
+  <g transform="translate(10, 16)">
+    <!-- Iconic Oberoi Red Triangle Icon -->
+    <polygon points="12,4 40,24 12,44" fill="#D32F2F" />
+    <polygon points="4,12 24,24 4,36" fill="#1E293B" />
+  </g>
+  <text x="68" y="38" font-family="'Helvetica Neue', Arial, sans-serif" font-size="20" font-weight="900" fill="#0F172A" letter-spacing="1.5">OBEROI</text>
+  <text x="68" y="54" font-family="'Helvetica Neue', Arial, sans-serif" font-size="11" font-weight="700" fill="#DC2626" letter-spacing="4">REALTY</text>
+</svg>
