@@ -3273,17 +3273,52 @@ export function ContractorSavingsCalculator() {
                   </div>
                 </div>
 
-                <Link
-                  href="https://onboarding.digitallabourchowk.com/login"
-                  className="mt-8 w-full py-3.5 px-6 rounded-xl bg-[#D4A017] hover:bg-[#B8860B] text-white font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-lg shadow-amber-600/30 flex items-center justify-center gap-2 transition-all transform active:scale-98"
-                >
-                  <span>Hire Verified Workers Now</span>
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                <div className="mt-8 space-y-3">
+                  <Link
+                    href="https://onboarding.digitallabourchowk.com/login"
+                    className="w-full py-3.5 px-6 rounded-xl bg-[#D4A017] hover:bg-[#B8860B] text-white font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-lg shadow-amber-600/30 flex items-center justify-center gap-2 transition-all transform active:scale-98"
+                  >
+                    <span>Hire Verified Workers Now</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+
+                  <Link
+                    href="/cost-estimator"
+                    className="w-full py-3 px-6 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/20 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all group backdrop-blur-sm"
+                  >
+                    <Calculator className="w-4 h-4 text-amber-400 group-hover:scale-110 transition-transform" />
+                    <span>House Construction Cost Estimator</span>
+                    <ArrowRight className="w-4 h-4 text-slate-400 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
               </div>
             </div>
 
           </div>
+        </div>
+
+        {/* Specialized House Construction Cost Estimator Banner */}
+        <div className="mt-6 rounded-2xl bg-gradient-to-r from-blue-900/5 via-amber-500/10 to-blue-900/5 border border-slate-200/90 p-4 sm:p-5 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+          <div className="flex items-center gap-3.5 text-center sm:text-left">
+            <div className="w-10 h-10 rounded-xl bg-[#0C59D4]/10 text-[#0C59D4] flex items-center justify-center shrink-0">
+              <Calculator className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="text-sm font-extrabold text-slate-900">
+                Planning a Turnkey Residential House Construction Project?
+              </div>
+              <div className="text-xs text-slate-600 mt-0.5">
+                Calculate comprehensive cost per sq.ft across 10+ Indian cities with material specifications & BOQ breakdown.
+              </div>
+            </div>
+          </div>
+          <Link
+            href="/cost-estimator"
+            className="shrink-0 inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0C59D4] hover:bg-blue-700 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md shadow-blue-500/20 active:scale-98"
+          >
+            <span>Launch Cost Estimator</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
 
       </div>
