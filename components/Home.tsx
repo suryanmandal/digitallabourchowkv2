@@ -3548,92 +3548,341 @@ export function HomeFAQSection() {
 }
 
 // =============================================================================
-// SECTION 9: NEWS & MEDIA STRIP (National Recognition & Press Coverage)
+// SECTION 9: NEWS & MEDIA STRIP (3D Tilted Perspective Carousel)
 // =============================================================================
-const MEDIA_STORIES = [
+interface NewsMediaItem {
+  id: number;
+  outlet: string;
+  tag: string;
+  displayTitle: string;
+  subtitle: string;
+  summary: string;
+  image: string;
+  link: string;
+  isVideo?: boolean;
+}
+
+const NEWS_MEDIA_ITEMS: NewsMediaItem[] = [
   {
+    id: 1,
     outlet: "Amazon MX Player",
-    tag: "Documentary Feature",
-    headline: "Featured on 'Bharat Ke Super Founders'",
+    tag: "OTT Documentary",
+    displayTitle: "SUPER FOUNDERS",
+    subtitle: "Bharat Ke Super Founders",
     summary: "National documentary showcasing how DLC digitally connects over 3.5 Lakh craftsmen with India's building boom.",
-    badgeBg: "bg-amber-50 text-[#B45309] border-amber-200",
+    image: "/images/super-founder-banner.webp",
+    link: "https://www.mxplayer.in",
+    isVideo: true,
   },
   {
-    outlet: "Dainik Bhaskar",
-    tag: "National Print & Web",
-    headline: "Transforming Physical Chowks into Digital Platforms",
-    summary: "Highlighting how digital identity, transparent wages, and direct DBT are uplifting construction families across India.",
-    badgeBg: "bg-blue-50 text-[#0C59D4] border-blue-200",
+    id: 2,
+    outlet: "Hitachi India & KSUM",
+    tag: "National Innovation Challenge",
+    displayTitle: "HITACHI WINNER",
+    subtitle: "National Challenge Winner",
+    summary: "Awarded ₹30 Lakh Winner prize for pioneering digital formalization of construction labor logistics across India.",
+    image: "/images/for-collaboration/recognitions/recog-4.webp",
+    link: "https://www.thehindubusinessline.com/info-tech/fuselage-goudrika-win-hitachi-national-innovation-challenge/article65419369.ece",
   },
   {
-    outlet: "Aaj Tak & India Today",
-    tag: "Television Broadcast",
-    headline: "Zero Middlemen: Daily Direct Wages for Tradesmen",
-    summary: "Feature report on eliminating wage leakage and providing ₹5 Lakh accident insurance for site workers.",
-    badgeBg: "bg-emerald-50 text-[#16A34A] border-emerald-200",
+    id: 3,
+    outlet: "NAREDCO",
+    tag: "Best Startup Award",
+    displayTitle: "NAREDCO 2023",
+    subtitle: "Best Construction Startup",
+    summary: "Honored by the National Real Estate Development Council for exceptional innovation in verified manpower deployment.",
+    image: "/images/for-collaboration/recognitions/recog-3.webp",
+    link: "/awards-recognition",
   },
   {
+    id: 4,
+    outlet: "Republic TV",
+    tag: "TV Broadcast",
+    displayTitle: "REPUBLIC TV",
+    subtitle: "Prime-Time Special Report",
+    summary: "Prime-time national feature on how Digital Labour Chowk eliminates exploitative middleman cuts for roadside mistris.",
+    image: "/images/for-collaboration/recognitions/recog-7.webp",
+    link: "https://www.youtube.com/watch?v=7DRf-AvizO4",
+    isVideo: true,
+  },
+  {
+    id: 5,
     outlet: "Startup India & DPIIT",
     tag: "National Recognition",
-    headline: "Recognized Social Impact Workforce Platform",
-    summary: "Recognized for driving financial inclusion, digital literacy, and formalized employment in construction.",
-    badgeBg: "bg-purple-50 text-purple-700 border-purple-200",
+    displayTitle: "STARTUP INDIA",
+    subtitle: "Govt of India Felicitation",
+    summary: "Recognized as a benchmark social impact enterprise transforming blue-collar livelihoods and banking inclusion.",
+    image: "/images/for-collaboration/recognitions/recog-1.webp",
+    link: "/media-coverage",
+  },
+  {
+    id: 6,
+    outlet: "Ministry of MSME",
+    tag: "Champion of Impact",
+    displayTitle: "MSME CHAMPION",
+    subtitle: "Grassroots Wage Security Honor",
+    summary: "Honored for enabling direct bank payments (DBT) and free ₹5 Lakh accident insurance for site artisans.",
+    image: "/images/for-collaboration/recognitions/recog-2.webp",
+    link: "/awards-recognition",
+  },
+  {
+    id: 7,
+    outlet: "STPI & IT Ministry",
+    tag: "IT Sector Breakthrough",
+    displayTitle: "TECH INITIATIVE",
+    subtitle: "Best Startup in IT Sector",
+    summary: "Recognizing AI-driven trade matching and biometric geo-fenced attendance across Tier 1 and Tier 2 cities.",
+    image: "/images/for-collaboration/recognitions/recog-5.webp",
+    link: "/awards-recognition",
+  },
+  {
+    id: 8,
+    outlet: "TiE Global Summit",
+    tag: "Global Showcase",
+    displayTitle: "TIE GLOBAL",
+    subtitle: "Tech-For-Good Showcase",
+    summary: "Showcased at the TiE Global Summit as an exemplary platform scaling formal employment for unorganized workers.",
+    image: "/images/for-collaboration/recognitions/recog-6.webp",
+    link: "/awards-recognition",
   },
 ];
 
 export function NewsAndMediaSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const [cardStep, setCardStep] = useState(380);
+
+  // Dynamic step sizing based on responsive breakpoints
+  useEffect(() => {
+    const updateStep = () => {
+      if (window.innerWidth < 640) {
+        setCardStep(274); // 250px width + 24px gap
+      } else if (window.innerWidth < 1024) {
+        setCardStep(336); // 300px width + 36px gap
+      } else {
+        setCardStep(396); // 350px width + 46px gap
+      }
+    };
+    updateStep();
+    window.addEventListener("resize", updateStep);
+    return () => window.removeEventListener("resize", updateStep);
+  }, []);
+
+  const total = NEWS_MEDIA_ITEMS.length;
+
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev + 1) % total);
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex((prev) => (prev - 1 + total) % total);
+  };
+
+  // Autoplay with pause on hover/drag
+  useEffect(() => {
+    if (isPaused || isDragging) return;
+    const timer = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % total);
+    }, 4500);
+    return () => clearInterval(timer);
+  }, [isPaused, isDragging, total]);
+
+  // Mouse & Touch Drag Event Handlers
+  const handleDragStart = (clientX: number) => {
+    setIsDragging(true);
+    setStartX(clientX);
+    setDragOffset(0);
+  };
+
+  const handleDragMove = (clientX: number) => {
+    if (!isDragging) return;
+    const delta = clientX - startX;
+    setDragOffset(delta);
+  };
+
+  const handleDragEnd = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (dragOffset < -50) {
+      nextSlide();
+    } else if (dragOffset > 50) {
+      prevSlide();
+    }
+    setDragOffset(0);
+  };
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaX) > 30) {
+      if (e.deltaX > 0) nextSlide();
+      else prevSlide();
+    }
+  };
+
   return (
-    <section className="w-full bg-white py-16 sm:py-24 border-t border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-50 border border-purple-200 text-purple-700 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
-            <Award className="w-3.5 h-3.5 text-purple-600" />
-            <span>DLC IN THE NEWS</span>
+    <section
+      className="w-full bg-[#050507] text-white py-20 sm:py-28 lg:py-36 border-t border-neutral-900 relative overflow-hidden select-none"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => {
+        setIsPaused(false);
+        handleDragEnd();
+      }}
+    >
+      {/* Subtle radial ambient background glow */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(147,51,234,0.12),transparent_70%)] pointer-events-none" />
+
+      {/* Section Header */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 text-center mb-6 sm:mb-10">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-purple-500/30 text-purple-300 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5 backdrop-blur-md">
+          <Award className="w-3.5 h-3.5 text-purple-400" />
+          <span>DLC IN THE NEWS</span>
+        </div>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-tight">
+          Recognized Across National Media
+        </h2>
+        <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-400 leading-relaxed font-normal max-w-2xl mx-auto">
+          Covered by leading national broadcasts, newspapers, and streaming documentaries for modernizing India’s construction workforce.
+        </p>
+      </div>
+
+      {/* 3D Tilted Perspective Carousel Track Viewport */}
+      <div
+        className="relative w-full overflow-hidden py-14 sm:py-20 md:py-24 cursor-grab active:cursor-grabbing"
+        onMouseDown={(e) => handleDragStart(e.clientX)}
+        onMouseMove={(e) => handleDragMove(e.clientX)}
+        onMouseUp={handleDragEnd}
+        onTouchStart={(e) => handleDragStart(e.touches[0].clientX)}
+        onTouchMove={(e) => handleDragMove(e.touches[0].clientX)}
+        onTouchEnd={handleDragEnd}
+        onWheel={handleWheel}
+      >
+        {/* Tilted Angled Track Wrapper (-12deg Angle Matching Reference Video) */}
+        <div className="transform -rotate-[9deg] sm:-rotate-[12deg] -mx-24 sm:-mx-36 md:-mx-48 origin-center transition-transform duration-300">
+          <div
+            className={`flex items-start gap-6 sm:gap-9 lg:gap-11 px-8 sm:px-16 ${
+              isDragging ? "transition-none" : "transition-transform duration-700 ease-out"
+            }`}
+            style={{
+              transform: `translateX(calc(-${currentIndex * cardStep}px + ${dragOffset}px))`,
+            }}
+          >
+            {/* Render items duplicated for smooth continuous horizon */}
+            {[...NEWS_MEDIA_ITEMS, ...NEWS_MEDIA_ITEMS].map((card, idx) => (
+              <div
+                key={`${card.id}-${idx}`}
+                className="w-[250px] sm:w-[300px] lg:w-[350px] shrink-0 group/card cursor-pointer"
+                onClick={() => {
+                  if (card.link.startsWith("http")) {
+                    window.open(card.link, "_blank", "noopener,noreferrer");
+                  }
+                }}
+              >
+                {/* Image Container with Rounded Corners & Deep Drop Shadow */}
+                <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden bg-neutral-900 border border-white/10 group-hover/card:border-purple-400/60 shadow-[0_20px_50px_rgba(0,0,0,0.85)] transition-all duration-500">
+                  <Image
+                    src={card.image}
+                    alt={card.displayTitle}
+                    fill
+                    unoptimized
+                    priority
+                    sizes="(max-width: 640px) 250px, (max-width: 1024px) 300px, 350px"
+                    className="object-cover group-hover/card:scale-105 transition-transform duration-700 select-none pointer-events-none"
+                  />
+
+                  {/* Gradient Scrim for Legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent pointer-events-none" />
+
+                  {/* Top Floating Outlet Badge */}
+                  <div className="absolute top-4 left-4 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider text-white shadow-md">
+                    <span>{card.outlet}</span>
+                  </div>
+
+                  {/* Play Indicator for Video Stories */}
+                  {card.isVideo && (
+                    <div className="absolute bottom-4 right-4 z-10 w-9 h-9 rounded-full bg-red-600/90 text-white flex items-center justify-center shadow-lg group-hover/card:scale-110 transition-transform">
+                      <Play className="w-4 h-4 fill-white translate-x-0.5" />
+                    </div>
+                  )}
+
+                  {/* External Link Icon on Hover */}
+                  <div className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white flex items-center justify-center opacity-0 group-hover/card:opacity-100 transition-opacity">
+                    <ArrowUpRight className="w-4 h-4" />
+                  </div>
+                </div>
+
+                {/* Typography Below Card (Tilted Parallel to Cards, Monospace/Sans Wide Tracking) */}
+                <div className="mt-4 px-1">
+                  <div className="text-sm sm:text-base lg:text-lg font-black tracking-[0.22em] text-white uppercase truncate group-hover/card:text-purple-300 transition-colors">
+                    {card.displayTitle}
+                  </div>
+                  <div className="text-[11px] sm:text-xs font-semibold tracking-wider text-neutral-400 uppercase mt-0.5 truncate">
+                    {card.subtitle}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight">
-            Recognized Across National Media
-          </h2>
-          <p className="mt-3.5 text-sm sm:text-base md:text-lg text-slate-600 leading-relaxed font-normal">
-            Covered by leading national broadcasts, newspapers, and streaming documentaries for modernizing India’s unorganized construction labor market.
-          </p>
         </div>
 
-        {/* 4-Card Media Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {MEDIA_STORIES.map((story, idx) => (
-            <div
+        {/* Level Floating Circular Navigation Buttons (Positioned Horizontally Outside Rotation) */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-4 sm:left-8 z-30 pointer-events-auto">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              prevSlide();
+            }}
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md flex items-center justify-center transition-all shadow-2xl active:scale-95 group/btn focus:outline-none"
+            aria-label="Previous Media Story"
+          >
+            <ChevronLeft className="w-6 h-6 group-hover/btn:-translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+
+        <div className="absolute top-1/2 -translate-y-1/2 right-4 sm:right-8 z-30 pointer-events-auto">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              nextSlide();
+            }}
+            className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-md flex items-center justify-center transition-all shadow-2xl active:scale-95 group/btn focus:outline-none"
+            aria-label="Next Media Story"
+          >
+            <ChevronRight className="w-6 h-6 group-hover/btn:translate-x-0.5 transition-transform" />
+          </button>
+        </div>
+      </div>
+
+      {/* Slide Pagination Pill & Explore CTA */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 flex flex-col sm:flex-row items-center justify-between gap-6 pt-6 sm:pt-10 border-t border-neutral-900">
+        {/* Pagination Dots */}
+        <div className="flex items-center gap-2">
+          {NEWS_MEDIA_ITEMS.map((_, idx) => (
+            <button
               key={idx}
-              className="group bg-slate-50/70 hover:bg-white rounded-3xl p-6 border border-slate-200/80 hover:border-purple-300 transition-all duration-300 hover:shadow-xl hover:-translate-y-1.5 flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between gap-2 mb-3">
-                  <span className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-0.5 rounded-md border ${story.badgeBg}`}>
-                    {story.tag}
-                  </span>
-                  <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-purple-600 transition-colors" />
-                </div>
-
-                <div className="text-xs font-black text-slate-900 uppercase tracking-wider mb-2">
-                  {story.outlet}
-                </div>
-
-                <h3 className="text-base sm:text-[17px] font-extrabold text-slate-900 tracking-tight leading-snug group-hover:text-purple-700 transition-colors">
-                  {story.headline}
-                </h3>
-
-                <p className="mt-2.5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  {story.summary}
-                </p>
-              </div>
-
-              <div className="mt-5 pt-3.5 border-t border-slate-200/60 text-[11px] font-semibold text-slate-400 group-hover:text-slate-600 transition-colors">
-                Verified Media Feature →
-              </div>
-            </div>
+              type="button"
+              onClick={() => setCurrentIndex(idx)}
+              className={`h-1.5 rounded-full transition-all duration-300 ${
+                currentIndex % total === idx
+                  ? "w-8 bg-purple-500"
+                  : "w-2 bg-neutral-700 hover:bg-neutral-500"
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
           ))}
         </div>
 
+        {/* Explore All Media CTA */}
+        <Link
+          href="/media-coverage"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white/10 hover:bg-white text-white hover:text-slate-900 border border-white/20 font-extrabold text-xs uppercase tracking-wider transition-all duration-300 backdrop-blur-md shadow-lg active:scale-95"
+        >
+          <span>Explore All 25+ Media Features</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
       </div>
     </section>
   );
