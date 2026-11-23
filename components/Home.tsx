@@ -1109,7 +1109,7 @@ export function StatsAndTestimonials() {
   }, [maxIndex, isDragging]);
 
   return (
-    <section className="w-full bg-[#FAFAFC] pt-0 pb-16 sm:pb-24 border-t-0 overflow-hidden">
+    <section className="w-full bg-[#FAFAFC] pt-0 pb-6 sm:pb-10 border-t-0 overflow-hidden">
       {/* PART A: TOP HORIZONTAL STATS BAR (Stationary Responsive Grid with Scroll Count-Up Animation) */}
       <div ref={statsRef} className="w-full mb-16 sm:mb-20">
         <div className="w-full bg-white border-y border-slate-200/90 py-6 sm:py-7 shadow-xs">
@@ -2045,7 +2045,7 @@ export function HowItWorksSection() {
   }, [videoModalOpen]);
 
   return (
-    <section className="w-full bg-[#FAFAFC] py-20 sm:py-28 border-t border-slate-200/80 relative">
+    <section className="w-full bg-[#FAFAFC] pt-6 sm:pt-10 pb-12 sm:pb-16 border-t border-slate-200/80 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Header */}
@@ -3080,7 +3080,7 @@ function EnterpriseMarqueeCard({ partner }: { partner: EnterprisePartner }) {
 
 export function EnterprisePartnerWall() {
   return (
-    <section className="w-full bg-[#FAFAFC] py-16 sm:py-24 border-t border-slate-200/80 overflow-hidden relative">
+    <section className="w-full bg-[#FAFAFC] pt-10 sm:pt-14 pb-14 sm:pb-20 border-t border-slate-200/80 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-14 text-center">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-slate-800 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-3.5">
           <Building2 className="w-3.5 h-3.5 text-slate-700" />
