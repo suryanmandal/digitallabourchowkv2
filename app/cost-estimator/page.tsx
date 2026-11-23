@@ -535,9 +535,9 @@ export default function CostEstimatorPage() {
     <div className="w-full bg-[#FAFAFC] min-h-screen text-slate-900">
       
       {/* ========================================================================= */}
-      {/* 1. HERO HEADER                                                            */}
+      {/* 1. HERO HEADER (BLANK SECTION - NO TEXT, NO CONTENT)                      */}
       {/* ========================================================================= */}
-      <section className="w-full bg-slate-950 text-white pt-12 pb-16 sm:pt-16 sm:pb-20 relative overflow-hidden border-b border-slate-800">
+      <section className="w-full bg-slate-950 min-h-[300px] sm:min-h-[400px] relative overflow-hidden border-b border-slate-800">
         {/* Subtle grid background texture */}
         <div
           className="absolute inset-0 pointer-events-none opacity-10"
@@ -547,6 +547,8 @@ export default function CostEstimatorPage() {
           }}
         />
 
+        {/* Text, headers, and quick stats commented out per user request to leave hero section completely blank */}
+        {/*
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 border border-blue-400/30 text-blue-300 text-xs sm:text-[13px] font-bold uppercase tracking-wider shadow-sm mb-4 backdrop-blur-md">
             <Calculator className="w-3.5 h-3.5 text-[#0C59D4]" />
@@ -561,7 +563,6 @@ export default function CostEstimatorPage() {
             Get instant, package-wise construction estimates across 10+ major Indian cities. Calculate built-up area, material specifications, civil stages, and see direct contractor savings with Digital Labour Chowk.
           </p>
 
-          {/* Quick Stats Strip */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto mt-10 pt-8 border-t border-slate-800/80">
             <div>
               <div className="text-2xl sm:text-3xl font-black text-white">350,000+</div>
@@ -589,12 +590,13 @@ export default function CostEstimatorPage() {
             </div>
           </div>
         </div>
+        */}
       </section>
 
       {/* ========================================================================= */}
       {/* 2. MAIN INTERACTIVE CALCULATOR ENGINE                                     */}
       {/* ========================================================================= */}
-      <section className="w-full py-12 sm:py-16 -mt-6">
+      <section className="w-full py-12 sm:py-16 -mt-16 sm:-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
