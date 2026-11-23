@@ -600,11 +600,12 @@ export function CurtainRevealSection() {
 }
 
 // =============================================================================
-// SECTION 4: STATS MARQUEE & TESTIMONIALS (Split Section with Auto-Carousel)
+// SECTION 4: STATS COUNTER & TESTIMONIALS (Split Section with Auto-Carousel)
 // =============================================================================
 interface MetricItem {
   id: string;
-  value: string;
+  target: number;
+  suffix: string;
   label: string;
   icon: React.ReactNode;
 }
@@ -612,41 +613,81 @@ interface MetricItem {
 const STATS_METRICS: MetricItem[] = [
   {
     id: "workers",
-    value: "350,000+",
+    target: 350000,
+    suffix: "+",
     label: "REGISTERED WORKERS",
     icon: <Users className="w-4 h-4 text-[#0C59D4]" />,
   },
   {
     id: "contractors",
-    value: "20,000+",
+    target: 20000,
+    suffix: "+",
     label: "TRUSTED CONTRACTORS",
     icon: <HardHat className="w-4 h-4 text-[#D4A017]" />,
   },
   {
     id: "companies",
-    value: "50+",
+    target: 50,
+    suffix: "+",
     label: "BIG CONSTRUCTION COMPANIES",
     icon: <Building2 className="w-4 h-4 text-[#16A34A]" />,
   },
   {
     id: "cities",
-    value: "6,000+",
+    target: 6000,
+    suffix: "+",
     label: "CITIES ACROSS INDIA",
     icon: <MapPin className="w-4 h-4 text-[#E65100]" />,
   },
   {
     id: "projects",
-    value: "15,000+",
+    target: 15000,
+    suffix: "+",
     label: "PROJECTS DELIVERED",
     icon: <CheckCircle2 className="w-4 h-4 text-[#0C59D4]" />,
   },
   {
     id: "rate",
-    value: "98%",
+    target: 98,
+    suffix: "%",
     label: "ON-TIME DEPLOYMENT RATE",
     icon: <TrendingUp className="w-4 h-4 text-[#16A34A]" />,
   },
 ];
+
+function AnimatedCounter({ target, suffix, isVisible }: { target: number; suffix: string; isVisible: boolean }) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTimestamp: number | null = null;
+    const duration = 2000;
+
+    const step = (timestamp: number) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      const easeProgress = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.floor(easeProgress * target));
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
+    };
+
+    const animFrame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animFrame);
+  }, [isVisible, target]);
+
+  return (
+    <span>
+      {count.toLocaleString("en-US")}
+      {suffix}
+    </span>
+  );
+}
 
 interface TestimonialCard {
   id: number;
@@ -776,6 +817,26 @@ export function StatsAndTestimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [visibleCount, setVisibleCount] = useState(3);
   const totalCards = TESTIMONIALS_DATA.length;
+  const statsRef = useRef<HTMLDivElement>(null);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    const el = statsRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasAnimated(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -813,8 +874,8 @@ export function StatsAndTestimonials() {
 
   return (
     <section className="w-full bg-[#FAFAFC] pt-0 pb-16 sm:pb-24 border-t-0 overflow-hidden">
-      {/* PART A: TOP HORIZONTAL STATS BAR (Stationary Responsive Grid - No Marquee Animation) */}
-      <div className="w-full mb-16 sm:mb-20">
+      {/* PART A: TOP HORIZONTAL STATS BAR (Stationary Responsive Grid with Scroll Count-Up Animation) */}
+      <div ref={statsRef} className="w-full mb-16 sm:mb-20">
         <div className="w-full bg-white border-y border-slate-200/90 py-6 sm:py-7 shadow-xs">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-6 lg:gap-4 items-center">
@@ -830,8 +891,12 @@ export function StatsAndTestimonials() {
                   </div>
 
                   <div className="flex flex-col text-left ml-3 min-w-0">
-                    <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">
-                      {metric.value}
+                    <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none tabular-nums">
+                      <AnimatedCounter
+                        target={metric.target}
+                        suffix={metric.suffix}
+                        isVisible={hasAnimated}
+                      />
                     </span>
                     <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 tracking-wider uppercase mt-1 leading-tight">
                       {metric.label}
