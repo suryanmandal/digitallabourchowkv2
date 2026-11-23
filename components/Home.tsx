@@ -813,34 +813,33 @@ export function StatsAndTestimonials() {
 
   return (
     <section className="w-full bg-[#FAFAFC] pt-0 pb-16 sm:pb-24 border-t-0 overflow-hidden">
-      {/* PART A: TOP HORIZONTAL STATS MARQUEE (Right to Left Scrolling) */}
+      {/* PART A: TOP HORIZONTAL STATS BAR (Stationary Responsive Grid - No Marquee Animation) */}
       <div className="w-full mb-16 sm:mb-20">
-        <div className="w-full bg-white border-y border-slate-200/90 py-5 sm:py-6 shadow-xs overflow-hidden relative">
-          <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-r from-white via-white/80 to-transparent z-10 pointer-events-none" />
-          <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-28 bg-gradient-to-l from-white via-white/80 to-transparent z-10 pointer-events-none" />
+        <div className="w-full bg-white border-y border-slate-200/90 py-6 sm:py-7 shadow-xs">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 sm:gap-6 lg:gap-4 items-center">
+              {STATS_METRICS.map((metric, idx) => (
+                <div
+                  key={metric.id}
+                  className={`flex items-center justify-start lg:justify-center group cursor-default ${
+                    idx !== STATS_METRICS.length - 1 ? "lg:border-r lg:border-slate-200 lg:pr-4" : ""
+                  }`}
+                >
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center flex-shrink-0 shadow-xs group-hover:scale-105 group-hover:border-blue-300 transition-all">
+                    {metric.icon}
+                  </div>
 
-          <div className="flex w-max animate-marquee-rtl hover:[animation-play-state:paused]">
-            {[...STATS_METRICS, ...STATS_METRICS, ...STATS_METRICS, ...STATS_METRICS].map((metric, idx) => (
-              <div
-                key={`${metric.id}-${idx}`}
-                className="flex items-center mx-8 sm:mx-12 group cursor-default"
-              >
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-center flex-shrink-0 shadow-xs group-hover:scale-110 group-hover:border-blue-300 transition-all">
-                  {metric.icon}
+                  <div className="flex flex-col text-left ml-3 min-w-0">
+                    <span className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight leading-none">
+                      {metric.value}
+                    </span>
+                    <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 tracking-wider uppercase mt-1 leading-tight">
+                      {metric.label}
+                    </span>
+                  </div>
                 </div>
-
-                <div className="flex flex-col text-left ml-3.5 sm:ml-4 whitespace-nowrap">
-                  <span className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-none">
-                    {metric.value}
-                  </span>
-                  <span className="text-[10px] sm:text-xs font-bold text-slate-500 tracking-wider uppercase mt-1">
-                    {metric.label}
-                  </span>
-                </div>
-
-                <div className="w-px h-8 bg-slate-200 ml-10 sm:ml-14" />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
