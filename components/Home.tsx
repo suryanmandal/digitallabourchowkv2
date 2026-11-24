@@ -33,6 +33,7 @@ import {
   Plus,
   Minus,
 } from "lucide-react";
+import FloatingBuilderCTA from "@/components/FloatingBuilderCTA";
 
 // =============================================================================
 // SECTION 1: HERO IMAGE CAROUSEL (3 Core Business Pillars with Autoplay)
@@ -4133,6 +4134,9 @@ export default function HomeContent() {
 
       {/* SECTION 11: Quick Enterprise Lead Capture (Pre-Footer Dispatch Box) */}
       <QuickLeadCapture />
+
+      {/* FLOATING ACTION WIDGET: Builder & Contractor Quick Callback / QR Lead Capture */}
+      <FloatingBuilderCTA />
     </>
   );
 }

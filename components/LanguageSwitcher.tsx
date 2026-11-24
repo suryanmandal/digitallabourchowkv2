@@ -298,12 +298,12 @@ export default function LanguageSwitcher({
   // VARIANT 4: FLOATING (Corner pill on mobile for quick access)
   // ---------------------------------------------------------------------------
   return (
-    <div className={`fixed bottom-5 right-5 z-40 notranslate ${className}`} ref={dropdownRef}>
+    <div className={`fixed bottom-3 left-3 sm:bottom-5 sm:left-auto sm:right-5 z-30 notranslate ${className}`} ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Change language"
-        className="flex items-center gap-2 px-3.5 py-2.5 rounded-full bg-[#0C59D4] text-white font-bold text-xs shadow-xl hover:bg-[#0947AD] active:scale-95 transition-all border-2 border-white"
+        className="flex items-center gap-1.5 sm:gap-2 px-3 py-2 sm:px-3.5 sm:py-2.5 rounded-full bg-[#0C59D4] text-white font-bold text-xs shadow-xl hover:bg-[#0947AD] active:scale-95 transition-all border-2 border-white cursor-pointer"
       >
         <Globe className="w-4 h-4" />
         <span>{currentOption.nativeLabel}</span>
@@ -311,7 +311,7 @@ export default function LanguageSwitcher({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 bottom-full mb-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150">
+        <div className="absolute left-0 sm:left-auto sm:right-0 bottom-full mb-2 w-56 bg-white rounded-2xl shadow-2xl border border-slate-200 p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150">
           <div className="px-2 py-1.5 border-b border-slate-100 text-[11px] font-black uppercase tracking-wider text-slate-500">
             Select Language / भाषा चुनें
           </div>
