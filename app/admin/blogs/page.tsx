@@ -22,6 +22,7 @@ import {
   ArrowRight,
   SlidersHorizontal,
   Calendar,
+  Upload,
 } from "lucide-react";
 import { BlogPost } from "@/app/api/blogs/route";
 
@@ -80,6 +81,8 @@ function AdminBlogsContent() {
   const [formContent, setFormContent] = useState("");
   const [formStatus, setFormStatus] = useState<"published" | "draft">("published");
   const [formTags, setFormTags] = useState("");
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
   const fetchBlogs = async () => {
     setLoading(true);
@@ -154,6 +157,36 @@ function AdminBlogsContent() {
         .replace(/[^\w-]+/g, "")
         .replace(/--+/g, "-");
       setFormSlug(generatedSlug);
+    }
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingImage(true);
+    setUploadError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to upload image.");
+      }
+
+      setFormCoverImage(data.url);
+    } catch (err: any) {
+      console.error("Upload failed:", err);
+      setUploadError(err.message || "Failed to upload image");
+    } finally {
+      setUploadingImage(false);
     }
   };
 
@@ -669,19 +702,84 @@ function AdminBlogsContent() {
                 </div>
               </div>
 
-              {/* Cover Image Preset Picker & Custom Input */}
+              {/* Cover Image Preset Picker & Custom Input & Supabase Storage Uploader */}
               <div className="space-y-2">
-                <label className="text-xs font-bold text-slate-300 block">
-                  Cover Image URL:
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={formCoverImage}
-                    onChange={(e) => setFormCoverImage(e.target.value)}
-                    className="flex-1 px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono focus:outline-none focus:border-blue-500"
-                  />
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-slate-300 block">
+                    Cover Image (Upload to Cloud Storage or select preset)
+                  </label>
+                  {formCoverImage && (
+                    <span className="text-[10px] text-teal-400 font-mono">
+                      {formCoverImage.startsWith("http") ? "Cloud Storage / Web URL" : "Local Preset"}
+                    </span>
+                  )}
                 </div>
+
+                <div className="flex flex-col sm:flex-row gap-2">
+                  <div className="flex-1 relative">
+                    <input
+                      type="text"
+                      value={formCoverImage}
+                      onChange={(e) => setFormCoverImage(e.target.value)}
+                      placeholder="https://... or /images/blogs/..."
+                      className="w-full px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-mono focus:outline-none focus:border-blue-500"
+                    />
+                  </div>
+
+                  {/* Supabase Storage Upload Button */}
+                  <label className={`px-4 py-2.5 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer shrink-0 border ${
+                    uploadingImage 
+                      ? "bg-slate-800 text-slate-400 border-slate-700 cursor-not-allowed" 
+                      : "bg-teal-600 hover:bg-teal-500 text-white border-teal-500 shadow-md shadow-teal-900/30"
+                  }`}>
+                    {uploadingImage ? (
+                      <>
+                        <RefreshCw className="w-3.5 h-3.5 animate-spin text-teal-400" />
+                        <span>Uploading...</span>
+                      </>
+                    ) : (
+                      <>
+                        <Upload className="w-3.5 h-3.5" />
+                        <span>Upload to Supabase</span>
+                        <input
+                          type="file"
+                          accept="image/png,image/jpeg,image/webp,image/avif,image/svg+xml"
+                          onChange={handleImageUpload}
+                          disabled={uploadingImage}
+                          className="hidden"
+                        />
+                      </>
+                    )}
+                  </label>
+                </div>
+
+                {uploadError && (
+                  <div className="text-[11px] text-red-400 bg-red-950/40 border border-red-800/60 px-3 py-1.5 rounded-lg">
+                    Upload Error: {uploadError}
+                  </div>
+                )}
+
+                {/* Cover Image Preview Thumbnail */}
+                {formCoverImage && (
+                  <div className="flex items-center gap-3 p-2 bg-slate-900/60 border border-slate-800 rounded-xl">
+                    <img
+                      src={formCoverImage}
+                      alt="Cover Preview"
+                      className="w-16 h-10 object-cover rounded-lg border border-slate-700 shrink-0"
+                      onError={(e) => {
+                        (e.target as HTMLElement).style.display = "none";
+                      }}
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="text-[11px] font-medium text-slate-300 truncate font-mono">
+                        {formCoverImage}
+                      </div>
+                      <div className="text-[10px] text-slate-500">
+                        Live cover thumbnail preview
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Preset Chips */}
                 <div className="flex flex-wrap gap-1.5 pt-1">

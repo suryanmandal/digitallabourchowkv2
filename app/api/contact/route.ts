@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { supabaseAdmin } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 interface ContactInquiry {
   id: string;
@@ -92,14 +95,18 @@ export async function POST(request: Request) {
 
     const { name, phone, email, type, message } = body;
 
-    // 3. Strict Server-Side Validation: Name
-    if (!name || typeof name !== "string") {
+    // 3. Server-Side Validation: Name (default to Site Contractor if submitted from quick widget)
+    const rawName = (name && typeof name === "string" && name.trim().length > 0)
+      ? name
+      : (body.source === "Floating Builder Desk" ? "Site Contractor" : "");
+
+    if (!rawName) {
       return NextResponse.json(
         { error: "Full name is required." },
         { status: 400 }
       );
     }
-    const cleanName = sanitizeString(name);
+    const cleanName = sanitizeString(rawName);
     if (cleanName.length < 2 || cleanName.length > 60) {
       return NextResponse.json(
         { error: "Name must be between 2 and 60 characters." },
@@ -173,14 +180,12 @@ export async function POST(request: Request) {
     ];
     const cleanType = ALLOWED_TYPES.includes(type) ? type : "Contractor";
 
-    // 7. Strict Server-Side Validation: Message
-    if (!message || typeof message !== "string") {
-      return NextResponse.json(
-        { error: "Inquiry message is required." },
-        { status: 400 }
-      );
-    }
-    const cleanMessage = sanitizeString(message);
+    // 7. Server-Side Validation: Message (default for quick callback widgets)
+    const rawMessage = (message && typeof message === "string" && message.trim().length > 0)
+      ? message
+      : `Priority callback requested for ${body.headcount || "10-25"} ${body.trade || "workers"} in ${body.city || "Delhi NCR"}.`;
+
+    const cleanMessage = sanitizeString(rawMessage);
     if (cleanMessage.length < 5) {
       return NextResponse.json(
         { error: "Message is too short. Please provide at least 5 characters." },
@@ -197,9 +202,39 @@ export async function POST(request: Request) {
     // 8. Record Rate Limit
     rateLimitMap.set(ip, now);
 
-    // 9. Persist Inquiry to Datastore
+    // 9. Persist to Supabase PostgreSQL (Primary Production Datastore)
+    let supabaseId: string | null = null;
+    try {
+      const { data: dbData, error: dbError } = await supabaseAdmin
+        .from("inquiries")
+        .insert([
+          {
+            name: cleanName,
+            phone: tenDigitPhone,
+            email: cleanEmail || null,
+            type: cleanType,
+            trade: body.trade || null,
+            headcount: body.headcount || null,
+            city: body.city || "Delhi NCR",
+            message: cleanMessage,
+            source: body.source || "Website Contact Form",
+          },
+        ])
+        .select("id")
+        .single();
+
+      if (dbError) {
+        console.error("Supabase insert warning:", dbError.message);
+      } else if (dbData?.id) {
+        supabaseId = dbData.id;
+      }
+    } catch (dbErr) {
+      console.error("Supabase connection exception:", dbErr);
+    }
+
+    // 10. Persist to Local JSON Datastore (Zero-Dependency Fallback)
     const newInquiry: ContactInquiry = {
-      id: `inq-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
+      id: supabaseId || `inq-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
       name: cleanName,
       phone: tenDigitPhone,
       formattedPhone: `+91 ${tenDigitPhone.slice(0, 5)} ${tenDigitPhone.slice(5)}`,
@@ -219,6 +254,7 @@ export async function POST(request: Request) {
       success: true,
       message: "Your inquiry has been securely verified and submitted to our workforce desk.",
       inquiryId: newInquiry.id,
+      persistedToSupabase: Boolean(supabaseId),
     });
   } catch (error) {
     console.error("Contact API error:", error);
@@ -229,11 +265,30 @@ export async function POST(request: Request) {
   }
 }
 
-// GET /api/contact - Admin retrieval of inquiries
+// GET /api/contact - Admin retrieval of inquiries (Reads from Supabase first)
 export async function GET() {
+  try {
+    const { data, error, count } = await supabaseAdmin
+      .from("inquiries")
+      .select("*", { count: "exact" })
+      .order("created_at", { ascending: false });
+
+    if (!error && data) {
+      return NextResponse.json({
+        success: true,
+        source: "supabase",
+        total: count || data.length,
+        inquiries: data,
+      });
+    }
+  } catch (err) {
+    console.error("Supabase fetch failed, falling back to local storage:", err);
+  }
+
   const inquiries = loadInquiries();
   return NextResponse.json({
     success: true,
+    source: "local_fallback",
     total: inquiries.length,
     inquiries,
   });

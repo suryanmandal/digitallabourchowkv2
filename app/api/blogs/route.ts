@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { supabaseAdmin } from "@/lib/supabase";
+
+export const dynamic = "force-dynamic";
 
 const blogsFilePath = path.join(process.cwd(), "data", "blogs.json");
 
@@ -21,6 +24,31 @@ export interface BlogPost {
   tags?: string[];
   createdAt: string;
   updatedAt: string;
+}
+
+function mapDbRowToBlogPost(row: any): BlogPost {
+  return {
+    id: row.id,
+    postType: row.post_type || "post",
+    title: row.title,
+    slug: row.slug,
+    category: row.category,
+    author: row.author,
+    date: new Date(row.created_at).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }),
+    readTime: row.read_time,
+    coverImage: row.cover_image,
+    excerpt: row.excerpt,
+    content: row.content,
+    status: row.status,
+    views: row.views || 0,
+    tags: Array.isArray(row.tags) ? row.tags : [],
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  };
 }
 
 function getStoredBlogs(): BlogPost[] {
@@ -74,7 +102,23 @@ export async function GET(req: NextRequest) {
     const recommendFor = searchParams.get("recommendFor");
     const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit")!, 10) : undefined;
 
-    const blogs = getStoredBlogs();
+    let blogs: BlogPost[] = [];
+    try {
+      const { data: dbRows, error: dbError } = await supabaseAdmin
+        .from("blogs")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (!dbError && dbRows && dbRows.length > 0) {
+        blogs = dbRows.map(mapDbRowToBlogPost);
+      }
+    } catch (e) {
+      console.warn("Supabase fetch failed, falling back to local JSON:", e);
+    }
+
+    if (blogs.length === 0) {
+      blogs = getStoredBlogs();
+    }
 
     // Single post by ID
     if (id) {
@@ -223,7 +267,29 @@ export async function POST(req: NextRequest) {
       updatedAt: new Date().toISOString(),
     };
 
-    // Prepend to list
+    // Persist to Supabase
+    try {
+      await supabaseAdmin.from("blogs").insert([
+        {
+          post_type: newBlog.postType,
+          title: newBlog.title,
+          slug: newBlog.slug,
+          category: newBlog.category,
+          author: newBlog.author,
+          read_time: newBlog.readTime,
+          cover_image: newBlog.coverImage,
+          excerpt: newBlog.excerpt,
+          content: newBlog.content,
+          status: newBlog.status,
+          views: 0,
+          tags: newBlog.tags,
+        },
+      ]);
+    } catch (e) {
+      console.warn("Supabase blog insert warning:", e);
+    }
+
+    // Prepend to local JSON list
     blogs.unshift(newBlog);
     saveBlogs(blogs);
 
@@ -265,6 +331,29 @@ export async function PUT(req: NextRequest) {
       updatedAt: new Date().toISOString(),
     };
 
+    // Sync to Supabase
+    try {
+      await supabaseAdmin
+        .from("blogs")
+        .update({
+          title: updatedBlog.title,
+          slug: updatedBlog.slug,
+          post_type: updatedBlog.postType,
+          category: updatedBlog.category,
+          author: updatedBlog.author,
+          read_time: updatedBlog.readTime,
+          cover_image: updatedBlog.coverImage,
+          excerpt: updatedBlog.excerpt,
+          content: updatedBlog.content,
+          status: updatedBlog.status,
+          tags: updatedBlog.tags,
+          updated_at: updatedBlog.updatedAt,
+        })
+        .eq("slug", blogs[index].slug);
+    } catch (e) {
+      console.warn("Supabase blog update warning:", e);
+    }
+
     blogs[index] = updatedBlog;
     saveBlogs(blogs);
 
@@ -291,6 +380,13 @@ export async function DELETE(req: NextRequest) {
 
     if (blogs.length === beforeCount) {
       return NextResponse.json({ error: "Blog post not found." }, { status: 404 });
+    }
+
+    // Sync deletion to Supabase
+    try {
+      await supabaseAdmin.from("blogs").delete().eq("slug", id);
+    } catch (e) {
+      console.warn("Supabase blog delete warning:", e);
     }
 
     saveBlogs(blogs);
